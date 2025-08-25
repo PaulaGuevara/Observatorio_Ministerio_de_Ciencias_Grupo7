@@ -1,5 +1,4 @@
-# Observatorio_Ministerio_de_Ciencias_Grupo7
-
+Observatorio de Ciencia, Tecnología e Innovación
 
 # Observatorio de Ciencia, Tecnología e Innovación
 
@@ -64,7 +63,7 @@ Cada dataset incluye información detallada del investigador, del grupo de inves
 - Algunos proyectos pueden estar duplicados si se registran en más de una convocatoria.
 
 ## 5. Acceso y vías de consulta
-- **Fuente:** Plataforma de información de Minciencias. y Datos Abiertos Colombia.  
+- **Fuente:** Plataforma de información de [Minciencias](https://minciencias.gov.co/ciudadano/datosabiertos) y Datos Abiertos Colombia. 
 - **Formato disponible:** CSV, XLSX.  
 - **Acceso:** Descarga libre en línea, no requiere autenticación.  
 - **Periodicidad:** Datos reportados con corte anual.  
