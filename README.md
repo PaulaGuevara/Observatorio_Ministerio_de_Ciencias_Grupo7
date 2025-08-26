@@ -1,4 +1,41 @@
-Observatorio de Ciencia, Tecnología e Innovación
+# Informe de Viabilidad para el Observatorio de Ciencia, Tecnología e Innovación
+
+---
+
+# Introduccion
+
+El presente proyecto se centra en el análisis de datos abiertos relacionados con los investigadores reconocidos en Colombia por convocatorias nacionales de ciencia, tecnología e innovación. Su propósito es consolidar, evaluar y explorar
+información estratégica sobre la trayectoria académica, logros científicos,
+distribución geográfica e institucional de los investigadores.
+
+En este proyecto, los “Investigadores Reconocidos por Convocatoria” son los
+profesionales destacados por el Ministerio de Ciencia, Tecnología e Innovación de
+Colombia (Minciencias) mediante convocatorias nacionales. Estos
+reconocimientos se otorgan en diversas categorías, considerando criterios como la
+producción científica, la formación de recursos humanos, la transferencia de
+conocimiento y la participación en redes de colaboración.
+
+Como insumos principales los datasets correspondientes a las convocatorias 2017, 2019
+y 2021, disponibles en el portal de Datos Abiertos del Gobierno de Colombia y
+Minciencias.
+
+Este proyecto, busca aprovechar estas bases de datos para:
+
+- Consolidar diagnósticos sobre la distribución de investigadores reconocidos
+por convocatoria, área de conocimiento e institución.
+
+- Analizar la cobertura geográfica y territorial de los reconocimientos,
+identificando posibles concentraciones o vacíos en regiones específicas.
+
+- Comparar las convocatorias de 2017, 2019 y 2021 para evaluar tendencias en la
+asignación de reconocimientos y detectar cambios en la política de estímulo
+a la investigación.
+
+- Generar visualizaciones y tableros de control que permitan monitorear la
+evolución de la investigación reconocida, apoyando la planificación
+estratégica y la formulación de políticas en el ámbito científico.
+
+---
 
 # Observatorio de Ciencia, Tecnología e Innovación
 
