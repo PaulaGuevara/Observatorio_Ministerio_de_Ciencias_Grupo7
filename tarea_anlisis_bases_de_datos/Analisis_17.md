@@ -59,10 +59,24 @@ COD_DANE_RES_PR
 
 ### Análisis útililes para la vizualización
 
+Se hara un corto análisis de faltantes
+
 <img width="1438" height="841" alt="Captura de pantalla 2025-09-01 a la(s) 3 57 41 p m" src="https://github.com/user-attachments/assets/581d1afa-6cd6-4fe7-a84c-f86f83c86a2b" />
 
 
 Se observa que hay tres variables con faltantes, las cuales dos son los coidgos del Dane, con el 2.24% y 6.08%, ahora esto se debe a que el investigador esta en el exterior o no esta disponible la información, no es un problema de faltantes para la base. La tercera variable con el 12.57% es la variable INST_FIlA, si el investigador no tiene filación con ninguna isntitución no se tomara el dato y quedara como dato faltante por lo que no es un problema para la base.
+
+
+#### NME_ESP_AREA_PR: Especialidad del área de conocimiento OCDE principal del investigador
+
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-01 a la(s) 6 12 20 p m" src="https://github.com/user-attachments/assets/0d36ec5b-4f53-44b3-9727-8f34c3db1469" />
+
+
+
+
+
 
 
 
