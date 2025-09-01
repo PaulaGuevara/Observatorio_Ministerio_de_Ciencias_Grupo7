@@ -14,7 +14,7 @@ Formación académica: Nivel de formación (NME_NIV_FORM_PR), orden en el que se
 
 Clasificación del investigador: Nivel de reconocimiento (NME_CLASIFICACION_PR).
 
-Ubicación geográfica: País, región, departamento y municipio de residencia (con códigos DANE).
+Ubicación geográfica: País, región, departamento y municipio de residencia.
 
 Afiliación institucional: Nombre de la institución (INST_FILIA).
 
