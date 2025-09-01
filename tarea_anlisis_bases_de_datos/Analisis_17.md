@@ -59,5 +59,12 @@ COD_DANE_RES_PR
 
 ### Análisis útililes para la vizualización
 
+<img width="1438" height="841" alt="Captura de pantalla 2025-09-01 a la(s) 3 57 41 p m" src="https://github.com/user-attachments/assets/581d1afa-6cd6-4fe7-a84c-f86f83c86a2b" />
 
-Variables no útililes para la vizualización
+
+
+
+
+
+
+
