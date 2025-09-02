@@ -1,4 +1,3 @@
-
 # Análisis base de datos 2017
 
 La base de datos contiene 13.001 registros y 30 variables, correspondientes a investigadores reconocidos en convocatorias.
