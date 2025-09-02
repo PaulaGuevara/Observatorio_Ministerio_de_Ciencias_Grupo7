@@ -170,17 +170,64 @@ Los cuatros departamentos con menos nacimientos de investigadores son Amazonas, 
 Gráfica del municipio de nacimiento del investigador, filtrado solo por n mayor a 200.
 
 
-<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 27 24 a m" src="https://github.com/user-attachments/assets/2690039e-7a19-4ed0-90b2-1e4edbf6532e">
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 27 24 a m" src="https://github.com/user-attachments/assets/2690039e-7a19-4ed0-90b2-1e4edbf6532e" />
 
 
 
 Bogotá D.C es el municipio con más nacimientos de investigadores con 3346, doblando al segundo el cual es Medellin con 1520.
 
 
-#### NME_NIV_FORM_PR	Nombre del nivel de formación máximo alcanzado
+#### NME_NIV_FORM_PR:Nombre del nivel de formación máximo alcanzado
 
 
-<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 18 56 p m" src="https://github.com/user-attachments/assets/56c950fe-ca95-4fdb-a442-874e4b84fb3c" />
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 31 32 p m" src="https://github.com/user-attachments/assets/45b0dae2-b96e-4ea8-8523-40c92acfc74a" />
 
 
 Se observa que lel 49.68% de los investigadores son doctores, siendo 6459 investigadores con doctorado. Hay 4939 ivestigadores que su maximo nivel alcanzado es maestria, en estos dos niveles se encuentra el 87.67% de los investigadores
+
+
+#### ##NME_CLASIFICACION_PR:Nombre de la categoría alcanzada por el investigador
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 33 39 p m" src="https://github.com/user-attachments/assets/14001a41-02ef-4aad-b0ae-5757f60f9eb8" />
+
+
+Se observa que la mayoria de investigadores tienen la categoría Junior con un 58,3%, seguido por el asociado con el 27.7%, el investigador senior tienen un 13,1% y por ultimo el emérito con 1%
+
+
+#### EDAD_ANOS_PR	Edad en años desde la fecha de nacimiento hasta el último mes de la convocatoria (2017-07)
+
+En esta variable se encuentran dos datos que carecen de sentido, los cuales son que un hombre tenga 226 años y otro 952 años, por lo cual para el analisis de esta variable se remueven.
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 47 00 p m" src="https://github.com/user-attachments/assets/ae88a548-2510-4a25-b022-e1a2bb9184f6" />
+
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 49 39 p m" src="https://github.com/user-attachments/assets/b36369b3-a6e8-455f-a8bc-15c2eb016697" />
+
+Se observa que hay datos atipicos por encima del rango intercuartilico, el valor maximo es 89.7 y el valor minimo es 16.92, la media de las edades es 44.54.
+
+
+#### NME_PAIS_RES_PR: País de ubicación del investigador
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 54 51 p m" src="https://github.com/user-attachments/assets/d01fe0f0-69e2-4cc8-b5f8-900572696455" />
+
+El 97.8% de los investigadores investigan en Colombia y el 2% en el exterior.
+
+
+#### NME_REGION_RES_PR:	Región de ubicación del investigador
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 57 50 p m" src="https://github.com/user-attachments/assets/0b142969-16a3-458b-81e6-825e4ed48558" />
+
+Distrito capital es donde más investigan con 4362 investigadores, seguido por el Eje cafetero con 3149, esta grafica se comporta similar a la de nacimientos por región.
+
+
+####  NME_DEPARTAMENTO_RES_PR	Departamento de ubicación del investigador
+
+
+
+
+
