@@ -158,12 +158,22 @@ Los departamentos con más investigadores son Bogotá D.C, Antioquia y Valle de 
 Gráfica del departamento de nacimiento del investigador, filtrado solo por n menor a 20.
 
 
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 17 01 a m" src="https://github.com/user-attachments/assets/b4e5d717-3d94-4cea-b8c2-6c6d73ac3049" />
 
 
+Los cuatros departamentos con menos nacimientos de investigadores son Amazonas, San Andres y islas, Vaupés y Vichada todos con dos investigadores nacidas en cada departamento
 
 
+#### NME_MUNICIPIO_NAC_PR: Municipio de nacimiento del investigador
 
 
+Gráfica del municipio de nacimiento del investigador, filtrado solo por n mayor a 200.
 
 
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 27 24 a m" src="https://github.com/user-attachments/assets/2690039e-7a19-4ed0-90b2-1e4edbf6532e" />
 
+
+Bogotá D.C es el municipio con más nacimientos de investigadores con 3346, doblando al segundo el cual es medellin con 1520.
+
+
+#### NME_NIV_FORM_PR	Nombre del nivel de formación máximo alcanzado
