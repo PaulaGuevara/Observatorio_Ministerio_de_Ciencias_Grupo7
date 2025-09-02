@@ -225,9 +225,39 @@ El 97.8% de los investigadores investigan en Colombia y el 2% en el exterior.
 Distrito capital es donde más investigan con 4362 investigadores, seguido por el Eje cafetero con 3149, esta grafica se comporta similar a la de nacimientos por región.
 
 
-####  NME_DEPARTAMENTO_RES_PR	Departamento de ubicación del investigador
+####  NME_DEPARTAMENTO_RES_PR: Departamento de ubicación del investigador
+
+Gráfica del departamento de ubicación del investigador, filtrado solo por n mayor a 1000.
 
 
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 08 03 p m" src="https://github.com/user-attachments/assets/20300461-5901-407a-b0da-3735b755ac9d" />
+
+Los investigadores residen más en Bogota D.C, Antioquia y Valle del Cauca.
 
 
+Gráfica del departamento de ubicación del investigador, filtrado solo por n menor a 10.
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 12 08 p m" src="https://github.com/user-attachments/assets/a3b8c358-3941-4365-a7a3-bdb9903e41fe" />
+
+Aurauca y Vaupes es donde menos residen investigadores, cada uno con un solo investigador
+
+
+#### NME_MUNICIPIO_RES_PR:	Municipio de ubicación del investigador
+
+Gráfica del municipio de ubicación del investigador, filtrado solo por n mayor a 1000.
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 18 14 p m" src="https://github.com/user-attachments/assets/01e8f7dd-275d-4d9f-8188-4ee534fe1cf7" />
+
+
+Bogotá con 4357, Medellin con 2216 y Cali con 1008 son los municipios donde más residen investigadores, en terminos porcetuales es el 58.31%
+
+
+#### INST_FILIA:	Lista de instituciones que el investigador indica tener filiación separados por PIPE (inst_filia)
+
+Gráfica de instituciones que el investigador indica tener filiación separados por PIPE, filtrado solo por n mayor a 300. Se omiten los NA 
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 24 17 p m" src="https://github.com/user-attachments/assets/642d8255-b024-467b-b09b-abe649425577" />
+
+La universidad Nacional sede Bogota y la universidad de Antioquia tienen más de 600 investigadores con una filiación, la Javeriana con más de 400, por ultimo los Andes y Valle con más de 300
 
