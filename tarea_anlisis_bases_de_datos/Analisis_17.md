@@ -170,10 +170,22 @@ Los cuatros departamentos con menos nacimientos de investigadores son Amazonas, 
 Gráfica del municipio de nacimiento del investigador, filtrado solo por n mayor a 200.
 
 
-<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 27 24 a m" src="https://github.com/user-attachments/assets/2690039e-7a19-4ed0-90b2-1e4edbf6532e" />
 
 
-Bogotá D.C es el municipio con más nacimientos de investigadores con 3346, doblando al segundo el cual es medellin con 1520.
+
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 2 27 24 a m" src="https://github.com/user-attachments/assets/2690039e-7a19-4ed0-90b2-1e4edbf6532e">
+
+Se observa que lel 49.68% de los investigadores son doctores, siendo 6459 investigadores con doctorado. Hay 4939 ivestigadores que su maximo nivel alcanzado es maestria, en estos dos niveles se encuentra el 87.67% de los investigadores
+
+Bogotá D.C es el municipio con más nacimientos de investigadores con 3346, doblando al segundo el cual es Medellin con 1520.
 
 
 #### NME_NIV_FORM_PR	Nombre del nivel de formación máximo alcanzado
+
+
+<img width="1440" height="900" alt="Captura de pantalla 2025-09-02 a la(s) 1 18 56 p m" src="https://github.com/user-attachments/assets/56c950fe-ca95-4fdb-a442-874e4b84fb3c" />
+
+
+
