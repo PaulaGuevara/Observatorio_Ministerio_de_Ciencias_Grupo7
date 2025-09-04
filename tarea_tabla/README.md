@@ -34,4 +34,4 @@ La variable dif_edad fue diseñada como un mecanismo de control: su valor no deb
 
 Como resultado de la validación se identificaron 8 personas con valores de dif_edad superiores a lo esperado. Sin embargo, dado que en las demás variables de la base original no se encontraron incoherencias, se considera que estos casos corresponden a errores de digitación en la base original y no afectan de manera sustancial la integridad general del dataset. Por lo que se confirma que cada ID es unico.
 
-El código empleado para esta verificación está documentado en el .
+El código empleado para esta verificación está documentado en el tarea_tabla/arreglar_base_consultoria_7.R 
