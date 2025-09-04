@@ -62,3 +62,64 @@ nrow(Investigadores_Consolidado)-sum(duplicated(Investigadores_Consolidado$ID_PE
 write.xlsx(nuevo_dataset, "Base_sin_duplicados")
 
 
+#### verificación de que cada ID es unico 
+
+View(Investigadores_Consolidado%>%
+  filter(ID_PERSONA_PR=="20"))
+
+
+# Filtrar solo los IDs repetidos
+duplicados <- Investigadores_Consolidado %>%
+  group_by(ID_PERSONA_PR) %>%
+  filter(n() > 1) %>%   # IDs con más de una fila
+  arrange(ID_PERSONA_PR, ID_CONVOCATORIA) %>%
+  select(ID_PERSONA_PR, ID_CONVOCATORIA, NME_GENERO_PR, EDAD_ANOS_PR)
+
+
+duplicados_dif <- Investigadores_Consolidado %>%
+  group_by(ID_PERSONA_PR) %>%
+  filter(n() > 1) %>%
+  arrange(ID_PERSONA_PR, ID_CONVOCATORIA) %>%
+  select(ID_PERSONA_PR, ID_CONVOCATORIA, NME_GENERO_PR, EDAD_ANOS_PR)
+
+duplicados_dif<-duplicados_dif%>%
+  mutate(dif_edad = EDAD_ANOS_PR - lag(EDAD_ANOS_PR))
+
+dim(duplicados_dif)
+
+find("lag")
+
+duplicados_dif <- Investigadores_Consolidado %>%
+  group_by(ID_PERSONA_PR) %>%
+  filter(n() > 1) %>%
+  arrange(ID_PERSONA_PR, ID_CONVOCATORIA) %>%
+  mutate(dif_edad = EDAD_ANOS_PR - dplyr::lag(EDAD_ANOS_PR)) %>%
+  select(ID_PERSONA_PR, ID_CONVOCATORIA, NME_GENERO_PR, EDAD_ANOS_PR, dif_edad)
+
+
+duplicados_dif%>%
+  filter(dif_edad>4.1)
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="1626437"))## 12, 21
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="154598"))###4.98, 21
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="1125974"))###5.03, 20
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="671819"))##40.3, 20
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="671827"))##28.4, 20
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="1430632"))##24.5, 20
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="1434533"))##15.1, 20
+
+View(Investigadores_Consolidado%>%
+       filter(ID_PERSONA_PR=="1499639"))##9.28, 20
