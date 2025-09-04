@@ -1,4 +1,4 @@
-##Depuración de IDs duplicados por convocatoria
+## Depuración de IDs duplicados por convocatoria
 
 Durante el proceso de limpieza de la base de datos se detectó la presencia de registros repetidos por persona en distintas convocatorias.
 Para asegurar la consistencia del dataset y mantener únicamente la información más reciente de cada persona, se definió la siguiente regla de depuración:
