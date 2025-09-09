@@ -68,7 +68,7 @@ El análisis muestra la concentración de investigadores en campos específicos:
 ## 5. Cruce Gran Área × Género
 Se realizó un cruce de género dentro de cada área de conocimiento:
 
-![Cruce Género × Gran Área](Graficos_2019/gran_area_genero.png)
+![Cruce Género × Gran Área](Graficos_2019/gran_area_gener.png)
 
 - En todas las áreas predomina la **participación masculina**.
 - **Ciencias Sociales y Humanas** y **Ciencias Médicas y de la Salud** presentan mayor proporción femenina.
