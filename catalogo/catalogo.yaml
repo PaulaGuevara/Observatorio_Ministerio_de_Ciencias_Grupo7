@@ -1,0 +1,148 @@
+# Catalogo de Datos del Proyecto - Minciencias
+# ============================================
+# Proposito: documentar las fuentes principales y auxiliares necesarias
+# para construir un seguimiento longitudinal por investigador y analizar
+# cambios en su clasificacion, trayectoria territorial y caracteristicas asociadas.
+
+fuentes:
+  - nombre: "Investigadores Reconocidos 2017"
+    plataforma: "datos.gov.co"
+    socrata_id: "7669-9v24"
+    url: "https://www.datos.gov.co/resource/7669-9v24.csv"
+    formato: "csv"
+    periodicidad: "anual"
+    tamanio_registros: 13001
+    notas: "Resultados convocatoria 781 de 2017 de Minciencias."
+
+  - nombre: "Investigadores Reconocidos 2019"
+    plataforma: "datos.gov.co"
+    socrata_id: "853n-fj7y"
+    url: "https://www.datos.gov.co/resource/853n-fj7y.csv"
+    formato: "csv"
+    periodicidad: "anual"
+    tamanio_registros: 16796
+    notas: "Resultados convocatoria de medicion de investigadores 2019."
+
+  - nombre: "Investigadores Reconocidos 2021"
+    plataforma: "datos.gov.co"
+    socrata_id: "bqtm-4y2h"
+    url: "https://www.datos.gov.co/resource/bqtm-4y2h.csv"
+    formato: "csv"
+    periodicidad: "anual"
+    tamanio_registros: 21094
+    notas: "Resultados convocatoria 894 de 2021 (Plataforma ScienTI)."
+
+campos_clave_analiticos:
+  llave_unica_seguimiento: ID_PERSONA_PR
+  variable_tiempo: ANO_CONVO
+  variable_categoria_codigo: ID_CLAS_PR
+  variable_categoria_nombre: NME_CLASIFICACION_PR
+  variable_categoria_orden: ORDEN_CLAS_PR
+  variables_territoriales:
+    - NME_REGION_NAC_PR
+    - NME_DEPARTAMENTO_NAC_PR
+    - NME_MUNICIPIO_NAC_PR
+    - COD_DANE_NAC_PR
+    - NME_REGION_RES_PR
+    - NME_DEPARTAMENTO_RES_PR
+    - NME_MUNICIPIO_RES_PR
+    - COD_DANE_RES_PR
+
+diccionario_variables:
+  - nombre: ID_PERSONA_PR
+    descripcion: "Identificador de la persona"
+    tipo_dato: "texto"
+    categoria: "seguimiento"
+    rol_analitico: "llave_unica"
+
+  - nombre: ANO_CONVO
+    descripcion: "Año de realizacion de la convocatoria"
+    tipo_dato: "marca de tiempo variable"
+    categoria: "tiempo"
+    rol_analitico: "comparacion_temporal"
+
+  - nombre: ID_CLAS_PR
+    descripcion: "Identificador de la categoria alcanzada por el investigador"
+    tipo_dato: "texto"
+    categoria: "clasificacion"
+    rol_analitico: "codigo_categoria"
+
+  - nombre: NME_CLASIFICACION_PR
+    descripcion: "Nombre de la categoria alcanzada por el investigador"
+    tipo_dato: "texto"
+    categoria: "clasificacion"
+    rol_analitico: "etiqueta_categoria"
+
+  - nombre: ORDEN_CLAS_PR
+    descripcion: "Orden de importancia de la categoria alcanzada por el investigador"
+    tipo_dato: "numero"
+    categoria: "clasificacion"
+    rol_analitico: "comparacion_jerarquica"
+
+  - nombre: NME_REGION_NAC_PR
+    descripcion: "Region de nacimiento del investigador"
+    tipo_dato: "texto"
+    categoria: "territorio_nacimiento"
+    rol_analitico: "analisis_territorial"
+
+  - nombre: NME_REGION_RES_PR
+    descripcion: "Region de ubicacion del investigador"
+    tipo_dato: "texto"
+    categoria: "territorio_residencia"
+    rol_analitico: "analisis_territorial"
+
+  - nombre: NME_AREA_PR
+    descripcion: "Area de conocimiento OCDE principal del investigador"
+    tipo_dato: "texto"
+    categoria: "area_conocimiento"
+    rol_analitico: "segmentacion"
+
+  - nombre: NME_ESP_AREA_PR
+    descripcion: "Especialidad del area de conocimiento OCDE principal del investigador"
+    tipo_dato: "texto"
+    categoria: "area_conocimiento"
+    rol_analitico: "segmentacion"
+
+  - nombre: NME_GENERO_PR
+    descripcion: "Genero del investigador"
+    tipo_dato: "texto"
+    categoria: "caracteristicas_personales"
+    rol_analitico: "caracterizacion"
+
+  - nombre: EDAD_ANOS_PR
+    descripcion: "Edad en años del investigador"
+    tipo_dato: "numero"
+    categoria: "caracteristicas_personales"
+    rol_analitico: "caracterizacion"
+
+  - nombre: ID_NIV_FORMACION_PR
+    descripcion: "Identificador del nivel de formacion maximo alcanzado"
+    tipo_dato: "texto"
+    categoria: "formacion"
+    rol_analitico: "caracterizacion"
+
+  - nombre: NME_NIV_FORM_PR
+    descripcion: "Nombre del nivel de formacion maximo alcanzado"
+    tipo_dato: "texto"
+    categoria: "formacion"
+    rol_analitico: "caracterizacion"
+
+  - nombre: NRO_ORDEN_FORM_PR
+    descripcion: "Importancia del nivel de formacion"
+    tipo_dato: "numero"
+    categoria: "formacion"
+    rol_analitico: "comparacion_ordinal"
+
+fuentes_auxiliares:
+  - nombre: "DIVIPOLA"
+    plataforma: "DANE"
+    formato: "csv/xlsx"
+    proposito: "Homologacion territorial de municipios, departamentos y regiones para cruces geograficos."
+
+reglas_analiticas:
+  unidad_analisis: "investigador"
+  objetivo: "Construir un golden record por investigador y comparar su movilidad de clasificacion entre convocatorias."
+  criterio_movilidad:
+    sube_rango: "ORDEN_CLAS_PR_t > ORDEN_CLAS_PR_t_1"
+    baja_rango: "ORDEN_CLAS_PR_t < ORDEN_CLAS_PR_t_1"
+    mantiene_rango: "ORDEN_CLAS_PR_t = ORDEN_CLAS_PR_t_1"
