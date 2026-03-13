@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "observatorio-minciencias-grupo7"
+version = "0.1.0"
+description = "Observatorio de Ciencia, Tecnología e Innovación — Investigadores Reconocidos Minciencias"
+authors = ["Grupo 7"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2"
+numpy = "^1.26"
+matplotlib = "^3.8"
+seaborn = "^0.13"
+openpyxl = "^3.1"
+streamlit = "^1.35"
+scikit-learn = "^1.4"
+scipy = "^1.13"
+plotly = "^5.22"
+pyyaml = "^6.0"
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.2"
+ipykernel = "^6.29"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
