@@ -143,6 +143,47 @@ def crear_dim_municipio(con):
     print(f"dim_municipio: {n:,} registros")
 
 
+def crear_fact_investigadores(con):
+    """Tabla de hechos: un registro por investigador-convocatoria."""
+    con.execute("DROP TABLE IF EXISTS fact_investigadores")
+    con.execute("""
+        CREATE TABLE fact_investigadores AS
+        SELECT
+            s.ID_PERSONA_PR,
+            s.ID_CONVOCATORIA,
+            di.id_institucion,
+            da.id_area,
+            s.ID_CLAS_PR AS id_categoria,
+            dm.id_municipio,
+            s.NME_GENERO_PR AS genero,
+            s.EDAD_ANOS_PR AS edad,
+            s.ID_VICTIMA_CONFLICTO AS victima_conflicto,
+            s.TXT_GRUPO_ETNICO AS grupo_etnico,
+            s.TXT_POBLACION_DISCA AS poblacion_discapacidad
+        FROM staging_investigadores s
+        LEFT JOIN dim_institucion di
+            ON s.INST_FILIA = di.nombre_institucion
+        LEFT JOIN dim_area da
+            ON s.NME_GRAN_AREA_PR = da.gran_area
+            AND s.NME_AREA_PR = da.area
+            AND s.NME_ESP_AREA_PR = da.area_especifica
+        LEFT JOIN dim_municipio dm
+            ON s.COD_DANE_RES_PR = dm.cod_dane
+    """)
+    n = con.execute("SELECT count(*) FROM fact_investigadores").fetchone()[0]
+    nulos = con.execute("""
+        SELECT
+            count(*) FILTER (WHERE id_institucion IS NULL) AS sin_inst,
+            count(*) FILTER (WHERE id_area IS NULL) AS sin_area,
+            count(*) FILTER (WHERE id_categoria IS NULL) AS sin_cat,
+            count(*) FILTER (WHERE id_municipio IS NULL) AS sin_mun
+        FROM fact_investigadores
+    """).fetchone()
+    print(f"fact_investigadores: {n:,} registros")
+    print(f"  Nulos -> institucion: {nulos[0]}, area: {nulos[1]}, "
+          f"categoria: {nulos[2]}, municipio: {nulos[3]}")
+
+
 if __name__ == "__main__":
     con = conectar()
     cargar_csv(con)
@@ -151,5 +192,15 @@ if __name__ == "__main__":
     crear_dim_area(con)
     crear_dim_categoria(con)
     crear_dim_municipio(con)
+    crear_fact_investigadores(con)
+
+    # Limpiar staging
+    con.execute("DROP TABLE IF EXISTS staging_investigadores")
+    print("\nTablas finales:")
+    tablas = con.execute("SHOW TABLES").fetchall()
+    for t in tablas:
+        n = con.execute(f"SELECT count(*) FROM {t[0]}").fetchone()[0]
+        print(f"  {t[0]}: {n:,}")
+
     con.close()
     print(f"\nBase de datos: {DB_PATH}")
