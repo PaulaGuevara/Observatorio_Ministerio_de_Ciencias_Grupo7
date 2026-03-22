@@ -53,9 +53,54 @@ def crear_dim_convocatoria(con):
         print(f"  {f}")
 
 
+def crear_dim_institucion(con):
+    """Dimensión de institución de afiliación."""
+    con.execute("DROP TABLE IF EXISTS dim_institucion")
+    con.execute("""
+        CREATE TABLE dim_institucion AS
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY INST_FILIA) AS id_institucion,
+            INST_FILIA AS nombre_institucion
+        FROM (
+            SELECT DISTINCT INST_FILIA
+            FROM staging_investigadores
+            WHERE INST_FILIA IS NOT NULL
+        )
+        ORDER BY INST_FILIA
+    """)
+    n = con.execute("SELECT count(*) FROM dim_institucion").fetchone()[0]
+    print(f"dim_institucion: {n:,} registros")
+
+
+def crear_dim_area(con):
+    """Dimensión de área del conocimiento (clasificación OCDE)."""
+    con.execute("DROP TABLE IF EXISTS dim_area")
+    con.execute("""
+        CREATE TABLE dim_area AS
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY NME_GRAN_AREA_PR, NME_AREA_PR) AS id_area,
+            NME_GRAN_AREA_PR AS gran_area,
+            NME_AREA_PR AS area,
+            NME_ESP_AREA_PR AS area_especifica
+        FROM (
+            SELECT DISTINCT
+                NME_GRAN_AREA_PR,
+                NME_AREA_PR,
+                NME_ESP_AREA_PR
+            FROM staging_investigadores
+            WHERE NME_GRAN_AREA_PR IS NOT NULL
+        )
+        ORDER BY NME_GRAN_AREA_PR, NME_AREA_PR
+    """)
+    n = con.execute("SELECT count(*) FROM dim_area").fetchone()[0]
+    print(f"dim_area: {n:,} registros")
+
+
 if __name__ == "__main__":
     con = conectar()
     cargar_csv(con)
     crear_dim_convocatoria(con)
+    crear_dim_institucion(con)
+    crear_dim_area(con)
     con.close()
     print(f"\nBase de datos: {DB_PATH}")
