@@ -6,7 +6,6 @@ con dimensiones de institución, área, categoría, municipio y convocatoria.
 """
 
 import duckdb
-import pandas as pd
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -201,6 +200,31 @@ if __name__ == "__main__":
     for t in tablas:
         n = con.execute(f"SELECT count(*) FROM {t[0]}").fetchone()[0]
         print(f"  {t[0]}: {n:,}")
+
+    # Validaciones rapidas
+    print("\nValidaciones:")
+    r = con.execute("""
+        SELECT dc.anio, dk.clasificacion, count(*) AS n
+        FROM fact_investigadores f
+        JOIN dim_convocatoria dc ON f.ID_CONVOCATORIA = dc.ID_CONVOCATORIA
+        JOIN dim_categoria dk ON f.id_categoria = dk.id_categoria
+        GROUP BY dc.anio, dk.clasificacion
+        ORDER BY dc.anio, ANY_VALUE(dk.orden)
+    """).fetchall()
+    print("  Investigadores por anio y categoria:")
+    for anio, clas, n in r:
+        print(f"    {anio} | {clas}: {n:,}")
+
+    r2 = con.execute("""
+        SELECT dc.anio, genero, count(*) AS n
+        FROM fact_investigadores f
+        JOIN dim_convocatoria dc ON f.ID_CONVOCATORIA = dc.ID_CONVOCATORIA
+        GROUP BY dc.anio, genero
+        ORDER BY dc.anio, genero
+    """).fetchall()
+    print("  Investigadores por anio y genero:")
+    for anio, gen, n in r2:
+        print(f"    {anio} | {gen}: {n:,}")
 
     con.close()
     print(f"\nBase de datos: {DB_PATH}")
