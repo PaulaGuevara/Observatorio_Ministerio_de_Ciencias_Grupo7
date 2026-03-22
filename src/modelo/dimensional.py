@@ -96,11 +96,60 @@ def crear_dim_area(con):
     print(f"dim_area: {n:,} registros")
 
 
+def crear_dim_categoria(con):
+    """Dimensión de clasificación del investigador (junior, asociado, senior, emérito)."""
+    con.execute("DROP TABLE IF EXISTS dim_categoria")
+    con.execute("""
+        CREATE TABLE dim_categoria AS
+        SELECT DISTINCT
+            ID_CLAS_PR AS id_categoria,
+            NME_CLASIFICACION_PR AS clasificacion,
+            ORDEN_CLAS_PR AS orden
+        FROM staging_investigadores
+        WHERE ID_CLAS_PR IS NOT NULL
+        ORDER BY ORDEN_CLAS_PR
+    """)
+    filas = con.execute("SELECT * FROM dim_categoria").fetchall()
+    print(f"dim_categoria: {len(filas)} registros")
+    for f in filas:
+        print(f"  {f}")
+
+
+def crear_dim_municipio(con):
+    """Dimensión de municipio de residencia (jerarquía geográfica)."""
+    con.execute("DROP TABLE IF EXISTS dim_municipio")
+    con.execute("""
+        CREATE TABLE dim_municipio AS
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY COD_DANE_RES_PR) AS id_municipio,
+            COD_DANE_RES_PR AS cod_dane,
+            NME_MUNICIPIO_RES_PR AS municipio,
+            NME_DEPARTAMENTO_RES_PR AS departamento,
+            NME_REGION_RES_PR AS region,
+            NME_PAIS_RES_PR AS pais
+        FROM (
+            SELECT DISTINCT
+                COD_DANE_RES_PR,
+                NME_MUNICIPIO_RES_PR,
+                NME_DEPARTAMENTO_RES_PR,
+                NME_REGION_RES_PR,
+                NME_PAIS_RES_PR
+            FROM staging_investigadores
+            WHERE COD_DANE_RES_PR IS NOT NULL
+        )
+        ORDER BY COD_DANE_RES_PR
+    """)
+    n = con.execute("SELECT count(*) FROM dim_municipio").fetchone()[0]
+    print(f"dim_municipio: {n:,} registros")
+
+
 if __name__ == "__main__":
     con = conectar()
     cargar_csv(con)
     crear_dim_convocatoria(con)
     crear_dim_institucion(con)
     crear_dim_area(con)
+    crear_dim_categoria(con)
+    crear_dim_municipio(con)
     con.close()
     print(f"\nBase de datos: {DB_PATH}")
