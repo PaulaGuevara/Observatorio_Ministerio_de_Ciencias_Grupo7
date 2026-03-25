@@ -59,6 +59,20 @@ Para cada investigador se asignó uno de los siguientes resultados:
 - **Baja**: la categoría final es inferior a la inicial.
 - **Desaparece**: el investigador está en la convocatoria inicial pero no aparece en la siguiente.
 
+## Cuadro resumen de resultados
+
+| Periodo      | Total inicial | Se mantiene | % Se mantiene | Sube | % Sube | Baja | % Baja | Desaparece | % Desaparece |
+|--------------|--------------:|------------:|--------------:|-----:|--------:|-----:|--------:|------------:|--------------:|
+| 2017 - 2019  | 13001         | 7018        | 53.98%        | 2246 | 17.28%  | 730  | 5.61%   | 3007        | 23.13%        |
+| 2019 - 2021  | 16796         | 9657        | 57.50%        | 2336 | 13.91%  | 1362 | 8.11%   | 3441        | 20.49%        |
+
+## Lectura rápida de resultados
+
+- La situación más frecuente en ambos periodos es **permanecer en la misma categoría**.
+- En ambos periodos, los **ascensos superan a los descensos**.
+- También se observa una proporción importante de investigadores que **desaparecen** en la convocatoria siguiente.
+- Entre 2019 y 2021 aumentó el número absoluto de ascensos y desapariciones frente al periodo 2017 - 2019, aunque porcentualmente la movilidad ascendente perdió peso relativo.
+
 ## Resultados agregados
 
 ### Periodo 2017 - 2019
@@ -97,55 +111,21 @@ Porcentajes:
 
 ### Tracking por categoría 2017 - 2019
 
-- **Junior**:
-  - Se mantiene: 3797
-  - Sube: 1478
-  - Desaparece: 2300
-  - Baja: 0
-
-- **Asociado**:
-  - Se mantiene: 1793
-  - Sube: 739
-  - Baja: 558
-  - Desaparece: 505
-
-- **Senior**:
-  - Se mantiene: 1428
-  - Sube: 29
-  - Baja: 172
-  - Desaparece: 78
-
-- **Emérito**:
-  - Desaparece: 124
-  - Se mantiene: 0
-  - Sube: 0
-  - Baja: 0
+| Categoría inicial | Se mantiene | Sube | Baja | Desaparece |
+|-------------------|------------:|-----:|-----:|-----------:|
+| Junior            | 3797        | 1478 | 0    | 2300       |
+| Asociado          | 1793        | 739  | 558  | 505        |
+| Senior            | 1428        | 29   | 172  | 78         |
+| Emérito           | 0           | 0    | 0    | 124        |
 
 ### Tracking por categoría 2019 - 2021
 
-- **Junior**:
-  - Se mantiene: 5558
-  - Sube: 1574
-  - Desaparece: 2789
-  - Baja: 0
-
-- **Asociado**:
-  - Se mantiene: 2171
-  - Sube: 717
-  - Baja: 960
-  - Desaparece: 501
-
-- **Senior**:
-  - Se mantiene: 1928
-  - Sube: 45
-  - Baja: 402
-  - Desaparece: 98
-
-- **Emérito**:
-  - Desaparece: 53
-  - Se mantiene: 0
-  - Sube: 0
-  - Baja: 0
+| Categoría inicial | Se mantiene | Sube | Baja | Desaparece |
+|-------------------|------------:|-----:|-----:|-----------:|
+| Junior            | 5558        | 1574 | 0    | 2789       |
+| Asociado          | 2171        | 717  | 960  | 501        |
+| Senior            | 1928        | 45   | 402  | 98         |
+| Emérito           | 0           | 0    | 0    | 53         |
 
 ## Interpretación
 
@@ -153,7 +133,7 @@ El análisis longitudinal muestra que la situación más frecuente entre convoca
 
 La segunda dinámica más relevante es la desaparición del investigador en la convocatoria siguiente, lo cual representa una proporción importante del panel longitudinal.
 
-También se observa que los ascensos superan a los descensos en ambos periodos. Sin embargo, entre 2019 y 2021 la movilidad ascendente pierde fuerza y la movilidad descendente aumenta frente al periodo 2017 - 2019.
+También se observa que los ascensos superan a los descensos en ambos periodos. Sin embargo, entre 2019 y 2021 la movilidad ascendente pierde fuerza relativa y la movilidad descendente aumenta frente al periodo 2017 - 2019.
 
 Por categorías, Senior presenta mayor estabilidad relativa, mientras que Asociado se comporta como una categoría intermedia con movilidad tanto ascendente como descendente. La categoría Junior presenta alta permanencia y una fracción importante de ascenso hacia Asociado.
 
@@ -168,4 +148,4 @@ Un hallazgo adicional es que todos los investigadores clasificados como Emérito
 
 ## Conclusión
 
-La tarea de tracking longitudinal permitió cuantificar la permanencia, movilidad y desaparición de los investigadores entre convocatorias. Los resultados muestran una estructura con alta permanencia, movilidad ascendente moderada y una proporción importante de salida del panel entre periodos consecutivos.
+La tarea de tracking longitudinal permitió cuantificar la permanencia, la movilidad y la desaparición de los investigadores entre convocatorias. Los resultados muestran una estructura con alta permanencia, movilidad ascendente moderada y una proporción importante de salida del panel entre periodos consecutivos.

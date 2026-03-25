@@ -53,6 +53,25 @@ Se construyeron dos tipos de matrices:
 1. **Matriz observada entre categorías**, usando únicamente investigadores que aparecen en ambas convocatorias.
 2. **Matriz extendida**, incorporando el estado `Desaparece`, para capturar la salida del panel.
 
+## Cuadro resumen de probabilidades de transición
+
+| Categoría inicial | Periodo      | Permanencia en la misma categoría | Principal transición alternativa |
+|-------------------|--------------|----------------------------------:|----------------------------------|
+| Junior            | 2017 - 2019  | 71.98%                            | Junior → Asociado: 24.32%        |
+| Junior            | 2019 - 2021  | 77.93%                            | Junior → Asociado: 17.89%        |
+| Asociado          | 2017 - 2019  | 58.03%                            | Asociado → Senior: 23.50%        |
+| Asociado          | 2019 - 2021  | 56.42%                            | Asociado → Junior: 24.95%        |
+| Senior            | 2017 - 2019  | 87.66%                            | Senior → Asociado: 5.59%         |
+| Senior            | 2019 - 2021  | 81.18%                            | Senior → Asociado: 13.22%        |
+
+## Lectura rápida de resultados
+
+- La permanencia en la misma categoría es el resultado más frecuente en ambos periodos.
+- **Senior** es la categoría más estable en los dos periodos analizados.
+- **Junior** muestra alta permanencia, pero su transición más frecuente es hacia **Asociado**.
+- **Asociado** es la categoría con mayor dinamismo relativo, ya que presenta movilidad tanto ascendente como descendente.
+- La transición hacia **Emérito** existe, pero es poco frecuente.
+
 ---
 
 ## 1. Matriz observada entre categorías
@@ -151,6 +170,14 @@ La razón es que la matriz observada se construyó únicamente con investigadore
 - Todos los investigadores clasificados como Emérito en 2019 desaparecen en 2021.
 
 Por tanto, la ausencia de la fila Emérito en la matriz observada significa que no existe continuidad longitudinal de ese estado entre convocatorias consecutivas dentro del panel emparejado por `ID_PERSONA_PR`.
+
+## Cuadro resumen del comportamiento de Emérito
+
+| Periodo comparado | Resultado observado |
+|-------------------|--------------------|
+| 2017 - 2019       | Todos los Emérito desaparecen en la siguiente convocatoria |
+| 2019 - 2021       | Todos los Emérito desaparecen en la siguiente convocatoria |
+| Interpretación    | Emérito no aparece como fila inicial en la matriz observada porque no hay continuidad longitudinal en el panel emparejado |
 
 ---
 
