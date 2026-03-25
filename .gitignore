@@ -1,36 +1,58 @@
-# Python
+# === Python ===
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-*.egg
 *.egg-info/
 dist/
 build/
-.eggs/
+*.egg
 
-# Virtual environments
+# === Entornos virtuales ===
 .venv/
 venv/
 env/
 
-# Jupyter
+# === Datos pesados (usar DVC para versionar) ===
+datos/raw/*.csv
+datos/raw/*.xlsx
+datos/raw/*.parquet
+datos/processed/*.csv
+datos/processed/*.parquet
+datos/interim/
+*.duckdb
+*.sqlite
+*.db
+
+# === Artefactos de modelos ===
+models/*.pkl
+models/*.joblib
+artifacts/*.pkl
+artifacts/*.joblib
+
+# === Jupyter ===
 .ipynb_checkpoints/
-*.ipynb_checkpoints
 
-# Distribution / packaging
-*.whl
-
-# Unit test / coverage
-.coverage
-htmlcov/
-.pytest_cache/
-.tox/
-
-# IDEs
+# === IDE ===
 .vscode/
 .idea/
+*.swp
 
-# OS
+# === OS ===
 .DS_Store
 Thumbs.db
+
+# === Secretos ===
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# === MLflow ===
+mlruns/
+
+# === Misc ===
+*.log
+*.tmp
+.coverage
+htmlcov/
