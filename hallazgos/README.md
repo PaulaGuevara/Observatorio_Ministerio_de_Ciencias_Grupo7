@@ -105,3 +105,13 @@ Este documento resume qué contiene cada carpeta y archivo de `notebooks_Mincien
   Script R para depuración de duplicados y validaciones de unicidad/coherencia de IDs.
 
 ---
+
+## 6) entregables_hallazgos
+
+### Archivos
+- `sprint_2_hhi_concentracion_territorial.md`  
+  Informe del Sprint 2 con cálculo del índice Herfindahl-Hirschman por departamento de residencia, interpretación metodológica y respuesta puntual sobre la concentración en Bogotá, Antioquia y Valle del Cauca.
+
+- `sprint_2_hhi_concentracion_territorial.html`  
+  Versión visual del mismo análisis, lista para mostrar en navegador o en clase.
+

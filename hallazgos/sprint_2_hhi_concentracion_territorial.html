@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint 2 - Concentración territorial HHI</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --paper: #fffdf8;
+      --ink: #1e2430;
+      --muted: #5d6878;
+      --accent: #0f766e;
+      --accent-2: #a16207;
+      --line: #d9d2c7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(15, 118, 110, 0.10), transparent 28%),
+        radial-gradient(circle at left bottom, rgba(161, 98, 7, 0.10), transparent 32%),
+        var(--bg);
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(15,118,110,0.95), rgba(30,36,48,0.96));
+      color: #fff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 18px 50px rgba(30, 36, 48, 0.18);
+    }
+    h1, h2, h3 { margin-top: 0; }
+    h1 { font-size: clamp(2rem, 4vw, 3.1rem); margin-bottom: 10px; }
+    h2 { font-size: 1.4rem; margin-bottom: 8px; }
+    p, li { font-size: 1.03rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(30, 36, 48, 0.07);
+    }
+    .metric { font-size: 2rem; font-weight: 700; color: var(--accent); margin: 8px 0; }
+    .section { margin-top: 28px; }
+    .pill {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(161, 98, 7, 0.12);
+      color: var(--accent-2);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(30, 36, 48, 0.07);
+    }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: #efe7dc; }
+    td:nth-child(2), td:nth-child(3), th:nth-child(2), th:nth-child(3) { text-align: right; }
+    .note { color: var(--muted); }
+    .focus {
+      border-left: 4px solid var(--accent);
+      padding-left: 16px;
+      margin: 20px 0;
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 20px 14px 42px; }
+      .hero { padding: 20px; border-radius: 18px; }
+      .card { padding: 16px; }
+      th, td { padding: 10px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="pill">Sprint 2 · Análisis #14</div>
+      <h1>Índice Herfindahl-Hirschman por departamento</h1>
+      <p>Evaluación de la concentración territorial de la investigación reconocida por Minciencias, con énfasis en Bogotá, Antioquia y Valle del Cauca.</p>
+      <p class="note">Base principal: investigadores únicos, conservando la convocatoria más reciente por persona.</p>
+    </section>
+
+    <section class="grid section">
+      <article class="card">
+        <h2>HHI principal</h2>
+        <div class="metric">1517.56</div>
+        <p>Escala 0 a 10.000</p>
+      </article>
+      <article class="card">
+        <h2>Nivel</h2>
+        <div class="metric">Moderada</div>
+        <p>Concentración territorial</p>
+      </article>
+      <article class="card">
+        <h2>Total base final</h2>
+        <div class="metric">26.662</div>
+        <p>Investigadores únicos</p>
+      </article>
+      <article class="card">
+        <h2>Bogotá + Antioquia + Valle</h2>
+        <div class="metric">57.14%</div>
+        <p>Participación conjunta</p>
+      </article>
+    </section>
+
+    <section class="section card">
+      <h2>Lectura del resultado</h2>
+      <p>El HHI calculado sobre la base depurada por persona única es <strong>1517.56</strong>, lo que ubica la estructura territorial en una concentración <strong>moderada</strong>. Esto significa que la investigación reconocida no está distribuida homogéneamente en el país: pocos departamentos concentran una fracción importante del total.</p>
+      <div class="focus">
+        <p><strong>Respuesta corta:</strong> sí, Bogotá, Antioquia y Valle del Cauca concentran una parte sustantiva de la investigación reconocida. Juntos reúnen <strong>57.14%</strong> del total de investigadores únicos.</p>
+      </div>
+      <p class="note">Variable utilizada: <strong>NME_DEPARTAMENTO_RES_PR</strong>. Archivo fuente: <strong>datos/tarea_join/investigadores_consolidado.csv</strong>.</p>
+    </section>
+
+    <section class="section">
+      <h2>Departamentos foco</h2>
+      <table>
+        <thead>
+          <tr><th>Departamento</th><th>Investigadores</th><th>Participación</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Bogotá, D. C.</td><td>8.612</td><td>32.30%</td></tr>
+<tr><td>Antioquia</td><td>4.425</td><td>16.60%</td></tr>
+<tr><td>Valle del Cauca</td><td>2.197</td><td>8.24%</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Top 10 departamentos de residencia</h2>
+      <table>
+        <thead>
+          <tr><th>Departamento</th><th>Investigadores</th><th>Participación</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Bogotá, D. C.</td><td>8.612</td><td>32.30%</td></tr>
+<tr><td>Antioquia</td><td>4.425</td><td>16.60%</td></tr>
+<tr><td>Valle del Cauca</td><td>2.197</td><td>8.24%</td></tr>
+<tr><td>Atlántico</td><td>1.778</td><td>6.67%</td></tr>
+<tr><td>Santander</td><td>1.412</td><td>5.30%</td></tr>
+<tr><td>Caldas</td><td>775</td><td>2.91%</td></tr>
+<tr><td>Exterior</td><td>767</td><td>2.88%</td></tr>
+<tr><td>Boyacá</td><td>711</td><td>2.67%</td></tr>
+<tr><td>Bolívar</td><td>698</td><td>2.62%</td></tr>
+<tr><td>Norte de Santander</td><td>615</td><td>2.31%</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Los cinco primeros concentran 69.10% del total.</p>
+    </section>
+
+    <section class="grid section">
+      <article class="card">
+        <h2>Comparativo sin deduplicar</h2>
+        <p><strong>HHI:</strong> 1531.88</p>
+        <p><strong>Nivel:</strong> moderada</p>
+        <p><strong>Total registros:</strong> 50.891</p>
+        <p><strong>Participación top 3:</strong> 57.53%</p>
+      </article>
+      <article class="card">
+        <h2>Conclusión metodológica</h2>
+        <p>La comparación entre la base final por persona única y el consolidado completo muestra resultados muy cercanos. La conclusión no cambia: el sistema se organiza alrededor de pocos polos territoriales, encabezados por Bogotá, Antioquia y Valle del Cauca.</p>
+      </article>
+    </section>
+
+    <section class="section card">
+      <h2>Conclusiones</h2>
+      <ol>
+        <li>El HHI territorial principal es 1517.56, correspondiente a una concentración moderada.</li>
+        <li>Bogotá es el principal centro territorial de la investigación reconocida.</li>
+        <li>Antioquia y Valle del Cauca consolidan, junto con Bogotá, el núcleo dominante del sistema.</li>
+        <li>La concentración territorial es robusta al criterio de deduplicación.</li>
+      </ol>
+    </section>
+  </div>
+</body>
+</html>
