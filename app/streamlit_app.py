@@ -307,8 +307,17 @@ elif pagina == "🕸️ Redes":
     )
     from src.visualizacion.redes import grafo_a_html_filtrado
 
+    # La co-filiacion es longitudinal: necesita todos los años para detectar
+    # que un investigador aparecio en varias instituciones entre convocatorias.
+    if anio_filtro is not None:
+        st.info(
+            f"ℹ️ La red de co-filiación usa **todas las convocatorias** (2017, 2019, 2021) "
+            f"independientemente del filtro seleccionado, ya que el análisis requiere "
+            f"seguimiento longitudinal de investigadores entre instituciones."
+        )
+
     with st.spinner("Construyendo grafo..."):
-        df_red = cargar_red(anio=anio_filtro)
+        df_red = cargar_red(anio=None)
         G = construir_grafo_cofiliacion(df_red, top_n=top_n)
         metricas = calcular_metricas(G)
 

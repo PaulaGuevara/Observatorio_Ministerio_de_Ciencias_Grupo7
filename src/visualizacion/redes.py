@@ -22,7 +22,10 @@ COLORES_COMUNIDADES = [
 
 def _asignar_comunidades(G: nx.Graph) -> dict[str, int]:
     """Detecta comunidades con greedy modularity y retorna {nodo: id_comunidad}."""
-    comunidades = list(nx.community.greedy_modularity_communities(G, weight="weight"))
+    if G.number_of_edges() > 0:
+        comunidades = list(nx.community.greedy_modularity_communities(G, weight="weight"))
+    else:
+        comunidades = [{n} for n in G.nodes()]
     mapa = {}
     for idx, comunidad in enumerate(comunidades):
         for nodo in comunidad:

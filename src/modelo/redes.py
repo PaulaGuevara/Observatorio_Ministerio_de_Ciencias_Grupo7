@@ -168,7 +168,11 @@ def calcular_metricas(G: nx.Graph) -> dict:
     metricas["top_betweenness"] = [(n, round(v, 4)) for n, v in top_betweenness]
 
     # Deteccion de comunidades (Louvain via greedy modularity)
-    comunidades = list(nx.community.greedy_modularity_communities(G, weight="weight"))
+    # Requiere al menos un arco; sin arcos cada nodo es su propia comunidad
+    if G.number_of_edges() > 0:
+        comunidades = list(nx.community.greedy_modularity_communities(G, weight="weight"))
+    else:
+        comunidades = [{n} for n in G.nodes()]
     metricas["n_comunidades"] = len(comunidades)
     metricas["comunidades"] = [sorted(c) for c in comunidades]
 
