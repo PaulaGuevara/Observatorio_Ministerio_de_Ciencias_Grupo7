@@ -57,3 +57,6 @@ mlruns/
 *.tmp
 .coverage
 htmlcov/
+
+# === Pyvis (librerias JS generadas automaticamente) ===
+lib/
