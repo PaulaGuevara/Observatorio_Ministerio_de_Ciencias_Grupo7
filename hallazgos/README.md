@@ -127,6 +127,12 @@ Este documento resume qué contiene cada carpeta y archivo de `notebooks_Mincien
 - `sprint_3_cofiliacion_network.gexf`  
   Exportación del grafo en formato GEXF generado con NetworkX para análisis de red en herramientas compatibles.
 
+- `sprint_3_cofiliacion_grafo_interactivo.html`  
+  Visualización HTML interactiva del grafo de co-filiación usando Pyvis. Incluye physics engine Barnes-Hut, tooltips informativos, navegación con mouse (arrastrar, zoom, pan) y controles de física integrados. **Abre directamente en navegador sin dependencias externas.**
+
 - `dashboard_sprint_3.py`  
   Dashboard Streamlit del Sprint 3 #18 con visualización interactiva del grafo de co-filiación usando Pyvis (filtros de umbral de aristas y tamaño de red).
+
+- `dashboard_observatorio.py`  
+  Dashboard Streamlit unificado con dos pestañas: Sprint 2 (análisis HHI + mapa territorial de concentración de investigadores) y Sprint 3 (grafo interactivo de co-filiación institucional).
 
