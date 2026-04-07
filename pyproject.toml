@@ -9,6 +9,8 @@ package-mode = false
 python = ">=3.12,<4.0"
 streamlit = "^1.55.0"
 sodapy = "^2.2.0"
+networkx = "^3.5"
+pyvis = "^0.3.2"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

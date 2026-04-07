@@ -115,3 +115,18 @@ Este documento resume qué contiene cada carpeta y archivo de `notebooks_Mincien
 - `sprint_2_hhi_concentracion_territorial.html`  
   Versión visual del mismo análisis, lista para mostrar en navegador o en clase.
 
+- `sprint_3_cofiliacion_network.md`  
+  Informe del Sprint 3 con análisis de red de co-filiación institucional usando `INST_FILIA`, métricas principales de red, top de instituciones más conectadas y pares con mayor número de investigadores compartidos.
+
+- `sprint_3_cofiliacion_nodes.csv`  
+  Tabla de nodos del grafo (institución, investigadores afiliados y peso total de conexiones).
+
+- `sprint_3_cofiliacion_edges.csv`  
+  Tabla de aristas del grafo (institución origen, institución destino e investigadores compartidos).
+
+- `sprint_3_cofiliacion_network.gexf`  
+  Exportación del grafo en formato GEXF generado con NetworkX para análisis de red en herramientas compatibles.
+
+- `dashboard_sprint_3.py`  
+  Dashboard Streamlit del Sprint 3 #18 con visualización interactiva del grafo de co-filiación usando Pyvis (filtros de umbral de aristas y tamaño de red).
+
