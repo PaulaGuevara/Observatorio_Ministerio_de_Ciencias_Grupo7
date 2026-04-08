@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Reporte Visual Comparativo - Notebooks MinCiencias</title>
+	<style>
+		:root { --bg:#f6f8fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280; --accent:#1d4ed8; --line:#e5e7eb; }
+		body { margin:0; font-family: Segoe UI, Arial, sans-serif; background:var(--bg); color:var(--text); }
+		.wrap { max-width: 1100px; margin: 24px auto 48px; padding: 0 18px; }
+		.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:16px; }
+		h1,h2,h3 { margin: 0 0 10px; }
+		h1 { font-size: 28px; color: var(--accent); }
+		h2 { font-size: 22px; }
+		h3 { font-size: 18px; }
+		p, li { line-height: 1.45; }
+		.small { color:var(--muted); font-size: 14px; }
+		table { width:100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+		th, td { border:1px solid var(--line); padding: 8px 10px; text-align: left; }
+		th { background: #eef2ff; }
+		.grid-2 { display:grid; gap:14px; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); }
+		.img-card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
+		.img-card img { width:100%; height:auto; border-radius:8px; display:block; }
+		.caption { font-size: 13px; color:var(--muted); margin-top:6px; }
+		.badge { display:inline-block; padding:4px 8px; border-radius:999px; background:#dbeafe; color:#1e3a8a; font-size:12px; margin-right:6px; }
+		@media print { body { background:#fff; } .wrap { margin:0; max-width:none; } .card { break-inside: avoid; } }
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="card">
+			<h1>Detalle comparativo con evidencias visuales</h1>
+			<p><span class="badge">Proyecto</span> Observatorio MinCiencias · Grupo 7</p>
+			<p class="small">Comparación entre <b>notebooks</b> y <b>notebooks_Minciencias</b> con tablas, porcentajes y resultados visuales.</p>
+		</div>
+
+		<div class="card">
+			<h2>1) Comparación general</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Criterio</th>
+						<th>notebooks</th>
+						<th>notebooks_Minciencias</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>Enfoque</td><td>Exploratorio inicial (EDA y longitudinal)</td><td>Análisis especializado (univariado, multivariado, clústeres)</td></tr>
+					<tr><td>Resultado</td><td>Conteos y gráficas base</td><td>Porcentajes, tablas, cruces y perfiles técnicos</td></tr>
+					<tr><td>Profundidad</td><td>Básica/intermedia</td><td>Intermedia/avanzada</td></tr>
+					<tr><td>Reproducibilidad</td><td>Parcial</td><td>Mejorable (uso mixto Python/R)</td></tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="card">
+			<h2>2) Crítica constructiva</h2>
+			<ul>
+				<li><b>Crítica:</b> el flujo analítico está dividido entre <b>Python</b> y <b>R</b>, lo que complica mantenimiento y ejecución.</li>
+				<li><b>Mejora:</b> unificar el pipeline en <b>Python</b> para una sola ruta de trabajo.</li>
+				<li><b>Beneficio esperado:</b> mayor trazabilidad, menos fricción operativa y mejor comparación entre resultados.</li>
+			</ul>
+		</div>
+
+		<div class="card">
+			<h2>3) Resultados cuantitativos (tablas)</h2>
+			<h3>3.0 Comparativo anual por convocatoria (2017, 2019, 2021)</h3>
+			<table>
+				<thead>
+					<tr><th>Año</th><th>Registros</th><th>Hallazgos clave</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>2017</td><td>13.001</td><td>62,6% hombres / 37,4% mujeres; Ciencias Sociales ~29%; concentración en Bogotá y Eje Cafetero.</td></tr>
+					<tr><td>2019</td><td>16.796</td><td>61,83% hombres / 38,17% mujeres; Bogotá + Eje Cafetero > 60%.</td></tr>
+					<tr><td>2021</td><td>21.094</td><td>60,6% hombres / 39,3% mujeres; persiste centralización regional y predominio de posgrado.</td></tr>
+				</tbody>
+			</table>
+
+			<h3>3.1 Base unificada (gran tabla)</h3>
+			<table>
+				<thead>
+					<tr><th>Métrica</th><th>Valor</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>Registros</td><td>50.891</td></tr>
+					<tr><td>Variables</td><td>23</td></tr>
+					<tr><td>Predominio por género</td><td>Masculino ≈ 61% · Femenino ≈ 39%</td></tr>
+					<tr><td>Posgrado (maestría/doctorado y afines)</td><td>Más del 85%</td></tr>
+					<tr><td>Crecimiento 2017→2019</td><td>+29%</td></tr>
+					<tr><td>Crecimiento 2019→2021</td><td>+26%</td></tr>
+				</tbody>
+			</table>
+
+			<h3>3.2 Clústeres (K-Prototypes)</h3>
+			<table>
+				<thead>
+					<tr><th>Clúster</th><th>Perfil principal</th><th>Dato clave</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>1</td><td>Ciencias Sociales (Bogotá)</td><td>Edad ~45, área social 33%, Bogotá 38%</td></tr>
+					<tr><td>2</td><td>Ciencias Sociales (Bogotá)</td><td>Edad ~47, área social 43%, Bogotá 54%</td></tr>
+					<tr><td>3</td><td>Ingeniería (Eje Cafetero)</td><td>Edad ~42, ingeniería 36%, Eje Cafetero 64%</td></tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="card">
+			<h2>4) Evidencias visuales (2017, 2019, 2021)</h2>
+			<div class="grid-2">
+				<div class="img-card">
+					<img src="https://github.com/user-attachments/assets/88026745-8900-4c03-a9e7-9d22124ca9df" alt="Género 2017" />
+					<div class="caption">Convocatoria 2017: distribución por género</div>
+				</div>
+				<div class="img-card">
+					<img src="https://github.com/user-attachments/assets/02188f8c-f425-4d7d-b3c4-58333b6fa588" alt="Convocatorias" />
+					<div class="caption">Crecimiento de investigadores por convocatoria (2017-2019-2021)</div>
+				</div>
+				<div class="img-card">
+					<img src="https://github.com/user-attachments/assets/92f2f21c-58d2-48b7-abfe-d5b12dbc533d" alt="Género" />
+					<div class="caption">Distribución global por género</div>
+				</div>
+				<div class="img-card">
+					<img src="https://github.com/user-attachments/assets/881d25f0-397f-4eef-a59a-dd51dd20401c" alt="Región" />
+					<div class="caption">Concentración regional (residencia)</div>
+				</div>
+				<div class="img-card">
+					<img src="https://github.com/user-attachments/assets/7afad09d-975c-4622-9ba7-b62ef992de7d" alt="Gran área" />
+					<div class="caption">Gran área del conocimiento</div>
+				</div>
+				<div class="img-card">
+					<img src="https://github.com/user-attachments/assets/1600c806-7cff-4f0b-bf1f-b582b2eebee5" alt="Correspondencia" />
+					<div class="caption">Multivariado: correspondencia género vs gran área</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<h2>5) Conclusión ejecutiva</h2>
+			<p>Los notebooks base sirven para exploración inicial, mientras que notebooks_Minciencias entrega evidencia más fuerte para decisión (tablas, porcentajes y técnicas multivariadas). Para mejorar sostenibilidad técnica, se esta realizando la consolidacion en Python.</p>
+			<p class="small"><b>Exportar a PDF:</b> abre este archivo y presiona <b>Ctrl+P</b> → "Guardar como PDF".</p>
+		</div>
+	</div>
+</body>
+</html>

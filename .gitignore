@@ -35,6 +35,7 @@ artifacts/*.joblib
 # === IDE ===
 .vscode/
 .idea/
+.claude/
 *.swp
 
 # === OS ===
@@ -56,3 +57,6 @@ mlruns/
 *.tmp
 .coverage
 htmlcov/
+
+# === Pyvis (librerias JS generadas automaticamente) ===
+lib/

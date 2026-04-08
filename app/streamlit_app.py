@@ -1,406 +1,367 @@
+"""
+Dashboard interactivo — Observatorio MinCiencias
+Investigadores reconocidos 2017 · 2019 · 2021
+
+Paginas:
+    1. Resumen       — KPIs y metricas globales
+    2. Territorio    — Mapa interactivo por departamento
+    3. Distribuciones— Categoria, genero, edad, top instituciones
+    4. Redes         — Grafo de co-filiacion institucional
+
+Uso:
+    streamlit run app/streamlit_app.py
+"""
+
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
 
 import pandas as pd
 import streamlit as st
+from streamlit.components.v1 import html as st_html
 
-from src.visualizacion.distribuciones import (
-    figura_distribucion_categoria,
-    figura_distribucion_genero,
-    preparar_distribucion_categoria,
-    preparar_distribucion_genero,
-)
-from src.visualizacion.instituciones import (
-    expandir_instituciones,
-    filtrar_instituciones,
-    figura_ranking_instituciones,
-    obtener_columna_area,
-    ranking_instituciones,
-)
-from src.visualizacion.mapas import figura_mapa_departamentos, tabla_top_departamentos
-
+ROOT = Path(__file__).resolve().parents[1]
 CSV_PATH = ROOT / "datos" / "tarea_join" / "investigadores_consolidado.csv"
 
-COLUMNAS_BASE = [
-    "ANO_CONVO",
-    "ID_PERSONA_PR",
-    "NME_CLASIFICACION_PR",
-    "NME_GENERO_PR",
-]
-
-
-def normalizar_anio(serie: pd.Series) -> pd.Series:
-    anio_num = pd.to_numeric(serie, errors="coerce")
-    anio_fecha = pd.to_datetime(serie, dayfirst=True, errors="coerce").dt.year
-    anio_final = anio_num.where(anio_num.between(1900, 2100), anio_fecha)
-    return anio_final.astype("Int64")
-
-
-def crear_alias_columnas(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
-    base = df.copy()
-    avisos = []
-
-    if "NME_DEPARTAMENTO_RES_PR" not in base.columns:
-        if "NME_DEPARTAMENTO_NAC_PR" in base.columns:
-            base["NME_DEPARTAMENTO_RES_PR"] = base["NME_DEPARTAMENTO_NAC_PR"]
-            avisos.append(
-                "No se encontró 'NME_DEPARTAMENTO_RES_PR'. "
-                "Se usó 'NME_DEPARTAMENTO_NAC_PR' como reemplazo."
-            )
-
-    if "INST_FILIA" not in base.columns:
-        alternativas_inst = [
-            "INST_AVAL",
-            "NME_INST_PR",
-            "NME_INSTITUCION_PR",
-            "INSTITUCION",
-        ]
-        for col in alternativas_inst:
-            if col in base.columns:
-                base["INST_FILIA"] = base[col]
-                avisos.append(
-                    f"No se encontró 'INST_FILIA'. Se usó '{col}' como reemplazo."
-                )
-                break
-
-    return base, avisos
-
-
-def validar_columnas_base(df: pd.DataFrame) -> None:
-    faltantes = [col for col in COLUMNAS_BASE if col not in df.columns]
-    if faltantes:
-        raise ValueError(
-            "Faltan columnas base requeridas en el consolidado: "
-            + ", ".join(faltantes)
-        )
-
-
-@st.cache_data(show_spinner="Cargando consolidado de investigadores...")
-def cargar_datos() -> tuple[pd.DataFrame, list[str]]:
-    if not CSV_PATH.exists():
-        raise FileNotFoundError(f"No se encontró el archivo: {CSV_PATH}")
-
-    df = pd.read_csv(CSV_PATH, low_memory=False)
-    df, avisos = crear_alias_columnas(df)
-    validar_columnas_base(df)
-
-    df = df.copy()
-    df["ANO_CONVO"] = normalizar_anio(df["ANO_CONVO"])
-    df = df[df["ANO_CONVO"].isin([2017, 2019, 2021])].copy()
-
-    df["NME_CLASIFICACION_PR"] = (
-        df["NME_CLASIFICACION_PR"].fillna("No registra").astype(str).str.strip()
-    )
-    df["NME_GENERO_PR"] = (
-        df["NME_GENERO_PR"].fillna("No registra").astype(str).str.strip()
-    )
-
-    if "NME_DEPARTAMENTO_RES_PR" in df.columns:
-        df["NME_DEPARTAMENTO_RES_PR"] = (
-            df["NME_DEPARTAMENTO_RES_PR"]
-            .fillna("No registra")
-            .astype(str)
-            .str.strip()
-        )
-
-    if "INST_FILIA" in df.columns:
-        df["INST_FILIA"] = df["INST_FILIA"].fillna("").astype(str).str.strip()
-
-    columna_area = obtener_columna_area(df)
-    if columna_area is not None:
-        df[columna_area] = (
-            df[columna_area].fillna("No registra").astype(str).str.strip()
-        )
-
-    return df, avisos
-
-
-def formatear_tabla_departamentos(df_tabla: pd.DataFrame) -> pd.DataFrame:
-    base = df_tabla.copy()
-    if base.empty:
-        return base
-
-    base["Investigadores"] = base["Investigadores"].map(lambda x: f"{x:,}")
-    base["% del total"] = base["% del total"].map(lambda x: f"{x:.2f}%")
-    return base
-
-
-def formatear_tabla_ranking(df_tabla: pd.DataFrame) -> pd.DataFrame:
-    base = df_tabla.copy()
-    if base.empty:
-        return base
-
-    base = base.rename(
-        columns={
-            "ranking": "Ranking",
-            "institucion": "Institución",
-            "n_investigadores": "Investigadores únicos",
-        }
-    )
-    base["Investigadores únicos"] = base["Investigadores únicos"].map(
-        lambda x: f"{x:,}"
-    )
-    return base
-
-
-def resumen_issue_19(df_anio: pd.DataFrame) -> str:
-    categoria_df = preparar_distribucion_categoria(df_anio)
-    genero_df = preparar_distribucion_genero(df_anio)
-
-    categoria_top = (
-        categoria_df.sort_values("n_investigadores", ascending=False)
-        .iloc[0]["NME_CLASIFICACION_PR"]
-        if not categoria_df.empty
-        else "No disponible"
-    )
-    genero_top = (
-        genero_df.sort_values("n_investigadores", ascending=False)
-        .iloc[0]["NME_GENERO_PR"]
-        if not genero_df.empty
-        else "No disponible"
-    )
-
-    total = df_anio["ID_PERSONA_PR"].nunique()
-    return (
-        f"En la convocatoria seleccionada se registran **{total:,} investigadores únicos**. "
-        f"La categoría con mayor participación es **{categoria_top}** y el género con mayor presencia es **{genero_top}**."
-    )
-
-
-def resumen_issue_20(ranking_df: pd.DataFrame, anio_sel: int) -> str:
-    if ranking_df.empty:
-        return "No hay información suficiente para construir una interpretación del ranking."
-
-    top_inst = ranking_df.iloc[0]["institucion"]
-    top_val = ranking_df.iloc[0]["n_investigadores"]
-
-    return (
-        f"Para la convocatoria **{anio_sel}**, la institución con mayor número de investigadores es "
-        f"**{top_inst}**, con **{top_val:,} investigadores únicos**."
-    )
-
+# ---------------------------------------------------------------------------
+# Configuracion de pagina
+# ---------------------------------------------------------------------------
 
 st.set_page_config(
-    page_title="Observatorio MinCiencias",
-    page_icon="📊",
+    page_title="Observatorio MinCiencias · Ustadística",
+    page_icon="🔬",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-st.markdown(
-    """
-    <style>
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        max-width: 96%;
+# ---------------------------------------------------------------------------
+# CSS minimo
+# ---------------------------------------------------------------------------
+
+st.markdown("""
+<style>
+    .kpi-card {
+        background: #f0f4fa;
+        border-radius: 10px;
+        padding: 18px 20px;
+        text-align: center;
+        border-left: 5px solid #1a6faf;
     }
+    .kpi-valor { font-size: 2rem; font-weight: 700; color: #1a6faf; }
+    .kpi-label { font-size: 0.85rem; color: #555; margin-top: 4px; }
+</style>
+""", unsafe_allow_html=True)
 
-    h1 {
-        font-size: 2.4rem !important;
-        margin-bottom: 0.2rem !important;
-    }
 
-    h2, h3 {
-        font-size: 1.6rem !important;
-    }
+# ---------------------------------------------------------------------------
+# Carga de datos (cacheada)
+# ---------------------------------------------------------------------------
 
-    [data-testid="stMetricValue"] {
-        font-size: 2rem !important;
-    }
+@st.cache_data(show_spinner="Cargando datos...")
+def cargar_datos() -> pd.DataFrame:
+    df = pd.read_csv(CSV_PATH, low_memory=False)
+    df["ANO_CONVO"] = pd.to_datetime(df["ANO_CONVO"], dayfirst=True, errors="coerce").dt.year
+    df["INST_FILIA"] = df["INST_FILIA"].fillna("Sin institución").str.strip().str.upper()
+    df["NME_GENERO_PR"] = df["NME_GENERO_PR"].fillna("No registra")
+    return df
 
-    [data-testid="stMetricLabel"] {
-        font-size: 1rem !important;
-    }
 
-    .stCaption, p, label, div {
-        font-size: 0.98rem;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+df_global = cargar_datos()
+anios_disponibles = sorted(df_global["ANO_CONVO"].dropna().unique().astype(int).tolist())
 
-st.title("📊 Observatorio MinCiencias — Sprint 3")
-
-try:
-    df_global, avisos_carga = cargar_datos()
-except Exception as exc:
-    st.error(f"No fue posible cargar el dashboard: {exc}")
-    st.stop()
-
-for aviso in avisos_carga:
-    st.warning(aviso)
-
-anios_disponibles = sorted(
-    [
-        anio
-        for anio in df_global["ANO_CONVO"].dropna().unique().tolist()
-        if anio in [2017, 2019, 2021]
-    ]
-)
-
-if not anios_disponibles:
-    st.error("No hay registros válidos para 2017, 2019 o 2021.")
-    st.stop()
+# ---------------------------------------------------------------------------
+# Barra lateral
+# ---------------------------------------------------------------------------
 
 with st.sidebar:
-    st.header("Navegación")
-    seccion = st.radio(
-        "Selecciona una vista",
-        ["Issue 19 · Mapa territorial", "Issue 20 · Ranking de instituciones"],
+    st.title("Observatorio MinCiencias")
+    st.caption("Ustadística · Universidad Santo Tomás · 2026-I")
+    st.divider()
+
+    pagina = st.radio(
+        "Navegacion",
+        ["📊 Resumen", "🗺️ Territorio", "📈 Distribuciones", "🕸️ Redes"],
+        label_visibility="collapsed",
     )
 
     st.divider()
-    st.subheader("Filtro temporal")
-    anio_sel = st.select_slider(
+    st.markdown("**Filtros globales**")
+
+    anio_sel = st.selectbox(
         "Convocatoria",
-        options=anios_disponibles,
-        value=anios_disponibles[-1],
+        ["Todas"] + anios_disponibles,
+        index=0,
+    )
+    anio_filtro: int | None = None if anio_sel == "Todas" else int(anio_sel)
+
+    df = df_global.copy() if anio_filtro is None else df_global[df_global["ANO_CONVO"] == anio_filtro].copy()
+
+    generos = ["Todos"] + sorted(df_global["NME_GENERO_PR"].unique().tolist())
+    genero_sel = st.selectbox("Género", generos, index=0)
+    if genero_sel != "Todos":
+        df = df[df["NME_GENERO_PR"] == genero_sel]
+
+    st.caption(f"Registros visibles: **{len(df):,}**")
+
+
+# ===========================================================================
+# PAGINA 1 — RESUMEN
+# ===========================================================================
+
+if pagina == "📊 Resumen":
+    st.title("📊 Resumen general")
+    st.markdown(
+        "Investigadores reconocidos por MinCiencias en las convocatorias "
+        "**2017, 2019 y 2021**."
     )
 
-    categoria_sel = "Todas"
-    area_sel = "Todas"
-    top_n = 15
+    from src.visualizacion.distribuciones import calcular_kpis
+    kpis = calcular_kpis(df)
 
-    if seccion == "Issue 20 · Ranking de instituciones":
-        st.divider()
-        st.subheader("Filtros del ranking")
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c1:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-valor">{kpis['total_investigadores_unicos']:,}</div>
+            <div class="kpi-label">Investigadores únicos</div>
+        </div>""", unsafe_allow_html=True)
+    with c2:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-valor">{kpis['total_registros']:,}</div>
+            <div class="kpi-label">Registros totales</div>
+        </div>""", unsafe_allow_html=True)
+    with c3:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-valor">{kpis['pct_femenino']}%</div>
+            <div class="kpi-label">Investigadoras</div>
+        </div>""", unsafe_allow_html=True)
+    with c4:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-valor">{kpis['instituciones']:,}</div>
+            <div class="kpi-label">Instituciones</div>
+        </div>""", unsafe_allow_html=True)
+    with c5:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-valor">{kpis['municipios']:,}</div>
+            <div class="kpi-label">Municipios</div>
+        </div>""", unsafe_allow_html=True)
 
-        categorias = ["Todas"] + sorted(
-            df_global["NME_CLASIFICACION_PR"].dropna().unique().tolist()
-        )
-        categoria_sel = st.selectbox("Categoría", categorias, index=0)
+    st.divider()
 
-        columna_area_sidebar = obtener_columna_area(df_global)
-        if columna_area_sidebar is not None:
-            areas = ["Todas"] + sorted(
-                df_global[columna_area_sidebar].dropna().unique().tolist()
-            )
-            area_sel = st.selectbox("Área", areas, index=0)
+    from src.visualizacion.distribuciones import (
+        figura_evolucion_categoria,
+        figura_genero_anio,
+        figura_retencion,
+    )
+
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.plotly_chart(figura_evolucion_categoria(df), use_container_width=True)
+    with col_b:
+        st.plotly_chart(figura_genero_anio(df), use_container_width=True)
+
+    st.plotly_chart(figura_retencion(df_global), use_container_width=True)
+
+    st.divider()
+    st.markdown("#### Preguntas de investigacion")
+    for pregunta in [
+        "¿Cuál es la tasa de retención de investigadores reconocidos entre convocatorias sucesivas?",
+        "¿Qué instituciones concentran la mayor producción de investigadores Senior y Emérito?",
+        "¿Existe segregación territorial en el reconocimiento de investigadores por fuera de las tres principales ciudades?",
+        "¿La representación de mujeres investigadoras ha mejorado significativamente entre 2017 y 2021 en áreas STEM?",
+    ]:
+        st.markdown(f"- {pregunta}")
+
+
+# ===========================================================================
+# PAGINA 2 — TERRITORIO
+# ===========================================================================
+
+elif pagina == "🗺️ Territorio":
+    st.title("🗺️ Distribución territorial")
+
+    tipo_mapa = st.radio(
+        "Tipo de mapa",
+        ["Densidad por departamento", "Concentracion vs. resto del pais"],
+        horizontal=True,
+    )
+
+    from src.visualizacion.mapas import mapa_investigadores_por_depto, mapa_concentracion_territorial
+
+    try:
+        from streamlit_folium import st_folium  # type: ignore[import]
+
+        if tipo_mapa == "Densidad por departamento":
+            m = mapa_investigadores_por_depto(df, anio=anio_filtro)
         else:
-            st.info("No se encontró una columna de área disponible.")
+            m = mapa_concentracion_territorial(df, anio=anio_filtro)
 
-        top_n = st.slider("Top N", min_value=5, max_value=30, value=15, step=1)
+        st_folium(m, width=None, height=520, returned_objects=[])
 
-df_anio = df_global[df_global["ANO_CONVO"] == anio_sel].copy()
+    except ImportError:
+        st.info(
+            "Instala `streamlit-folium` para el mapa interactivo:  \n"
+            "`pip install streamlit-folium`  \n"
+            "Mostrando tabla de conteo como alternativa."
+        )
+        conteo = (
+            df.groupby("NME_DEPARTAMENTO_RES_PR")["ID_PERSONA_PR"]
+            .count()
+            .reset_index()
+            .rename(columns={
+                "NME_DEPARTAMENTO_RES_PR": "Departamento",
+                "ID_PERSONA_PR": "Investigadores",
+            })
+            .sort_values("Investigadores", ascending=False)
+        )
+        st.dataframe(conteo, use_container_width=True, hide_index=True)
 
-if seccion == "Issue 19 · Mapa territorial":
-    st.subheader("Issue 19 — Mapa por departamento y distribuciones")
-    st.caption(
-        "Vista territorial de investigadores por departamento, complementada con la distribución por categoría y género."
+    st.divider()
+    st.markdown("#### Top 10 departamentos")
+    top_deptos = (
+        df.groupby("NME_DEPARTAMENTO_RES_PR")["ID_PERSONA_PR"]
+        .count()
+        .sort_values(ascending=False)
+        .head(10)
+        .reset_index()
+        .rename(columns={
+            "NME_DEPARTAMENTO_RES_PR": "Departamento",
+            "ID_PERSONA_PR": "Investigadores",
+        })
+    )
+    top_deptos["% del total"] = (
+        top_deptos["Investigadores"] / len(df) * 100
+    ).round(1).astype(str) + "%"
+    st.dataframe(top_deptos, use_container_width=True, hide_index=True)
+
+
+# ===========================================================================
+# PAGINA 3 — DISTRIBUCIONES
+# ===========================================================================
+
+elif pagina == "📈 Distribuciones":
+    st.title("📈 Análisis de distribuciones")
+
+    from src.visualizacion.distribuciones import (
+        figura_categoria_anio,
+        figura_genero_area,
+        figura_edad_categoria,
+        figura_top_instituciones,
     )
 
-    total_inv = df_anio["ID_PERSONA_PR"].nunique()
-    total_deptos = (
-        df_anio["NME_DEPARTAMENTO_RES_PR"].nunique()
-        if "NME_DEPARTAMENTO_RES_PR" in df_anio.columns
-        else 0
-    )
+    tab1, tab2, tab3, tab4 = st.tabs(["Categoría", "Género × Área", "Edad", "Top Instituciones"])
 
-    categoria_df = preparar_distribucion_categoria(df_anio)
-    categoria_top = (
-        categoria_df.sort_values("n_investigadores", ascending=False)
-        .iloc[0]["NME_CLASIFICACION_PR"]
-        if not categoria_df.empty
-        else "No disponible"
-    )
+    with tab1:
+        st.plotly_chart(figura_categoria_anio(df), use_container_width=True)
 
-    m1, m2, m3 = st.columns(3)
-    m1.metric("Investigadores únicos", f"{total_inv:,}")
-    m2.metric("Departamentos con registros", f"{total_deptos:,}")
-    m3.metric("Categoría predominante", categoria_top)
+    with tab2:
+        st.plotly_chart(figura_genero_area(df, anio=anio_filtro), use_container_width=True)
 
-    st.info(resumen_issue_19(df_anio))
+    with tab3:
+        st.plotly_chart(figura_edad_categoria(df, anio=anio_filtro), use_container_width=True)
 
-    if "NME_DEPARTAMENTO_RES_PR" not in df_anio.columns:
-        st.error("No existe una columna de departamento usable para construir el mapa.")
-    else:
+    with tab4:
+        n_inst = st.slider("Número de instituciones", 5, 30, 15)
         st.plotly_chart(
-            figura_mapa_departamentos(df_anio),
-            use_container_width=True
+            figura_top_instituciones(df, n=n_inst, anio=anio_filtro),
+            use_container_width=True,
         )
 
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.plotly_chart(
-            figura_distribucion_categoria(df_anio),
-            use_container_width=True
-        )
-
-    with col2:
-        st.plotly_chart(
-            figura_distribucion_genero(df_anio),
-            use_container_width=True
-        )
-
-    st.markdown("#### Top departamentos")
-    tabla_deptos = tabla_top_departamentos(df_anio, top_n=10)
-    st.dataframe(
-        formatear_tabla_departamentos(tabla_deptos),
-        use_container_width=True,
-        hide_index=True,
-    )
-
-elif seccion == "Issue 20 · Ranking de instituciones":
-    st.subheader("Issue 20 — Ranking de instituciones")
-    st.caption(
-        "Ranking de instituciones por número de investigadores, con filtros por categoría y área."
-    )
-
-    if "INST_FILIA" not in df_anio.columns:
-        st.error("No existe una columna de institución usable para construir el ranking.")
-        st.stop()
-
-    df_filtrado = filtrar_instituciones(
-    df_anio,
-    categoria=categoria_sel,
-    area=area_sel,
-    )
-
-    ranking_df = ranking_instituciones(df_filtrado, top_n=top_n)
-    universo_inst = expandir_instituciones(df_filtrado)
-    total_instituciones = universo_inst["INST_FILIA"].nunique()
-
-    top_inst_nombre = (
-        ranking_df.iloc[0]["institucion"] if not ranking_df.empty else "No disponible"
-    )
-
-    met1, met2, met3 = st.columns(3)
-    met1.metric("Instituciones en el universo filtrado", f"{total_instituciones:,}")
-    met2.metric(
-        "Investigadores únicos filtrados",
-        f"{df_filtrado['ID_PERSONA_PR'].nunique():,}"
-    )
-    met3.metric(
-        "Institución líder",
-        top_inst_nombre[:28] + "..." if len(top_inst_nombre) > 28 else top_inst_nombre
-    )
-
-    st.info(resumen_issue_20(ranking_df, anio_sel))
-
-    st.dataframe(
-        formatear_tabla_ranking(ranking_df),
-        use_container_width=True,
-        hide_index=True,
-        height=420,
-    )
-
-    st.plotly_chart(
-        figura_ranking_instituciones(ranking_df),
-        use_container_width=True
-    )
-
-    with st.expander("Ver tabla de ranking", expanded=False):
+    st.divider()
+    with st.expander("Ver tabla de datos filtrados (primeros 500 registros)"):
+        cols_mostrar = [
+            "ID_PERSONA_PR", "ANO_CONVO", "NME_CLASIFICACION_PR",
+            "NME_GENERO_PR", "EDAD_ANOS_PR", "NME_GRAN_AREA_PR",
+            "NME_DEPARTAMENTO_RES_PR", "INST_FILIA",
+        ]
         st.dataframe(
-            formatear_tabla_ranking(ranking_df),
+            df[[c for c in cols_mostrar if c in df.columns]].head(500),
             use_container_width=True,
             hide_index=True,
-            height=420,
         )
+
+
+# ===========================================================================
+# PAGINA 4 — REDES
+# ===========================================================================
+
+elif pagina == "🕸️ Redes":
+    st.title("🕸️ Red de co-filiación institucional")
+    st.markdown(
+        "Dos instituciones están conectadas si el mismo investigador aparece en ambas "
+        "a lo largo de las convocatorias. El tamaño del nodo refleja el número de "
+        "investigadores registrados. El color indica la **comunidad** detectada."
+    )
+
+    with st.sidebar:
+        st.divider()
+        st.markdown("**Configuracion de la red**")
+        top_n = st.slider("Top N instituciones", 10, 80, 40, step=5)
+        min_grado = st.slider("Grado mínimo de conexión", 1, 10, 1)
+        fisica_on = st.toggle("Simulacion de fuerzas", value=True)
+
+    from src.modelo.redes import (
+        cargar_datos as cargar_red,
+        construir_grafo_cofiliacion,
+        calcular_metricas,
+        tabla_nodos,
+    )
+    from src.visualizacion.redes import grafo_a_html_filtrado
+
+    # La co-filiacion es longitudinal: necesita todos los años para detectar
+    # que un investigador aparecio en varias instituciones entre convocatorias.
+    if anio_filtro is not None:
+        st.info(
+            f"ℹ️ La red de co-filiación usa **todas las convocatorias** (2017, 2019, 2021) "
+            f"independientemente del filtro seleccionado, ya que el análisis requiere "
+            f"seguimiento longitudinal de investigadores entre instituciones."
+        )
+
+    with st.spinner("Construyendo grafo..."):
+        df_red = cargar_red(anio=None)
+        G = construir_grafo_cofiliacion(df_red, top_n=top_n)
+        metricas = calcular_metricas(G)
+
+    # KPIs de la red
+    m1, m2, m3, m4, m5 = st.columns(5)
+    m1.metric("Nodos", metricas.get("n_nodos", 0))
+    m2.metric("Arcos", metricas.get("n_arcos", 0))
+    m3.metric("Densidad", metricas.get("densidad", 0))
+    m4.metric("Comunidades", metricas.get("n_comunidades", 0))
+    m5.metric("Componentes", metricas.get("componentes_conectados", 0))
+
+    st.divider()
+
+    with st.spinner("Renderizando grafo..."):
+        html_grafo = grafo_a_html_filtrado(G, min_grado=min_grado, altura="580px")
+
+    st_html(html_grafo, height=600, scrolling=False)
+
+    st.divider()
+
+    col_left, col_right = st.columns(2)
+
+    with col_left:
+        st.markdown("#### Centralidad de grado (top 10)")
+        if metricas.get("top_degree"):
+            df_deg = pd.DataFrame(metricas["top_degree"], columns=["Institución", "Centralidad"])
+            df_deg["Institución"] = df_deg["Institución"].apply(
+                lambda x: x[:55] + "..." if len(x) > 55 else x
+            )
+            st.dataframe(df_deg, use_container_width=True, hide_index=True)
+
+    with col_right:
+        st.markdown("#### Betweenness (top 10)")
+        if metricas.get("top_betweenness"):
+            df_bet = pd.DataFrame(metricas["top_betweenness"], columns=["Institución", "Betweenness"])
+            df_bet["Institución"] = df_bet["Institución"].apply(
+                lambda x: x[:55] + "..." if len(x) > 55 else x
+            )
+            st.dataframe(df_bet, use_container_width=True, hide_index=True)
+
+    st.divider()
+    with st.expander("Ver tabla completa de nodos"):
+        df_nodos = tabla_nodos(G)
+        df_nodos["institucion"] = df_nodos["institucion"].apply(
+            lambda x: x[:70] + "..." if len(x) > 70 else x
+        )
+        st.dataframe(df_nodos, use_container_width=True, hide_index=True)

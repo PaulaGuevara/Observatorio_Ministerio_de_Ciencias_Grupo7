@@ -1,21 +1,27 @@
+"""
+Visualizaciones geograficas — investigadores MinCiencias
+
+Genera mapas interactivos con folium mostrando la distribucion
+territorial de investigadores reconocidos por convocatoria.
+"""
+
 from __future__ import annotations
 
-import re
-import unicodedata
-
+import folium
 import pandas as pd
-import plotly.express as px
+from folium.plugins import MarkerCluster
 
+# Coordenadas aproximadas de capitales de departamento colombianas
 COORDENADAS_DEPARTAMENTOS: dict[str, tuple[float, float]] = {
     "AMAZONAS": (-1.0, -71.9),
     "ANTIOQUIA": (6.2442, -75.5812),
     "ARAUCA": (7.0667, -70.7500),
     "ATLANTICO": (10.9685, -74.7813),
     "BOGOTA": (4.7110, -74.0721),
-    "BOLIVAR": (9.1000, -74.5000),
+    "BOLIVAR": (9.1, -74.5),
     "BOYACA": (5.5353, -73.3678),
     "CALDAS": (5.0703, -75.5138),
-    "CAQUETA": (1.6140, -75.6062),
+    "CAQUETA": (1.614, -75.6062),
     "CASANARE": (5.3333, -71.3500),
     "CAUCA": (2.4448, -76.6147),
     "CESAR": (9.3373, -73.6536),
@@ -30,7 +36,7 @@ COORDENADAS_DEPARTAMENTOS: dict[str, tuple[float, float]] = {
     "META": (4.1420, -73.6266),
     "NARINO": (1.2136, -77.2811),
     "NORTE DE SANTANDER": (7.8939, -72.5078),
-    "PUTUMAYO": (0.4353, -76.6000),
+    "PUTUMAYO": (0.4353, -76.6),
     "QUINDIO": (4.5339, -75.6811),
     "RISARALDA": (4.8133, -75.6961),
     "SAN ANDRES": (12.5847, -81.7006),
@@ -42,131 +48,131 @@ COORDENADAS_DEPARTAMENTOS: dict[str, tuple[float, float]] = {
     "VICHADA": (4.4233, -69.2878),
 }
 
-REEMPLAZOS_DEPARTAMENTO = {
-    "ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA": "SAN ANDRES",
-    "SAN ANDRES Y PROVIDENCIA": "SAN ANDRES",
-    "BOGOTA D C": "BOGOTA",
-    "BOGOTA DC": "BOGOTA",
-    "DISTRITO CAPITAL DE BOGOTA": "BOGOTA",
-    "VALLE": "VALLE DEL CAUCA",
-}
 
-
-def normalizar_texto(texto: str | None) -> str:
-    if texto is None or pd.isna(texto):
+def _normalizar_depto(nombre: str | None) -> str:
+    """Normaliza el nombre del departamento para busqueda en el diccionario."""
+    if pd.isna(nombre) or nombre is None:
         return ""
-
-    texto = str(texto).strip().upper()
-    texto = unicodedata.normalize("NFKD", texto)
-    texto = "".join(ch for ch in texto if not unicodedata.combining(ch))
-    texto = re.sub(r"[^\w\s]", " ", texto)
-    texto = " ".join(texto.split())
-    return texto
+    s = str(nombre).upper().strip()
+    s = s.replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+    s = s.replace("\u00c1", "A").replace("\u00c9", "E").replace("\u00cd", "I")
+    s = s.replace("\u00d3", "O").replace("\u00da", "U")
+    return s
 
 
-def preparar_mapa_departamentos(
+def mapa_investigadores_por_depto(
     df: pd.DataFrame,
-    columna_departamento: str = "NME_DEPARTAMENTO_RES_PR",
-    columna_id: str = "ID_PERSONA_PR",
-) -> pd.DataFrame:
-    base = df[[columna_departamento, columna_id]].copy()
-    base = base.dropna(subset=[columna_departamento, columna_id])
+    anio: int | None = None,
+    columna_depto: str = "NME_DEPARTAMENTO_RES_PR",
+) -> folium.Map:
+    """
+    Mapa de burbujas: numero de investigadores por departamento.
 
-    base["departamento"] = base[columna_departamento].apply(normalizar_texto)
-    base["departamento"] = base["departamento"].replace(REEMPLAZOS_DEPARTAMENTO)
+    Parameters
+    ----------
+    df       : DataFrame consolidado de investigadores
+    anio     : filtrar por año (None = todos)
+    columna_depto : columna con el nombre del departamento
+
+    Returns
+    -------
+    m : objeto folium.Map listo para renderizar en Streamlit
+    """
+    if anio is not None:
+        df = df[df["ANO_CONVO"] == anio].copy()
 
     conteo = (
-        base.groupby("departamento")[columna_id]
-        .nunique()
-        .reset_index(name="n_investigadores")
+        df.groupby(columna_depto)["ID_PERSONA_PR"]
+        .count()
+        .reset_index()
+        .rename(columns={columna_depto: "departamento", "ID_PERSONA_PR": "n"})
     )
+    conteo["depto_key"] = conteo["departamento"].apply(_normalizar_depto)
 
-    conteo["lat"] = conteo["departamento"].map(
-        lambda x: COORDENADAS_DEPARTAMENTOS.get(x, (None, None))[0]
+    m = folium.Map(location=[4.5, -74.0], zoom_start=5, tiles="CartoDB positron")
+
+    max_n = conteo["n"].max() if len(conteo) > 0 else 1
+
+    for _, row in conteo.iterrows():
+        coords = COORDENADAS_DEPARTAMENTOS.get(row["depto_key"])
+        if coords is None:
+            continue
+        radio = 5 + (row["n"] / max_n) * 30
+        folium.CircleMarker(
+            location=coords,
+            radius=radio,
+            color="#1a6faf",
+            fill=True,
+            fill_color="#1a6faf",
+            fill_opacity=0.6,
+            tooltip=f"{row['departamento']}: {row['n']:,} investigadores",
+            popup=folium.Popup(
+                f"<b>{row['departamento']}</b><br>{row['n']:,} investigadores",
+                max_width=200,
+            ),
+        ).add_to(m)
+
+    return m
+
+
+def mapa_concentracion_territorial(
+    df: pd.DataFrame,
+    anio: int | None = None,
+) -> folium.Map:
+    """
+    Mapa de calor (choropleth por cuartiles) de concentracion departamental.
+    Distingue entre las 3 principales ciudades (Bogota, Medellin, Cali)
+    y el resto del pais.
+    """
+    if anio is not None:
+        df = df[df["ANO_CONVO"] == anio].copy()
+
+    total = len(df)
+    conteo = (
+        df.groupby("NME_DEPARTAMENTO_RES_PR")["ID_PERSONA_PR"]
+        .count()
+        .reset_index()
+        .rename(columns={"NME_DEPARTAMENTO_RES_PR": "departamento", "ID_PERSONA_PR": "n"})
     )
-    conteo["lon"] = conteo["departamento"].map(
-        lambda x: COORDENADAS_DEPARTAMENTOS.get(x, (None, None))[1]
-    )
+    conteo["pct"] = (conteo["n"] / total * 100).round(2)
+    conteo["depto_key"] = conteo["departamento"].apply(_normalizar_depto)
 
-    conteo = conteo.dropna(subset=["lat", "lon"]).sort_values(
-        "n_investigadores", ascending=False
-    )
-    return conteo
+    m = folium.Map(location=[4.5, -74.0], zoom_start=5, tiles="CartoDB positron")
 
+    principales = {"BOGOTA", "ANTIOQUIA", "VALLE DEL CAUCA"}
 
-def figura_mapa_departamentos(df: pd.DataFrame):
-    mapa_df = preparar_mapa_departamentos(df)
+    for _, row in conteo.iterrows():
+        coords = COORDENADAS_DEPARTAMENTOS.get(row["depto_key"])
+        if coords is None:
+            continue
 
-    if mapa_df.empty:
-        fig = px.scatter_geo()
-        fig.update_layout(title="No hay datos suficientes para construir el mapa.")
-        return fig
+        color = "#c0392b" if row["depto_key"] in principales else "#2980b9"
+        radio = 4 + (row["pct"] / conteo["pct"].max()) * 28
 
-    fig = px.scatter_geo(
-        mapa_df,
-        lat="lat",
-        lon="lon",
-        size="n_investigadores",
-        color="n_investigadores",
-        hover_name="departamento",
-        hover_data={
-            "lat": False,
-            "lon": False,
-            "n_investigadores": ":,",
-        },
-        projection="mercator",
-        title="Investigadores únicos por departamento",
-        labels={"n_investigadores": "Investigadores"},
-        size_max=60,
-    )
+        folium.CircleMarker(
+            location=coords,
+            radius=radio,
+            color=color,
+            fill=True,
+            fill_color=color,
+            fill_opacity=0.65,
+            tooltip=f"{row['departamento']}: {row['pct']}% ({row['n']:,})",
+            popup=folium.Popup(
+                f"<b>{row['departamento']}</b><br>"
+                f"{row['n']:,} investigadores ({row['pct']}% del total)",
+                max_width=220,
+            ),
+        ).add_to(m)
 
-    fig.update_traces(
-        marker=dict(opacity=0.85, line=dict(width=1.0, color="white"))
-    )
-
-    fig.update_geos(
-        center=dict(lat=4.5, lon=-73.5),
-        projection_scale=7.2,
-        lataxis_range=[-5, 14],
-        lonaxis_range=[-82, -66],
-        showcountries=True,
-        countrycolor="gray",
-        showcoastlines=True,
-        coastlinecolor="gray",
-        showland=True,
-        landcolor="rgb(242, 242, 242)",
-        showocean=True,
-        oceancolor="rgb(230, 240, 255)",
-    )
-
-    fig.update_layout(
-        margin=dict(l=10, r=10, t=60, b=10),
-        height=850,
-        font=dict(size=14),
-        title_font=dict(size=22),
-        coloraxis_colorbar=dict(title="Investigadores"),
-    )
-    return fig
-
-def tabla_top_departamentos(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
-    mapa_df = preparar_mapa_departamentos(df)
-
-    if mapa_df.empty:
-        return pd.DataFrame(
-            columns=["Ranking", "Departamento", "Investigadores", "% del total"]
-        )
-
-    total_real = df["ID_PERSONA_PR"].nunique()
-
-    salida = mapa_df.head(top_n).copy()
-    salida["% del total"] = (salida["n_investigadores"] / total_real * 100).round(2)
-    salida.insert(0, "Ranking", range(1, len(salida) + 1))
-
-    salida = salida.rename(
-        columns={
-            "departamento": "Departamento",
-            "n_investigadores": "Investigadores",
-        }
-    )
-
-    return salida[["Ranking", "Departamento", "Investigadores", "% del total"]]
+    # Leyenda
+    leyenda = """
+    <div style="position:fixed;bottom:30px;left:30px;z-index:1000;
+                background:white;padding:10px;border-radius:8px;
+                border:1px solid #ccc;font-size:12px;">
+        <b>Concentracion territorial</b><br>
+        <span style="color:#c0392b;">&#9679;</span> Grandes centros urbanos<br>
+        <span style="color:#2980b9;">&#9679;</span> Otros departamentos
+    </div>
+    """
+    m.get_root().html.add_child(folium.Element(leyenda))
+    return m

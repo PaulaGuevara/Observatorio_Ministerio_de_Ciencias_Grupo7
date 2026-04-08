@@ -1,2 +1,3 @@
-# src/ -- Modulos Python del proyecto
-# Ingesta, transformacion, modelo y visualizacion
+"""Paquete de visualización."""
+
+__all__ = []
