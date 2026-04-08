@@ -17,6 +17,7 @@ from src.visualizacion.distribuciones import (
     preparar_distribucion_genero,
 )
 from src.visualizacion.instituciones import (
+    expandir_instituciones,
     filtrar_instituciones,
     figura_ranking_instituciones,
     obtener_columna_area,
@@ -358,19 +359,21 @@ elif seccion == "Issue 20 · Ranking de instituciones":
         st.stop()
 
     df_filtrado = filtrar_instituciones(
-        df_anio,
-        categoria=categoria_sel,
-        area=area_sel,
+    df_anio,
+    categoria=categoria_sel,
+    area=area_sel,
     )
 
     ranking_df = ranking_instituciones(df_filtrado, top_n=top_n)
+    universo_inst = expandir_instituciones(df_filtrado)
+    total_instituciones = universo_inst["INST_FILIA"].nunique()
 
     top_inst_nombre = (
         ranking_df.iloc[0]["institucion"] if not ranking_df.empty else "No disponible"
     )
 
     met1, met2, met3 = st.columns(3)
-    met1.metric("Instituciones en el ranking", f"{len(ranking_df):,}")
+    met1.metric("Instituciones en el universo filtrado", f"{total_instituciones:,}")
     met2.metric(
         "Investigadores únicos filtrados",
         f"{df_filtrado['ID_PERSONA_PR'].nunique():,}"
@@ -381,6 +384,13 @@ elif seccion == "Issue 20 · Ranking de instituciones":
     )
 
     st.info(resumen_issue_20(ranking_df, anio_sel))
+
+    st.dataframe(
+        formatear_tabla_ranking(ranking_df),
+        use_container_width=True,
+        hide_index=True,
+        height=420,
+    )
 
     st.plotly_chart(
         figura_ranking_instituciones(ranking_df),
