@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import unicodedata
 
 import pandas as pd
@@ -42,9 +43,10 @@ COORDENADAS_DEPARTAMENTOS: dict[str, tuple[float, float]] = {
 }
 
 REEMPLAZOS_DEPARTAMENTO = {
-    "ARCHIPIELAGO DE SAN ANDRES, PROVIDENCIA Y SANTA CATALINA": "SAN ANDRES",
+    "ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA": "SAN ANDRES",
     "SAN ANDRES Y PROVIDENCIA": "SAN ANDRES",
-    "BOGOTA D.C.": "BOGOTA",
+    "BOGOTA D C": "BOGOTA",
+    "BOGOTA DC": "BOGOTA",
     "DISTRITO CAPITAL DE BOGOTA": "BOGOTA",
     "VALLE": "VALLE DEL CAUCA",
 }
@@ -57,6 +59,7 @@ def normalizar_texto(texto: str | None) -> str:
     texto = str(texto).strip().upper()
     texto = unicodedata.normalize("NFKD", texto)
     texto = "".join(ch for ch in texto if not unicodedata.combining(ch))
+    texto = re.sub(r"[^\w\s]", " ", texto)
     texto = " ".join(texto.split())
     return texto
 
@@ -145,7 +148,6 @@ def figura_mapa_departamentos(df: pd.DataFrame):
     )
     return fig
 
-
 def tabla_top_departamentos(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
     mapa_df = preparar_mapa_departamentos(df)
 
@@ -154,10 +156,10 @@ def tabla_top_departamentos(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
             columns=["Ranking", "Departamento", "Investigadores", "% del total"]
         )
 
-    total = mapa_df["n_investigadores"].sum()
+    total_real = df["ID_PERSONA_PR"].nunique()
 
     salida = mapa_df.head(top_n).copy()
-    salida["% del total"] = (salida["n_investigadores"] / total * 100).round(2)
+    salida["% del total"] = (salida["n_investigadores"] / total_real * 100).round(2)
     salida.insert(0, "Ranking", range(1, len(salida) + 1))
 
     salida = salida.rename(
