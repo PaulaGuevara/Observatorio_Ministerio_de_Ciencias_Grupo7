@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import unicodedata
 
 import pandas as pd
@@ -20,7 +21,10 @@ COORDENADAS_DEPARTAMENTOS: dict[str, tuple[float, float]] = {
     "CESAR": (9.3373, -73.6536),
     "CHOCO": (5.6942, -76.6545),
     "CORDOBA": (8.7479, -75.8814),
-    "CUNDINAMARCA": (4.7110, -74.0721),
+
+    # Coordenadas diferentes para evitar superposición con Bogotá
+    "CUNDINAMARCA": (4.85, -74.15),
+
     "GUAINIA": (3.8667, -67.9167),
     "GUAVIARE": (2.5667, -72.6500),
     "HUILA": (2.9273, -75.2819),
@@ -42,13 +46,20 @@ COORDENADAS_DEPARTAMENTOS: dict[str, tuple[float, float]] = {
 }
 
 REEMPLAZOS_DEPARTAMENTO = {
+    "ARCHIPIELAGO DE SAN ANDRES PROVIDENCIA Y SANTA CATALINA": "SAN ANDRES",
     "ARCHIPIELAGO DE SAN ANDRES, PROVIDENCIA Y SANTA CATALINA": "SAN ANDRES",
     "SAN ANDRES Y PROVIDENCIA": "SAN ANDRES",
+
+    "BOGOTA D C": "BOGOTA",
+    "BOGOTA D.C": "BOGOTA",
     "BOGOTA D.C.": "BOGOTA",
+    "BOGOTA, D.C": "BOGOTA",
+    "BOGOTA, D.C.": "BOGOTA",
+    "DISTRITO CAPITAL": "BOGOTA",
     "DISTRITO CAPITAL DE BOGOTA": "BOGOTA",
+
     "VALLE": "VALLE DEL CAUCA",
 }
-
 
 def normalizar_texto(texto: str | None) -> str:
     if texto is None or pd.isna(texto):
@@ -57,9 +68,12 @@ def normalizar_texto(texto: str | None) -> str:
     texto = str(texto).strip().upper()
     texto = unicodedata.normalize("NFKD", texto)
     texto = "".join(ch for ch in texto if not unicodedata.combining(ch))
-    texto = " ".join(texto.split())
-    return texto
 
+    # Quitar puntuación para unificar variantes como "BOGOTÁ, D.C."
+    texto = re.sub(r"[^\w\s]", " ", texto)
+    texto = " ".join(texto.split())
+
+    return texto
 
 def preparar_mapa_departamentos(
     df: pd.DataFrame,
@@ -88,8 +102,8 @@ def preparar_mapa_departamentos(
     conteo = conteo.dropna(subset=["lat", "lon"]).sort_values(
         "n_investigadores", ascending=False
     )
-    return conteo
 
+    return conteo
 
 def figura_mapa_departamentos(df: pd.DataFrame):
     mapa_df = preparar_mapa_departamentos(df)
@@ -143,8 +157,8 @@ def figura_mapa_departamentos(df: pd.DataFrame):
         title_font=dict(size=22),
         coloraxis_colorbar=dict(title="Investigadores"),
     )
-    return fig
 
+    return fig
 
 def tabla_top_departamentos(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
     mapa_df = preparar_mapa_departamentos(df)
@@ -155,7 +169,6 @@ def tabla_top_departamentos(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
         )
 
     total = mapa_df["n_investigadores"].sum()
-
     salida = mapa_df.head(top_n).copy()
     salida["% del total"] = (salida["n_investigadores"] / total * 100).round(2)
     salida.insert(0, "Ranking", range(1, len(salida) + 1))
