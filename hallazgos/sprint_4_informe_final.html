@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informe Final Sprint 4 — Observatorio Minciencias Grupo 7</title>
+
+  <!-- KaTeX para ecuaciones matemáticas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false}
+    ]});"></script>
+
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --verde:    #1a5c3a;
+      --verde-cl: #2e7d55;
+      --verde-bg: #eaf4ee;
+      --gris-bg:  #f7f8fa;
+      --gris-bd:  #d1d5db;
+      --text:     #1e293b;
+      --subtext:  #475569;
+      --accent:   #d97706;
+      --danger:   #b91c1c;
+      --info:     #1d4ed8;
+      --radius:   8px;
+      --shadow:   0 2px 8px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      background: #f1f5f9;
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar / Índice ── */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--verde);
+      color: #fff;
+      padding: 1.5rem 1rem;
+    }
+
+    .sidebar-brand {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      opacity: .7;
+      margin-bottom: .4rem;
+    }
+    .sidebar-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .nav-list { list-style: none; }
+    .nav-list li { margin-bottom: .15rem; }
+    .nav-list a {
+      display: block;
+      padding: .35rem .6rem;
+      border-radius: 5px;
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      font-size: .85rem;
+      transition: background .15s;
+    }
+    .nav-list a:hover,
+    .nav-list a.active { background: rgba(255,255,255,.18); color: #fff; }
+    .nav-sub { padding-left: .9rem; }
+    .nav-sub a { font-size: .8rem; opacity: .85; }
+
+    /* ── Main ── */
+    .main {
+      padding: 2rem 2.5rem 4rem;
+      max-width: 960px;
+    }
+
+    /* ── Hero header ── */
+    .report-header {
+      background: linear-gradient(135deg, var(--verde) 0%, var(--verde-cl) 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .report-header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 20px;
+      padding: .2rem .8rem;
+      font-size: .75rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+    }
+    .report-header h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: .3rem;
+    }
+    .report-header h2 {
+      font-size: 1rem;
+      font-weight: 400;
+      opacity: .85;
+      margin-bottom: 1.2rem;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: .6rem;
+      margin-top: 1rem;
+    }
+    .meta-item {
+      background: rgba(255,255,255,.12);
+      border-radius: 6px;
+      padding: .5rem .8rem;
+      font-size: .82rem;
+    }
+    .meta-item strong { display: block; opacity: .7; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ── Section cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.6rem;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.4rem;
+      cursor: pointer;
+      user-select: none;
+      border-left: 5px solid var(--verde);
+      background: var(--gris-bg);
+      transition: background .15s;
+    }
+    .section-header:hover { background: var(--verde-bg); }
+
+    .section-header h2, .section-header h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--verde);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-number {
+      background: var(--verde);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: .15rem .45rem;
+    }
+    .toggle-icon {
+      font-size: 1.1rem;
+      color: var(--verde);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    .section-header.open .toggle-icon { transform: rotate(180deg); }
+
+    .section-body {
+      padding: 1.4rem 1.6rem;
+      display: none;
+      animation: fadeIn .2s ease;
+    }
+    .section-body.open { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Sub-sections ── */
+    .subsection { margin-bottom: 1.4rem; }
+    .subsection h3 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--verde-cl);
+      border-bottom: 2px solid var(--verde-bg);
+      padding-bottom: .3rem;
+      margin-bottom: .8rem;
+    }
+    .subsection h4 {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--subtext);
+      margin-bottom: .5rem;
+      margin-top: .9rem;
+    }
+
+    /* ── Párrafos y listas ── */
+    p { margin-bottom: .9rem; color: var(--text); }
+    p:last-child { margin-bottom: 0; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: .9rem; }
+    li { margin-bottom: .35rem; }
+
+    /* ── Tablas ── */
+    .tbl-wrap { overflow-x: auto; margin: .8rem 0 1.1rem; border-radius: 6px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .83rem;
+    }
+    thead tr { background: var(--verde); color: #fff; }
+    thead th { padding: .55rem .85rem; text-align: left; font-weight: 600; white-space: nowrap; }
+    tbody tr:nth-child(odd)  { background: #fff; }
+    tbody tr:nth-child(even) { background: var(--verde-bg); }
+    tbody td { padding: .48rem .85rem; border-bottom: 1px solid var(--gris-bd); }
+    tfoot tr { background: #e2e8f0; font-weight: 600; }
+    tfoot td { padding: .48rem .85rem; }
+    td.num, th.num { text-align: right; }
+    td.ctr, th.ctr { text-align: center; }
+
+    /* ── Callout boxes ── */
+    .callout {
+      border-left: 4px solid var(--verde-cl);
+      background: var(--verde-bg);
+      border-radius: 0 6px 6px 0;
+      padding: .8rem 1rem;
+      margin: .9rem 0;
+      font-size: .88rem;
+    }
+    .callout.warn  { border-color: var(--accent);  background: #fffbeb; }
+    .callout.info  { border-color: var(--info);    background: #eff6ff; }
+    .callout.alert { border-color: var(--danger);  background: #fef2f2; }
+    .callout strong { display: block; margin-bottom: .25rem; font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+
+    /* ── KPI chips ── */
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin: .8rem 0;
+    }
+    .kpi {
+      background: var(--verde-bg);
+      border: 1px solid #a7d3b8;
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      text-align: center;
+      min-width: 120px;
+      flex: 1;
+    }
+    .kpi .kpi-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--verde);
+      line-height: 1.1;
+    }
+    .kpi .kpi-lbl {
+      font-size: .72rem;
+      color: var(--subtext);
+      margin-top: .25rem;
+    }
+    .kpi.red   { background: #fef2f2; border-color: #fca5a5; }
+    .kpi.red   .kpi-val { color: var(--danger); }
+    .kpi.amber { background: #fffbeb; border-color: #fcd34d; }
+    .kpi.amber .kpi-val { color: var(--accent); }
+
+    /* ── Formula block ── */
+    .formula-block {
+      background: #f8fafc;
+      border: 1px solid var(--gris-bd);
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin: .8rem 0;
+      text-align: center;
+      font-size: 1.05rem;
+    }
+
+    /* ── Badge chips ── */
+    .badge-chip {
+      display: inline-block;
+      padding: .15rem .55rem;
+      border-radius: 12px;
+      font-size: .72rem;
+      font-weight: 600;
+    }
+    .chip-green  { background: #d1fae5; color: #065f46; }
+    .chip-red    { background: #fee2e2; color: #991b1b; }
+    .chip-amber  { background: #fef3c7; color: #92400e; }
+    .chip-blue   { background: #dbeafe; color: #1e40af; }
+    .chip-gray   { background: #f1f5f9; color: #475569; }
+
+    /* ── Conclusiones numbered list ── */
+    .concl-list { list-style: none; padding: 0; }
+    .concl-list > li {
+      display: flex;
+      gap: .9rem;
+      margin-bottom: .95rem;
+      align-items: flex-start;
+    }
+    .concl-num {
+      background: var(--verde);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .8rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    /* ── Recomendaciones ── */
+    .recomend-list { list-style: none; padding: 0; }
+    .recomend-list > li {
+      display: flex;
+      gap: .7rem;
+      margin-bottom: .7rem;
+      padding: .6rem .9rem;
+      background: var(--verde-bg);
+      border-radius: 6px;
+      font-size: .88rem;
+      align-items: flex-start;
+    }
+    .recomend-list .icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+
+    /* ── References table ── */
+    .ref-table td:first-child { font-weight: 600; color: var(--verde-cl); width: 28%; }
+
+    /* ── File badges ── */
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      background: #f1f5f9;
+      border: 1px solid var(--gris-bd);
+      border-radius: 4px;
+      padding: .15rem .5rem;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: .78rem;
+      color: var(--info);
+    }
+
+    /* ── Resumen ejecutivo ── */
+    .exec-summary {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--accent);
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 1.6rem;
+    }
+    .exec-summary h2 {
+      color: var(--accent);
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: .6rem;
+    }
+    .exec-summary p { font-size: .93rem; line-height: 1.75; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .main { padding: 1.2rem 1rem 3rem; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      .sidebar { display: none; }
+      .page-wrap { display: block; }
+      .section-body { display: block !important; }
+      .toggle-icon { display: none; }
+      .section-header { cursor: default; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ====== SIDEBAR ====== -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">Grupo 7 · Sprint 4</div>
+    <div class="sidebar-title">Observatorio Minciencias</div>
+    <ul class="nav-list">
+      <li><a href="#resumen">Resumen ejecutivo</a></li>
+      <li><a href="#s1">1. Introducción</a></li>
+      <li><a href="#s2">2. Materiales y métodos</a></li>
+      <li><a href="#s3">3. Resultados</a></li>
+      <li class="nav-sub">
+        <ul class="nav-list">
+          <li><a href="#s3-1">3.1 Longitudinal</a></li>
+          <li><a href="#s3-2">3.2 Concentración HHI</a></li>
+          <li><a href="#s3-3">3.3 Género OCDE</a></li>
+          <li><a href="#s3-4">3.4 Redes co-filiación</a></li>
+          <li><a href="#s3-5">3.5 Diversidad</a></li>
+        </ul>
+      </li>
+      <li><a href="#s4">4. Discusión</a></li>
+      <li><a href="#s5">5. Conclusiones</a></li>
+      <li><a href="#s6">6. Recomendaciones</a></li>
+      <li><a href="#s7">7. Referencias</a></li>
+      <li><a href="#s8">8. Archivos de respaldo</a></li>
+    </ul>
+  </aside>
+
+  <!-- ====== MAIN ====== -->
+  <main class="main">
+
+    <!-- Encabezado del informe -->
+    <header class="report-header">
+      <div class="badge">Informe Final Reproducible · Sprint 4</div>
+      <h1>Observatorio de Investigadores Reconocidos por Minciencias</h1>
+      <h2>Grupo 7 — Análisis longitudinal, redes y diversidad</h2>
+      <div class="meta-grid">
+        <div class="meta-item"><strong>Fecha</strong>Abril 2026</div>
+        <div class="meta-item"><strong>Convocatorias</strong>2017 · 2019 · 2021</div>
+        <div class="meta-item"><strong>Fuente principal</strong>datos/tarea_join/investigadores_consolidado.csv</div>
+        <div class="meta-item"><strong>Portal</strong><a href="https://www.datos.gov.co/Ciencia-Tecnolog-a-e-Innovaci-n/Investigadores-Reconocidos-por-convocatoria/bqtm-4y2h/about_data" style="color:#a7d3b8" target="_blank" rel="noopener">datos.gov.co →</a></div>
+      </div>
+    </header>
+
+    <!-- Resumen ejecutivo -->
+    <section class="exec-summary" id="resumen">
+      <h2>Resumen ejecutivo</h2>
+      <p>
+        Este informe integra los hallazgos de los cuatro sprints del proyecto. A partir de las bases de investigadores reconocidos
+        por Minciencias (2017, 2019 y 2021), se realizaron: (1) análisis longitudinal de trayectorias individuales y matrices de
+        transición entre categorías; (2) análisis de concentración territorial mediante el índice Herfindahl-Hirschman; (3) análisis
+        de redes de co-filiación institucional; y (4) análisis de variables de conflicto, etnia y discapacidad con comparación frente
+        al Censo DANE 2018. Los resultados muestran un sistema de investigación con alta permanencia en categorías intermedias,
+        fuerte concentración territorial en tres departamentos, una red de colaboración institucional con estructura de hub dominado
+        por la Universidad Nacional, y brechas sistemáticas de representación para poblaciones en condición de vulnerabilidad.
+      </p>
+    </section>
+
+    <!-- ── Sección 1: Introducción ── -->
+    <div class="section-card" id="s1">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">1</span> Introducción</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+        <p>
+          El sistema colombiano de reconocimiento de investigadores opera bajo convocatorias periódicas de Minciencias, cuyos registros
+          permiten estudiar la evolución del capital humano científico del país. El presente trabajo consolida y analiza dichos registros
+          buscando responder cuatro preguntas analíticas transversales:
+        </p>
+        <ul>
+          <li>¿Cómo cambia la categoría de un investigador entre convocatorias consecutivas?</li>
+          <li>¿Qué tan concentrada geográficamente está la investigación reconocida?</li>
+          <li>¿Qué estructura de colaboración institucional emerge de las co-filiaciones declaradas?</li>
+          <li>¿En qué medida la comunidad investigadora refleja la diversidad étnica, de discapacidad y de exposición al conflicto armado de la población general?</li>
+        </ul>
+        <p>
+          La base de trabajo es el consolidado único de las convocatorias 2017, 2019 y 2021, construido mediante la unión de las tres
+          tablas originales con verificación heurística de unicidad de <code>ID_PERSONA_PR</code>. La convocatoria 2023 no se incluye
+          porque a la fecha de análisis no ha sido publicada oficialmente en el portal de datos abiertos del gobierno
+          (última actualización disponible: septiembre 2022).
+        </p>
+        <div class="callout warn">
+          <strong>⚠ Alcance temporal</strong>
+          El análisis cubre exclusivamente las convocatorias 2017, 2019 y 2021. La convocatoria 2023 se incorporará cuando sea
+          publicada en datos.gov.co.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sección 2: Materiales y métodos ── -->
+    <div class="section-card" id="s2">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">2</span> Materiales y métodos</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+
+        <div class="subsection">
+          <h3>2.1 Fuente de datos</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="ctr">Convocatoria</th>
+                  <th class="num">Registros</th>
+                  <th>Variables de diversidad disponibles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="ctr">2017</td><td class="num">13 001</td><td><span class="badge-chip chip-red">No disponibles</span></td></tr>
+                <tr><td class="ctr">2019</td><td class="num">16 796</td><td><span class="badge-chip chip-red">No disponibles</span></td></tr>
+                <tr>
+                  <td class="ctr">2021</td>
+                  <td class="num">21 094</td>
+                  <td>
+                    <code>ID_VICTIMA_CONFLICTO</code>, <code>TXT_GRUPO_ETNICO</code>, <code>TXT_POBLACION_DISCA</code>
+                    <span class="badge-chip chip-green">96.8 % con valor útil</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>La ausencia de variables de diversidad en 2017 y 2019 es estructural: dichos campos no formaban parte del formulario de esas convocatorias. El análisis de diversidad se circunscribe, por tanto, a 2021.</p>
+        </div>
+
+        <div class="subsection">
+          <h3>2.2 Variables utilizadas</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Variable</th><th>Rol analítico</th></tr></thead>
+              <tbody>
+                <tr><td><code>ID_PERSONA_PR</code></td><td>Identificador longitudinal del investigador</td></tr>
+                <tr><td><code>ANO_CONVO</code></td><td>Año de la convocatoria (transformado desde fecha)</td></tr>
+                <tr><td><code>NME_CLASIFICACION_PR</code></td><td>Categoría del investigador (Junior, Asociado, Senior, Emérito)</td></tr>
+                <tr><td><code>NME_DEPARTAMENTO_RES_PR</code></td><td>Departamento de residencia</td></tr>
+                <tr><td><code>INST_FILIA</code></td><td>Instituciones de afiliación (separadas por <code>|</code>)</td></tr>
+                <tr><td><code>NME_GRAN_AREA_PR</code></td><td>Gran área OCDE del investigador</td></tr>
+                <tr><td><code>COD_SEXO_PR</code></td><td>Sexo del investigador</td></tr>
+                <tr><td><code>ID_VICTIMA_CONFLICTO</code></td><td>Condición de víctima del conflicto armado</td></tr>
+                <tr><td><code>TXT_GRUPO_ETNICO</code></td><td>Grupo étnico autodeclarado</td></tr>
+                <tr><td><code>TXT_POBLACION_DISCA</code></td><td>Tipo de discapacidad autodeclarada</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>2.3 Métodos aplicados</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Sprint</th><th>Método</th><th>Herramienta</th></tr></thead>
+              <tbody>
+                <tr><td>1 — Longitudinal</td><td>Seguimiento panel; matrices de transición de Markov</td><td>Python / pandas</td></tr>
+                <tr><td>2 — Territorial</td><td>Índice Herfindahl-Hirschman (HHI)</td><td>Python / pandas</td></tr>
+                <tr><td>2 — Género</td><td>Comparación de participación femenina por gran área OCDE</td><td>Python / pandas</td></tr>
+                <tr><td>3 — Redes</td><td>Grafo de co-filiación (NetworkX); métricas de centralidad</td><td>Python / NetworkX</td></tr>
+                <tr><td>4 — Diversidad</td><td>Tablas de frecuencia; comparación de proporciones con DANE 2018</td><td>Python / pandas</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Sección 3: Resultados ── -->
+    <div class="section-card" id="s3">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">3</span> Resultados</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+
+        <!-- 3.1 -->
+        <div class="subsection" id="s3-1">
+          <h3>3.1 Análisis longitudinal de trayectorias (Sprints 1–2)</h3>
+
+          <h4>3.1.1 Resumen de movilidad entre convocatorias</h4>
+          <p>El seguimiento longitudinal se construyó emparejando registros del mismo <code>ID_PERSONA_PR</code> en pares de convocatorias consecutivas. Para cada investigador presente en la convocatoria inicial se clasificó su situación al final del periodo.</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Periodo</th>
+                  <th class="num">Total inicial</th>
+                  <th class="num">Se mantiene</th>
+                  <th class="num">Sube</th>
+                  <th class="num">Baja</th>
+                  <th class="num">Desaparece</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2017 → 2019</td>
+                  <td class="num">13 001</td>
+                  <td class="num">7 018 <span class="badge-chip chip-green">54.0 %</span></td>
+                  <td class="num">2 246 <span class="badge-chip chip-blue">17.3 %</span></td>
+                  <td class="num">730 <span class="badge-chip chip-amber">5.6 %</span></td>
+                  <td class="num">3 007 <span class="badge-chip chip-gray">23.1 %</span></td>
+                </tr>
+                <tr>
+                  <td>2019 → 2021</td>
+                  <td class="num">16 796</td>
+                  <td class="num">9 657 <span class="badge-chip chip-green">57.5 %</span></td>
+                  <td class="num">2 336 <span class="badge-chip chip-blue">13.9 %</span></td>
+                  <td class="num">1 362 <span class="badge-chip chip-amber">8.1 %</span></td>
+                  <td class="num">3 441 <span class="badge-chip chip-gray">20.5 %</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <strong>Interpretación</strong>
+            En ambos periodos la situación dominante es la permanencia en la misma categoría. Los ascensos superan a los descensos,
+            aunque en 2019→2021 la proporción de ascensos disminuye (17.3 % → 13.9 %) mientras la de descensos aumenta
+            (5.6 % → 8.1 %), lo que sugiere un endurecimiento relativo de las condiciones de ascenso o un efecto pandemia-COVID
+            sobre la producción evaluada. La proporción de investigadores que desaparecen (≈ 20–23 %) refleja la rotación natural
+            del panel.
+          </div>
+
+          <h4>3.1.2 Matrices de transición entre categorías</h4>
+          <p>Los valores corresponden a probabilidades $P(\text{destino} \mid \text{origen})$ para investigadores presentes en ambas convocatorias del periodo.</p>
+
+          <h4>Periodo 2017 → 2019</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>Origen \ Destino</th><th class="ctr">Junior</th><th class="ctr">Asociado</th><th class="ctr">Senior</th><th class="ctr">Emérito</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Junior</strong></td>   <td class="ctr"><span class="badge-chip chip-green">0.720</span></td><td class="ctr">0.243</td><td class="ctr">0.036</td><td class="ctr">0.001</td></tr>
+                <tr><td><strong>Asociado</strong></td> <td class="ctr">0.181</td><td class="ctr"><span class="badge-chip chip-green">0.580</span></td><td class="ctr">0.235</td><td class="ctr">0.004</td></tr>
+                <tr><td><strong>Senior</strong></td>   <td class="ctr">0.050</td><td class="ctr">0.056</td><td class="ctr"><span class="badge-chip chip-green">0.877</span></td><td class="ctr">0.018</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Periodo 2019 → 2021</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>Origen \ Destino</th><th class="ctr">Junior</th><th class="ctr">Asociado</th><th class="ctr">Senior</th><th class="ctr">Emérito</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Junior</strong></td>   <td class="ctr"><span class="badge-chip chip-green">0.779</span></td><td class="ctr">0.179</td><td class="ctr">0.041</td><td class="ctr">0.001</td></tr>
+                <tr><td><strong>Asociado</strong></td> <td class="ctr"><span class="badge-chip chip-amber">0.250</span></td><td class="ctr"><span class="badge-chip chip-green">0.564</span></td><td class="ctr">0.182</td><td class="ctr">0.004</td></tr>
+                <tr><td><strong>Senior</strong></td>   <td class="ctr">0.037</td><td class="ctr">0.132</td><td class="ctr"><span class="badge-chip chip-green">0.812</span></td><td class="ctr">0.019</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <ul>
+            <li><strong>Senior</strong> es la categoría más estable ($P \approx 0.88$ en 2017→2019; $0.81$ en 2019→2021), pero su estabilidad cae 7 pp en el segundo periodo.</li>
+            <li><strong>Junior</strong> presenta alta permanencia (≈ 72–78 %), con la transición ascendente más frecuente hacia Asociado que se ralentiza (24.3 % → 17.9 %).</li>
+            <li><strong>Asociado</strong> es la categoría con mayor dinamismo: la probabilidad de descender a Junior crece de 18.1 % a 25.0 % entre periodos.</li>
+            <li>Las transiciones hacia <strong>Emérito</strong> son posibles pero marginales (&lt; 0.5 %).</li>
+          </ul>
+        </div>
+
+        <!-- 3.2 -->
+        <div class="subsection" id="s3-2">
+          <h3>3.2 Concentración territorial — Índice Herfindahl-Hirschman (Sprint 2)</h3>
+          <p>El HHI mide la concentración de una distribución usando la participación de cada departamento como fracción del total de investigadores únicos.</p>
+
+          <div class="formula-block">
+            $$\text{HHI} = \sum_{i=1}^{n} s_i^2 \qquad \text{HHI}_{10000} = \text{HHI} \times 10000$$
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi">
+              <div class="kpi-val">26 662</div>
+              <div class="kpi-lbl">Investigadores únicos</div>
+            </div>
+            <div class="kpi amber">
+              <div class="kpi-val">1 517.6</div>
+              <div class="kpi-lbl">HHI (escala 0–10 000)</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val">Moderada</div>
+              <div class="kpi-lbl">Nivel de concentración</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val">57.1 %</div>
+              <div class="kpi-lbl">Bogotá + Antioquia + Valle</div>
+            </div>
+          </div>
+
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>Base</th><th class="num">Investigadores</th><th class="ctr">HHI</th><th class="ctr">HHI (0–10 000)</th><th>Concentración</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Depurada (persona única)</td><td class="num">26 662</td><td class="ctr">0.1518</td><td class="ctr">1 517.6</td><td><span class="badge-chip chip-amber">Moderada</span></td></tr>
+                <tr><td>Consolidado completo (sin deduplicar)</td><td class="num">50 891</td><td class="ctr">0.1532</td><td class="ctr">1 531.9</td><td><span class="badge-chip chip-amber">Moderada</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Top 5 departamentos de residencia (base depurada)</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Departamento</th><th class="num">Investigadores</th><th class="ctr">Participación</th></tr></thead>
+              <tbody>
+                <tr><td>Bogotá, D. C.</td><td class="num">8 612</td><td class="ctr"><strong>32.3 %</strong></td></tr>
+                <tr><td>Antioquia</td><td class="num">4 425</td><td class="ctr">16.6 %</td></tr>
+                <tr><td>Valle del Cauca</td><td class="num">2 197</td><td class="ctr">8.2 %</td></tr>
+                <tr><td>Atlántico</td><td class="num">1 778</td><td class="ctr">6.7 %</td></tr>
+                <tr><td>Santander</td><td class="num">1 412</td><td class="ctr">5.3 %</td></tr>
+              </tbody>
+              <tfoot><tr><td><strong>Subtotal top 3</strong></td><td class="num"><strong>15 234</strong></td><td class="ctr"><strong>57.1 %</strong></td></tr></tfoot>
+            </table>
+          </div>
+          <p>En el extremo opuesto, Vichada (n = 1), Guaviare (n = 2) y Vaupés (n = 2) tienen presencia mínima, evidenciando una brecha territorial profunda entre regiones con tradición universitaria consolidada y territorios históricamente marginados de la política científica.</p>
+        </div>
+
+        <!-- 3.3 -->
+        <div class="subsection" id="s3-3">
+          <h3>3.3 Participación femenina por gran área OCDE (Sprint 2)</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Gran área OCDE</th>
+                  <th class="ctr">% fem. 2017</th>
+                  <th class="ctr">% fem. 2019</th>
+                  <th class="ctr">% fem. 2021</th>
+                  <th class="ctr">Cambio 2017–2021</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Ingeniería y Tecnología</td><td class="ctr">25.7 %</td><td class="ctr">26.0 %</td><td class="ctr">26.5 %</td><td class="ctr"><span class="badge-chip chip-amber">+0.8 pp</span></td></tr>
+                <tr><td>Ciencias Agrícolas</td><td class="ctr">32.9 %</td><td class="ctr">35.8 %</td><td class="ctr">35.0 %</td><td class="ctr"><span class="badge-chip chip-blue">+2.2 pp</span></td></tr>
+                <tr><td>Ciencias Naturales</td><td class="ctr">34.2 %</td><td class="ctr">35.3 %</td><td class="ctr">35.8 %</td><td class="ctr"><span class="badge-chip chip-blue">+1.6 pp</span></td></tr>
+                <tr><td>Humanidades</td><td class="ctr">33.1 %</td><td class="ctr">33.7 %</td><td class="ctr">38.4 %</td><td class="ctr"><span class="badge-chip chip-green">+5.3 pp</span></td></tr>
+                <tr><td>Ciencias Sociales</td><td class="ctr">43.5 %</td><td class="ctr">44.1 %</td><td class="ctr">45.1 %</td><td class="ctr"><span class="badge-chip chip-blue">+1.7 pp</span></td></tr>
+                <tr><td>Ciencias Médicas y de la Salud</td><td class="ctr">48.2 %</td><td class="ctr">48.7 %</td><td class="ctr"><strong>50.8 %</strong></td><td class="ctr"><span class="badge-chip chip-blue">+2.7 pp</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>La participación femenina crece en todas las áreas. Ingeniería y Tecnología sigue siendo el área con menor representación femenina (≈ 26 %). Ciencias Médicas y de la Salud supera el 50 % en 2021. Humanidades registra el mayor avance relativo (+5.3 pp).</p>
+        </div>
+
+        <!-- 3.4 -->
+        <div class="subsection" id="s3-4">
+          <h3>3.4 Red de co-filiación institucional (Sprint 3)</h3>
+
+          <h4>3.4.1 Descripción del modelo de red</h4>
+          <p>Se construyó un <strong>grafo no dirigido</strong> donde los <em>nodos</em> son instituciones y las <em>aristas</em> conectan pares que comparten al menos dos investigadores. Se normalizaron variantes nominales (sedes, paréntesis, formatos) antes de construir el grafo.</p>
+
+          <h4>3.4.2 Métricas globales del grafo</h4>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-val">46 618</div><div class="kpi-lbl">Con alguna afiliación</div></div>
+            <div class="kpi amber"><div class="kpi-val">537</div><div class="kpi-lbl">Con co-filiación (≥ 2 inst.)</div></div>
+            <div class="kpi red"><div class="kpi-val">1.15 %</div><div class="kpi-lbl">% con co-filiación</div></div>
+            <div class="kpi"><div class="kpi-val">31</div><div class="kpi-lbl">Nodos (instituciones)</div></div>
+            <div class="kpi"><div class="kpi-val">28</div><div class="kpi-lbl">Aristas</div></div>
+            <div class="kpi"><div class="kpi-val">0.060</div><div class="kpi-lbl">Densidad de red</div></div>
+          </div>
+
+          <div class="callout info">
+            <strong>ℹ Interpretación</strong>
+            La baja densidad (0.060) y los cuatro componentes desconectados indican un sistema de colaboración interinstitucional
+            incipiente: la co-filiación es la excepción y no la norma dentro del panel.
+          </div>
+
+          <h4>3.4.3 Instituciones con mayor centralidad de grado</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Institución</th><th class="num">Investigadores afiliados</th><th class="ctr">Centralidad de grado</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Universidad Nacional de Colombia (Sede Bogotá)</strong></td><td class="num">3 453</td><td class="ctr"><strong>0.367</strong></td></tr>
+                <tr><td>Universidad de Antioquia</td><td class="num">2 238</td><td class="ctr">0.267</td></tr>
+                <tr><td>Pontificia Universidad Javeriana</td><td class="num">1 825</td><td class="ctr">0.133</td></tr>
+                <tr><td>Universidad de los Andes</td><td class="num">1 175</td><td class="ctr">0.067</td></tr>
+                <tr><td>Universidad EAFIT</td><td class="num">562</td><td class="ctr">0.067</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>3.4.4 Pares institucionales con mayor co-filiación</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Institución A</th><th>Institución B</th><th class="num">Investigadores compartidos</th></tr></thead>
+              <tbody>
+                <tr><td>Universidad Nacional — Sede Bogotá</td><td>Universidad de Antioquia</td><td class="num"><strong>5</strong></td></tr>
+                <tr><td>Universidad Nacional — Sede Bogotá</td><td>Universidad Industrial de Santander</td><td class="num">3</td></tr>
+                <tr><td>Universidad Nacional — Sede Bogotá</td><td>Universidad de los Andes</td><td class="num">3</td></tr>
+                <tr><td>Colegio Mayor Ntra. Sra. del Rosario</td><td>Universidad del Rosario</td><td class="num">3</td></tr>
+                <tr><td>Universidad Nacional — Sede Bogotá</td><td>Fundación Universidad del Norte</td><td class="num">3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3.5 -->
+        <div class="subsection" id="s3-5">
+          <h3>3.5 Variables de diversidad: conflicto, etnia y discapacidad (Sprint 4)</h3>
+          <p>El análisis se realizó sobre la convocatoria 2021 (n = 21 094). Se excluyeron registros con respuesta "No informa" del cálculo de porcentajes válidos para hacer los valores comparables con el DANE.</p>
+
+          <h4>3.5.1 Víctimas del conflicto armado</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Categoría</th><th class="num">n</th><th class="ctr">% sobre válidos</th></tr></thead>
+              <tbody>
+                <tr><td>No es víctima</td><td class="num">20 002</td><td class="ctr">97.9 %</td></tr>
+                <tr><td><strong>Sí es víctima</strong></td><td class="num"><strong>421</strong></td><td class="ctr"><strong>2.1 %</strong></td></tr>
+                <tr><td>No informa</td><td class="num">671</td><td class="ctr">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout alert">
+            <strong>⚡ Brecha vs. DANE 2018</strong>
+            Población general: <strong>11.8 %</strong> víctimas del conflicto. Investigadores reconocidos: <strong>2.1 %</strong>.
+            Brecha: <strong>−9.7 puntos porcentuales</strong>.
+          </div>
+
+          <h4>3.5.2 Grupo étnico</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>Grupo étnico</th><th class="num">n</th><th class="ctr">% válidos</th><th class="ctr">% DANE 2018</th><th class="ctr">Brecha (pp)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Ningún grupo étnico</td><td class="num">19 674</td><td class="ctr">96.3 %</td><td class="ctr">—</td><td class="ctr">—</td></tr>
+                <tr><td><strong>NARP</strong></td><td class="num">509</td><td class="ctr">2.5 %</td><td class="ctr">9.3 %</td><td class="ctr"><span class="badge-chip chip-red">−6.8</span></td></tr>
+                <tr><td>Blanco o mestizo</td><td class="num">120</td><td class="ctr">0.6 %</td><td class="ctr">—</td><td class="ctr">—</td></tr>
+                <tr><td><strong>Indígena</strong></td><td class="num">114</td><td class="ctr">0.6 %</td><td class="ctr">4.4 %</td><td class="ctr"><span class="badge-chip chip-red">−3.8</span></td></tr>
+                <tr><td>Rrom</td><td class="num">6</td><td class="ctr">0.03 %</td><td class="ctr">0.006 %</td><td class="ctr"><span class="badge-chip chip-gray">+0.02</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>3.5.3 Discapacidad</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>Categoría</th><th class="num">n</th><th class="ctr">% válidos</th><th class="ctr">% DANE 2018</th><th class="ctr">Brecha (pp)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Sin discapacidad</td><td class="num">20 240</td><td class="ctr">99.1 %</td><td class="ctr">95.8 %</td><td class="ctr">—</td></tr>
+                <tr><td><strong>Con discapacidad</strong></td><td class="num"><strong>181</strong></td><td class="ctr"><strong>0.9 %</strong></td><td class="ctr">4.24 %</td><td class="ctr"><span class="badge-chip chip-red">−3.4</span></td></tr>
+                <tr><td>No informa</td><td class="num">673</td><td class="ctr">—</td><td class="ctr">—</td><td class="ctr">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Entre los investigadores con discapacidad, los tipos más frecuentes son: visual (n = 68; 0.33 %), física (n = 55; 0.27 %) y auditiva (n = 42; 0.21 %).</p>
+
+          <h4>3.5.4 Transcripción íntegra de evidencia Sprint 4 (MariaAmaya12)</h4>
+          <div class="callout info">
+            <strong>Fuente de trazabilidad</strong>
+            Contenido reproducido desde <code>evidencias/sprint4/evidencia_sprint4_variables_dane_2018.md</code> en la rama <code>develop_mariap</code>, manteniendo la estructura y cifras originales.
+          </div>
+
+          <h4>1. Fuente de entrada</h4>
+          <ul>
+            <li>Archivo analizado: <code>datos/tarea_join/investigadores_consolidado.csv</code></li>
+            <li>Año seleccionado para la explotación: <strong>2021</strong></li>
+          </ul>
+
+          <h4>2. Disponibilidad de variables por año</h4>
+          <p>Se revisaron las convocatorias disponibles y se verificó la disponibilidad de <code>ID_VICTIMA_CONFLICTO</code>, <code>TXT_GRUPO_ETNICO</code> y <code>TXT_POBLACION_DISCA</code>.</p>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">anio</th>
+                  <th class="num">n_registros</th>
+                  <th class="num">ID_VICTIMA_CONFLICTO_n_util</th>
+                  <th class="num">ID_VICTIMA_CONFLICTO_pct_util</th>
+                  <th class="num">TXT_GRUPO_ETNICO_n_util</th>
+                  <th class="num">TXT_GRUPO_ETNICO_pct_util</th>
+                  <th class="num">TXT_POBLACION_DISCA_n_util</th>
+                  <th class="num">TXT_POBLACION_DISCA_pct_util</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="num">2017</td><td class="num">13001</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                <tr><td class="num">2019</td><td class="num">16796</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+                <tr><td class="num">2021</td><td class="num">21094</td><td class="num">20423</td><td class="num">96.82</td><td class="num">20423</td><td class="num">96.82</td><td class="num">20421</td><td class="num">96.81</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>3. Justificación metodológica</h4>
+          <p>Aunque el proyecto trabaja con 2017, 2019 y 2021, la explotación sustantiva de estas variables se realiza sobre el año con información útil. Si en un año los registros aparecen únicamente como <code>No registra</code> o <code>No disponible</code>, ese año se documenta, pero no se usa para calcular porcentajes comparables con DANE.</p>
+
+          <h4>4. Resultados descriptivos</h4>
+
+          <h4>4.1 Víctima del conflicto</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>categoria</th><th class="num">n</th><th class="num">pct_total</th><th class="num">pct_validos</th></tr></thead>
+              <tbody>
+                <tr><td>No</td><td class="num">20002</td><td class="num">94.8232</td><td class="num">97.9386</td></tr>
+                <tr><td>No informa</td><td class="num">671</td><td class="num">3.181</td><td class="num">0</td></tr>
+                <tr><td>Sí</td><td class="num">421</td><td class="num">1.9958</td><td class="num">2.0614</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>4.2 Grupo étnico</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>categoria</th><th class="num">n</th><th class="num">pct_total</th><th class="num">pct_validos</th></tr></thead>
+              <tbody>
+                <tr><td>Ningún grupo étnico</td><td class="num">19674</td><td class="num">93.2682</td><td class="num">96.3326</td></tr>
+                <tr><td>No informa</td><td class="num">671</td><td class="num">3.181</td><td class="num">0</td></tr>
+                <tr><td>NARP</td><td class="num">509</td><td class="num">2.413</td><td class="num">2.4923</td></tr>
+                <tr><td>Blanco o mestizo</td><td class="num">120</td><td class="num">0.5689</td><td class="num">0.5876</td></tr>
+                <tr><td>Indígena</td><td class="num">114</td><td class="num">0.5404</td><td class="num">0.5582</td></tr>
+                <tr><td>Rrom</td><td class="num">6</td><td class="num">0.0284</td><td class="num">0.0294</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>4.3 Discapacidad (detalle)</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>categoria</th><th class="num">n</th><th class="num">pct_total</th><th class="num">pct_validos</th></tr></thead>
+              <tbody>
+                <tr><td>Ninguna</td><td class="num">20240</td><td class="num">95.9515</td><td class="num">99.1137</td></tr>
+                <tr><td>No informa</td><td class="num">673</td><td class="num">3.1905</td><td class="num">0</td></tr>
+                <tr><td>Visual</td><td class="num">68</td><td class="num">0.3224</td><td class="num">0.333</td></tr>
+                <tr><td>Física</td><td class="num">55</td><td class="num">0.2607</td><td class="num">0.2693</td></tr>
+                <tr><td>Auditiva</td><td class="num">42</td><td class="num">0.1991</td><td class="num">0.2057</td></tr>
+                <tr><td>Psicosocial</td><td class="num">6</td><td class="num">0.0284</td><td class="num">0.0294</td></tr>
+                <tr><td>Intelectual</td><td class="num">6</td><td class="num">0.0284</td><td class="num">0.0294</td></tr>
+                <tr><td>Múltiple</td><td class="num">4</td><td class="num">0.019</td><td class="num">0.0196</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>4.4 Discapacidad (binaria)</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>categoria</th><th class="num">n</th><th class="num">pct_total</th><th class="num">pct_validos</th></tr></thead>
+              <tbody>
+                <tr><td>No</td><td class="num">20240</td><td class="num">95.9515</td><td class="num">99.1137</td></tr>
+                <tr><td>No informa</td><td class="num">673</td><td class="num">3.1905</td><td class="num">0</td></tr>
+                <tr><td>Sí</td><td class="num">181</td><td class="num">0.8581</td><td class="num">0.8863</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>5. Comparación con DANE 2018</h4>
+
+          <h4>5.1 Víctima del conflicto</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>indicador</th><th>categoria</th><th class="num">pct_base</th><th class="num">pct_dane_2018</th><th class="num">brecha_pp</th></tr></thead>
+              <tbody>
+                <tr><td>víctima del conflicto</td><td>Sí</td><td class="num">2.0614</td><td class="num">11.8</td><td class="num">-9.7386</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>5.2 Discapacidad</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>indicador</th><th>categoria</th><th class="num">pct_base</th><th class="num">pct_dane_2018</th><th class="num">brecha_pp</th></tr></thead>
+              <tbody>
+                <tr><td>discapacidad</td><td>Sí</td><td class="num">0.8863</td><td class="num">4.24</td><td class="num">-3.3537</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>5.3 Grupo étnico</h4>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>categoria</th><th class="num">n</th><th class="num">pct_base</th><th class="num">pct_dane_2018</th><th class="num">brecha_pp</th></tr></thead>
+              <tbody>
+                <tr><td>NARP</td><td class="num">509</td><td class="num">2.4923</td><td class="num">9.34</td><td class="num">-6.8477</td></tr>
+                <tr><td>Indígena</td><td class="num">114</td><td class="num">0.5582</td><td class="num">4.4</td><td class="num">-3.8418</td></tr>
+                <tr><td>Rrom</td><td class="num">6</td><td class="num">0.0294</td><td class="num">0.006</td><td class="num">0.0234</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>6. Conclusión</h4>
+          <p>La comparación se realizó mediante porcentajes y no por conteos absolutos, dado que la base de investigadores corresponde a una población específica y el DANE 2018 representa la población nacional. En consecuencia, las brechas se interpretan en puntos porcentuales.</p>
+        </div>
+
+      </div><!-- /section-body -->
+    </div><!-- /section-card -->
+
+    <!-- ── Sección 4: Discusión ── -->
+    <div class="section-card" id="s4">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">4</span> Discusión integrada</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+        <div class="subsection">
+          <h3>Eje longitudinal</h3>
+          <p>El sistema presenta inercia categorial elevada: la mayoría de los investigadores reconocidos mantienen su categoría entre convocatorias. Sin embargo, la comparación 2017→2019 versus 2019→2021 sugiere un cambio de tendencia: menor movilidad ascendente y mayor movilidad descendente, especialmente en la categoría Asociado. Una hipótesis plausible es que los requisitos de evaluación se hicieron más exigentes o que factores externos (pandemia, reducción de producción académica) afectaron el rendimiento medido.</p>
+        </div>
+        <div class="subsection">
+          <h3>Eje territorial</h3>
+          <p>Con un HHI de 1 518 puntos, el sistema opera bajo concentración moderada pero estructuralmente robusta: los tres primeros departamentos explican más de la mitad del total. La concentración geográfica no es casual, sino el resultado acumulado de décadas de desigual inversión en educación superior. El análisis de la red de co-filiación refuerza esta conclusión: las instituciones con mayor centralidad son precisamente las localizadas en los departamentos dominantes.</p>
+        </div>
+        <div class="subsection">
+          <h3>Eje de redes</h3>
+          <p>La red de co-filiación es dispersa (densidad 0.06) y jerárquica (estructura de hub centrada en la UNAL). La co-filiación como práctica solo involucra al 1.15 % de los investigadores, lo que indica que la colaboración interinstitucional es todavía marginal. La variable <code>INST_FILIA</code> puede no capturar todas las formas de colaboración formalizadas en proyectos sin co-autoría declarada en el formulario.</p>
+        </div>
+        <div class="subsection">
+          <h3>Eje de diversidad</h3>
+          <p>Las brechas de representación documentadas en los tres indicadores (conflicto, etnia, discapacidad) son sistemáticas. La comunidad investigadora reconocida no es un espejo de la sociedad colombiana en ninguna de estas dimensiones. Las brechas reflejan desigualdades estructurales reproducidas dentro del sistema científico y son relevantes para el diseño de políticas de inclusión en futuras convocatorias.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sección 5: Conclusiones ── -->
+    <div class="section-card" id="s5">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">5</span> Conclusiones</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+        <ol class="concl-list">
+          <li>
+            <div class="concl-num">1</div>
+            <div><strong>Estabilidad con señales de tensión ascendente.</strong> El sistema de categorización es estable pero muestra una ralentización de la movilidad ascendente y un incremento de los descensos en el periodo 2019→2021, especialmente en Asociado. El monitoreo longitudinal continuo es indispensable para distinguir si esta tendencia es transitoria o estructural.</div>
+          </li>
+          <li>
+            <div class="concl-num">2</div>
+            <div><strong>Concentración territorial moderada pero persistente.</strong> Bogotá, Antioquia y Valle del Cauca concentran el 57 % de los investigadores únicos. Las regiones periféricas tienen participación marginal y no muestran señales de convergencia con los datos disponibles.</div>
+          </li>
+          <li>
+            <div class="concl-num">3</div>
+            <div><strong>Red de colaboración incipiente.</strong> Solo el 1.15 % de los investigadores declara co-filiación. La red es baja en densidad y dominada por pocas instituciones de gran tradición. El fortalecimiento de la colaboración interinstitucional requiere incentivos explícitos en el modelo de evaluación.</div>
+          </li>
+          <li>
+            <div class="concl-num">4</div>
+            <div><strong>Brechas de diversidad sistemáticas.</strong> Las poblaciones víctimas del conflicto (−9.7 pp), NARP (−6.8 pp), indígenas (−3.8 pp) y personas con discapacidad (−3.4 pp) están subrepresentadas respecto a la población general. Estas brechas son consistentes con las desigualdades estructurales del acceso a la educación superior en Colombia.</div>
+          </li>
+          <li>
+            <div class="concl-num">5</div>
+            <div><strong>Limitaciones de los datos.</strong> Las variables de diversidad solo están disponibles para 2021, lo que impide análisis longitudinales de estas dimensiones. La convocatoria 2023 aún no ha sido publicada en el portal oficial.</div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ── Sección 6: Recomendaciones ── -->
+    <div class="section-card" id="s6">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">6</span> Recomendaciones</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+        <ul class="recomend-list">
+          <li><span class="icon">📋</span>Incorporar las variables de diversidad (<code>ID_VICTIMA_CONFLICTO</code>, <code>TXT_GRUPO_ETNICO</code>, <code>TXT_POBLACION_DISCA</code>) en los formularios de convocatorias futuras para habilitar comparaciones temporales.</li>
+          <li><span class="icon">🗺️</span>Implementar políticas de focalización territorial que amplíen el acceso al reconocimiento en departamentos periféricos (Amazonia, Pacífico, Orinoquía).</li>
+          <li><span class="icon">🔗</span>Diseñar incentivos de colaboración interinstitucional en los criterios de evaluación para incrementar la densidad de la red y reducir la dependencia del hub UNAL.</li>
+          <li><span class="icon">⚖️</span>Establecer estrategias de acción afirmativa dentro de las convocatorias para reducir las brechas de representación de poblaciones NARP, indígenas, víctimas del conflicto y personas con discapacidad.</li>
+          <li><span class="icon">🔄</span>Actualizar el presente informe cuando la convocatoria 2023 sea publicada oficialmente para extender el análisis longitudinal.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── Sección 7: Referencias ── -->
+    <div class="section-card" id="s7">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">7</span> Referencias</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+        <div class="tbl-wrap">
+          <table class="ref-table">
+            <thead><tr><th>Fuente</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td>Minciencias</td><td>Bases de datos de investigadores reconocidos — convocatorias 2017, 2019 y 2021. Portal datos.gov.co</td></tr>
+              <tr><td>DANE</td><td>Censo Nacional de Población y Vivienda 2018 — resultados de grupos étnicos, discapacidad y víctimas del conflicto</td></tr>
+              <tr><td>Newman, M. E. J. (2010)</td><td><em>Networks: An Introduction</em>. Oxford University Press</td></tr>
+              <tr><td>Hirschman, A. O. (1964)</td><td>The paternity of an index. <em>American Economic Review</em>, 54(5), 761–762</td></tr>
+              <tr><td>Minciencias</td><td>Modelo de medición de grupos e investigadores — bases conceptuales del sistema de categorización</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sección 8: Archivos de respaldo ── -->
+    <div class="section-card" id="s8">
+      <div class="section-header open" onclick="toggleSection(this)">
+        <h2><span class="section-number">8</span> Archivos de respaldo en el repositorio</h2>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="section-body open">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Archivo</th><th>Contenido</th></tr></thead>
+            <tbody>
+              <tr><td><span class="file-badge">evidencias/evidencia_tarea1_tracking_longitudinal.md</span></td><td>Detalle completo del análisis longitudinal y cuadros de movilidad</td></tr>
+              <tr><td><span class="file-badge">evidencias/evidencia_tarea2_transiciones_categoria.md</span></td><td>Matrices de transición observadas y probabilidades por categoría y periodo</td></tr>
+              <tr><td><span class="file-badge">evidencias/matriz_transicion_2017_2019.csv</span></td><td>Conteos de transición 2017→2019</td></tr>
+              <tr><td><span class="file-badge">evidencias/matriz_transicion_2019_2021.csv</span></td><td>Conteos de transición 2019→2021</td></tr>
+              <tr><td><span class="file-badge">evidencias/matriz_probabilidades_2017_2019.csv</span></td><td>Probabilidades de transición 2017→2019</td></tr>
+              <tr><td><span class="file-badge">evidencias/matriz_probabilidades_2019_2021.csv</span></td><td>Probabilidades de transición 2019→2021</td></tr>
+              <tr><td><span class="file-badge">hallazgos/sprint_2_hhi_concentracion_territorial.md</span></td><td>Concentración territorial HHI — metodología y resultados</td></tr>
+              <tr><td><span class="file-badge">artifacts/sprint2_genero_ocde/tabla_pct_femenino_por_area_anio.csv</span></td><td>Participación femenina por gran área OCDE, 2017–2021</td></tr>
+              <tr><td><span class="file-badge">hallazgos/sprint_3_cofiliacion_network.md</span></td><td>Red de co-filiación — métricas y pares institucionales</td></tr>
+              <tr><td><span class="file-badge">hallazgos/sprint_3_cofiliacion_nodes.csv</span></td><td>Tabla de nodos del grafo institucional</td></tr>
+              <tr><td><span class="file-badge">hallazgos/sprint_3_cofiliacion_edges.csv</span></td><td>Tabla de aristas del grafo institucional</td></tr>
+              <tr><td><span class="file-badge">hallazgos/sprint_3_cofiliacion_network.gexf</span></td><td>Grafo exportado (Gephi / NetworkX)</td></tr>
+              <tr><td><span class="file-badge">evidencias/sprint4/evidencia_sprint4_variables_dane_2018.md</span></td><td>Análisis de diversidad 2021 y comparación con DANE 2018 (rama develop_mariap)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer style="text-align:center;color:var(--subtext);font-size:.78rem;margin-top:2rem;padding-top:1rem;border-top:1px solid var(--gris-bd);">
+      Observatorio Minciencias — Grupo 7 · Sprint 4 · Abril 2026 · Fuente: datos.gov.co
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    header.classList.toggle('open', !isOpen);
+  }
+
+  // Activar link del sidebar al hacer scroll
+  const sections = document.querySelectorAll('[id^="s"]');
+  const navLinks = document.querySelectorAll('.nav-list a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+
+</body>
+</html>
