@@ -235,7 +235,7 @@ Entre los investigadores con alguna discapacidad, los tipos más frecuentes son:
 
 #### 3.5.4 Transcripción íntegra de evidencia Sprint 4 (MariaAmaya12)
 
-Esta sección incorpora de forma reproducible el contenido completo del análisis en `evidencias/sprint4/evidencia_sprint4_variables_dane_2018.md` (rama `develop_mariap`), para dejar trazabilidad textual y numérica exacta.
+Esta sección incorpora de forma reproducible el contenido completo del análisis en `hallazgos/evidencias/sprint4/evidencia_sprint4_variables_dane_2018.md` (rama `develop_mariap`), para dejar trazabilidad textual y numérica exacta.
 
 ##### 1. Fuente de entrada
 
@@ -380,16 +380,16 @@ Los cuatro ejes de análisis convergen en una imagen coherente del sistema colom
 
 | Archivo | Contenido |
 |:---|:---|
-| `evidencias/evidencia_tarea1_tracking_longitudinal.md` | Detalle completo del análisis longitudinal y cuadros de movilidad |
-| `evidencias/evidencia_tarea2_transiciones_categoria.md` | Matrices de transición observadas y probabilidades por categoría y periodo |
-| `evidencias/matriz_transicion_2017_2019.csv` | Conteos de transición 2017→2019 |
-| `evidencias/matriz_transicion_2019_2021.csv` | Conteos de transición 2019→2021 |
-| `evidencias/matriz_probabilidades_2017_2019.csv` | Probabilidades de transición 2017→2019 |
-| `evidencias/matriz_probabilidades_2019_2021.csv` | Probabilidades de transición 2019→2021 |
+| `hallazgos/evidencias/evidencia_tarea1_tracking_longitudinal.md` | Detalle completo del análisis longitudinal y cuadros de movilidad |
+| `hallazgos/evidencias/evidencia_tarea2_transiciones_categoria.md` | Matrices de transición observadas y probabilidades por categoría y periodo |
+| `hallazgos/evidencias/matriz_transicion_2017_2019.csv` | Conteos de transición 2017→2019 |
+| `hallazgos/evidencias/matriz_transicion_2019_2021.csv` | Conteos de transición 2019→2021 |
+| `hallazgos/evidencias/matriz_probabilidades_2017_2019.csv` | Probabilidades de transición 2017→2019 |
+| `hallazgos/evidencias/matriz_probabilidades_2019_2021.csv` | Probabilidades de transición 2019→2021 |
 | `hallazgos/sprint_2_hhi_concentracion_territorial.md` | Concentración territorial HHI — metodología y resultados |
 | `artifacts/sprint2_genero_ocde/tabla_pct_femenino_por_area_anio.csv` | Participación femenina por gran área OCDE, 2017–2021 |
 | `hallazgos/sprint_3_cofiliacion_network.md` | Red de co-filiación — métricas y pares institucionales |
 | `hallazgos/sprint_3_cofiliacion_nodes.csv` | Tabla de nodos del grafo institucional |
 | `hallazgos/sprint_3_cofiliacion_edges.csv` | Tabla de aristas del grafo institucional |
 | `hallazgos/sprint_3_cofiliacion_network.gexf` | Grafo exportado (Gephi / NetworkX) |
-| `evidencias/sprint4/evidencia_sprint4_variables_dane_2018.md` | Análisis de diversidad 2021 y comparación con DANE 2018 (rama develop_mariap) |
+| `hallazgos/evidencias/sprint4/evidencia_sprint4_variables_dane_2018.md` | Análisis de diversidad 2021 y comparación con DANE 2018 (rama develop_mariap) |

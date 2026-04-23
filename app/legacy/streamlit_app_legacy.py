@@ -6,7 +6,7 @@ Tablero de control interactivo para el Observatorio de Ciencia, Tecnología e
 Innovación — Investigadores Reconocidos Minciencias (Grupo 7).
 
 Ejecución:
-    streamlit run streamlit_app.py
+    streamlit run app/legacy/streamlit_app_legacy.py
 """
 
 import pathlib
@@ -19,8 +19,8 @@ import plotly.express as px
 # ---------------------------------------------------------------------------
 # Rutas
 # ---------------------------------------------------------------------------
-ROOT = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT / "src"))
+PROJECT_ROOT = pathlib.Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from ingesta import cargar_consolidado  # noqa: E402
 from Transformacion import transformar  # noqa: E402
