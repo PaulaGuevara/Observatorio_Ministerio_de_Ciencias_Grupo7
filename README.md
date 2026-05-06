@@ -1,125 +1,96 @@
 # Observatorio MinCiencias — Investigadores Reconocidos
 
-> **Ustadistica** -- Consultoria e Investigacion . Universidad Santo Tomas . 2026-I
+> Ustadistica - Consultoria e Investigacion - Universidad Santo Tomas - 2026-I
 
-Observatorio de investigadores reconocidos por MinCiencias. Análisis longitudinal de convocatorias 2017, 2019, 2021 (y 2023 si disponible).
+Repositorio del proyecto de consultoria para analizar convocatorias de investigadores reconocidos por MinCiencias (2017, 2019, 2021), con enfoque longitudinal, territorial y de co-filiacion.
 
-## Fuentes de Datos
+## Objetivo
 
-MinCiencias / datos.gov.co — Investigadores reconocidos por convocatoria (2017, 2019, 2021)
+Construir evidencia analitica reproducible y visualmente interpretable para responder preguntas de retencion, transicion de categorias, concentracion territorial y estructura de redes de co-filiacion institucional.
 
-Consultar [`datos/catalogo.yaml`](datos/catalogo.yaml) para los identificadores Socrata y metadatos de cada dataset.
+## Navegacion Rapida (para validacion)
 
-## Preguntas de Investigacion
+- Reporte visual comparativo: [hallazgos/reporte_visual_comparativo.html](hallazgos/reporte_visual_comparativo.html)
+- Informe final Sprint 4 (Markdown): [docs/sprint_4_informe_final.md](docs/sprint_4_informe_final.md)
+- Informe final Sprint 4 (HTML): [hallazgos/sprint_4_informe_final.html](hallazgos/sprint_4_informe_final.html)
+- Evidencias de tareas y matrices: [hallazgos/evidencias/](hallazgos/evidencias)
+- Guia de organizacion del repositorio: [docs/organizacion_repositorio.md](docs/organizacion_repositorio.md)
 
-- ¿Cuál es la tasa de retención de investigadores reconocidos entre convocatorias sucesivas?
-- ¿Qué instituciones concentran la mayor producción de investigadores Senior y Emérito?
-- ¿Existe segregación territorial en el reconocimiento de investigadores por fuera de las tres principales ciudades?
-- ¿La representación de mujeres investigadoras ha mejorado significativamente entre 2017 y 2021 en áreas STEM?
+## Estructura Real del Repositorio
 
-## Estructura del Proyecto
-
-```
+```text
 Observatorio_Ministerio_de_Ciencias_Grupo7/
-|-- README.md                    # Este archivo
-|-- CONTRIBUTING.md              # Guia de contribucion y Git Flow
-|-- pyproject.toml               # Poetry (dependencias + metadata)
-|-- Dockerfile                   # Contenedor reproducible
-|-- .github/
-|   +-- workflows/
-|       +-- etl_update.yml       # GitHub Actions para ingesta periodica
-|-- src/
-|   |-- ingesta/                 # Scripts de extraccion (sodapy)
-|   |-- transformacion/          # Limpieza, normalizacion, joins
-|   |-- modelo/                  # Modelo estrella / modelado estadistico
-|   +-- visualizacion/           # Funciones de graficos reutilizables
-|-- notebooks/
-|   |-- 01_eda.ipynb
-|   |-- 02_analisis.ipynb
-|   +-- 03_modelado.ipynb
-|-- app/
-|   +-- streamlit_app.py         # Dashboard interactivo
-|-- datos/
-|   |-- raw/                     # Datos crudos (gitignored si pesados)
-|   |-- processed/               # Datos limpios
-|   +-- catalogo.yaml            # Metadatos de cada dataset
-|-- docs/                        # Informes y documentacion
-|-- tests/                       # Tests automatizados
-|-- artifacts/                   # Artefactos generados (metricas, reportes)
-+-- models/                      # Modelos serializados
+|- README.md
+|- CONTRIBUTING.md
+|- pyproject.toml
+|- Dockerfile
+|- app/
+|  |- streamlit_app.py
+|  |- dashboard_observatorio.py
+|  |- dashboard_sprint_3.py
+|  |- legacy/
+|     |- streamlit_app_legacy.py
+|- artifacts/
+|  |- sprint2_genero_ocde/
+|- datos/
+|  |- catalogo.yaml
+|  |- raw/
+|  |- processed/
+|  |- tarea_join/
+|     |- investigadores_consolidado.csv
+|- diccionario/
+|  |- diccionario_minciencias.yaml
+|- docs/
+|  |- sprint_4_informe_final.md
+|- hallazgos/
+|  |- README.md
+|  |- evidencias/
+|  |- reporte_visual_comparativo.html
+|  |- sprint_2_hhi_concentracion_territorial.md
+|  |- sprint_2_hhi_concentracion_territorial.html
+|  |- sprint_3_cofiliacion_network.md
+|  |- sprint_3_cofiliacion_grafo_interactivo.html
+|  |- sprint_4_informe_final.html
+|- notebooks/
+|- notebooks_Minciencias/
+|- src/
+|  |- ingesta.py
+|  |- Transformacion.py
+|  |- ingesta/
+|  |- transformacion/
+|  |- modelo/
+|  |- visualizacion/
+|- tests/
+|- informe_final.md
+|- MARCO_TEORICO.md
+|- catalogo.yaml
 ```
 
-## Instalacion
+## Convenciones de Orden (Marie Kondo)
+
+- `datos/`: fuentes y productos de datos.
+- `notebooks/` y `notebooks_Minciencias/`: trabajo exploratorio y desarrollo historico.
+- `hallazgos/`: salidas finales para socializacion (HTML, MD, CSV, GEXF) y evidencias.
+- `src/`: codigo reusable por modulos.
+- `app/`: dashboards y aplicaciones Streamlit.
+- `docs/`: documentacion formal de entrega.
+
+No se eliminan archivos historicos; se privilegia claridad por ubicacion, nombre e indice.
+
+## Ejecucion Basica
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo7.git
-cd Observatorio_Ministerio_de_Ciencias_Grupo7
-
-# Instalar dependencias con Poetry
 pip install poetry
 poetry install
 
-# Ejecutar pipeline de ingesta
-poetry run python -m src.ingesta.main
-
-# Ejecutar pipeline de transformacion
-poetry run python -m src.transformacion.main
-
-# Lanzar dashboard
+# Dashboard principal (si aplica en tu entorno)
 poetry run streamlit run app/streamlit_app.py
 ```
 
-## Cronograma -- CRISP-DM
-
-### Sprint 1 (Sem 1-2)
-
-Actualización de datos (verificar convocatoria 2023), automatizar ingesta con sodapy, refactorizar notebooks.
-
-### Sprint 2 (Sem 3-4)
-
-Análisis longitudinal: tracking de investigadores entre convocatorias, matrices de transición de categoría, concentración territorial (HHI).
-
-### Sprint 3 (Sem 5-7)
-
-Network analysis de co-filiación institucional (NetworkX + Pyvis). Dashboard Streamlit con mapa, distribuciones y grafo interactivo.
-
-### Sprint 4 (Sem 8)
-
-Análisis de variables de conflicto, etnia y discapacidad. Comparación con proporciones poblacionales DANE 2018.
-
-
-## Equipo
-
-| Rol | GitHub |
-|-----|--------|
-| Líder estadística | [@MariaAmaya12](https://github.com/MariaAmaya12) |
-| Desarrollo + redes | [@PaulBetancour](https://github.com/PaulBetancour) |
-| Pipeline + deploy | [@Victor-Diaz-Usta](https://github.com/Victor-Diaz-Usta) |
-
-**Director:** [@Izainea](https://github.com/Izainea)
-
 ## Metodologia
 
-- **Framework analitico:** CRISP-DM
-- **Gestion de proyecto:** Sprints de 2 semanas con Kanban (GitHub Projects)
-- **Control de versiones:** Git Flow (`main` / `develop` / `feature/*`)
-- **Estandar operativo:** Big 4 (governance formal, auditoria cruzada, mejora continua)
+- Framework analitico: CRISP-DM
+- Gestion: Sprints y Git Flow (`main`, `develop`, `feature/*`)
+- Control de calidad: revisiones por pares y trazabilidad por evidencias
 
-Consultar [CONTRIBUTING.md](CONTRIBUTING.md) para la guia completa de contribucion.
-
-## Stack Tecnologico
-
-| Capa | Herramientas |
-|------|-------------|
-| Ingesta | sodapy, pandas, requests |
-| Almacen | DuckDB (modelo estrella) |
-| Analisis | pandas, scikit-learn, statsmodels |
-| Visualizacion | matplotlib, seaborn, plotly, folium |
-| Dashboard | Streamlit |
-| Reproducibilidad | Poetry, Docker, GitHub Actions |
-| Testing | pytest, pandera |
-
----
-
-> *"Si no esta en el README, el proyecto no existe."* -- Ustadistica 2026-I
+Consultar [CONTRIBUTING.md](CONTRIBUTING.md) para flujo de contribucion.

@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from pathlib import Path
 
+import networkx as nx
 import pandas as pd
 import pydeck as pdk
 import streamlit as st
@@ -11,7 +12,7 @@ import streamlit.components.v1 as components
 import dashboard_sprint_3 as sprint3
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = PROJECT_ROOT / "datos" / "tarea_join" / "investigadores_consolidado.csv"
 CONVOCATORIA_PRIORITY = {"2021": 3, "2019": 2, "2017": 1}
 
