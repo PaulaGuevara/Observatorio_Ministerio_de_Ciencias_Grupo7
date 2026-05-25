@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Issue #43 - Indicadores regionales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #102a43;
+            color: white;
+            padding: 28px 40px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+        header p {
+            margin: 8px 0 0;
+            color: #d9e2ec;
+        }
+        main {
+            max-width: 1180px;
+            margin: 24px auto;
+            padding: 0 20px 40px;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .kpi .value {
+            font-size: 26px;
+            font-weight: bold;
+            color: #0b5cad;
+        }
+        .kpi .label {
+            font-size: 13px;
+            color: #52606d;
+            margin-top: 5px;
+        }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        h2 {
+            color: #102a43;
+            border-bottom: 1px solid #d9e2ec;
+            padding-bottom: 8px;
+        }
+        code {
+            background: #eef2f7;
+            padding: 2px 6px;
+            border-radius: 5px;
+        }
+        .formula {
+            font-weight: bold;
+            color: #0b5cad;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 13px;
+        }
+        .data-table th {
+            background: #102a43;
+            color: white;
+            text-align: left;
+            padding: 8px;
+        }
+        .data-table td {
+            border-bottom: 1px solid #d9e2ec;
+            padding: 8px;
+        }
+        .note {
+            background: #e8f4ff;
+            border-left: 5px solid #0b5cad;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Issue #43 - Cálculo de indicadores regionales</h1>
+        <p>Producción científica registrada en Minciencias · Convocatorias 2017, 2019 y 2021</p>
+    </header>
+
+    <main>
+        <div class="note">
+            <strong>Fuente utilizada:</strong> <code>datos/processed/consolidado_produccion_investigadores_match.parquet</code><br>
+            <strong>Criterio territorial principal:</strong> región del grupo de investigación, variable <code>NME_REGION_GR</code>.
+        </div>
+
+        <section class="summary">
+            <div class="kpi">
+                <div class="value">1,247,683</div>
+                <div class="label">Registros en la base</div>
+            </div>
+            <div class="kpi">
+                <div class="value">8</div>
+                <div class="label">Regiones identificadas</div>
+            </div>
+            <div class="kpi">
+                <div class="value">6,386</div>
+                <div class="label">Grupos únicos</div>
+            </div>
+            <div class="kpi">
+                <div class="value">3</div>
+                <div class="label">Convocatorias</div>
+            </div>
+        </section>
+
+        
+        <section class="card">
+            <h2>Producción total por región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/01_produccion_total_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Pᵣ = Σ 1</span></p>
+            <p><strong>Interpretación:</strong> Cuenta el número total de productos científicos asociados a cada región.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>produccion_total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>413229</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>277698</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>201994</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>168798</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>136445</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>31972</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>10714</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>6833</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Participación porcentual regional</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/02_participacion_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">%ᵣ = (Pᵣ / Pₜ) × 100</span></p>
+            <p><strong>Interpretación:</strong> Mide el peso relativo de cada región frente al total nacional.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>produccion_total</th>
+      <th>participacion_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>413229</td>
+      <td>33.1197</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>277698</td>
+      <td>22.2571</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>201994</td>
+      <td>16.1895</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>168798</td>
+      <td>13.5289</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>136445</td>
+      <td>10.9359</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>31972</td>
+      <td>2.5625</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>10714</td>
+      <td>0.8587</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>6833</td>
+      <td>0.5477</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Producción promedio por grupo</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/03_promedio_por_grupo_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Promᵣ = Pᵣ / Gᵣ</span></p>
+            <p><strong>Interpretación:</strong> Calcula la producción media por grupo de investigación en cada región.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>produccion_total</th>
+      <th>grupos_unicos</th>
+      <th>promedio_productos_por_grupo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>413229</td>
+      <td>2163</td>
+      <td>191.0444</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>277698</td>
+      <td>1327</td>
+      <td>209.2675</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>201994</td>
+      <td>859</td>
+      <td>235.1502</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>168798</td>
+      <td>838</td>
+      <td>201.4296</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>136445</td>
+      <td>765</td>
+      <td>178.3595</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>31972</td>
+      <td>241</td>
+      <td>132.6639</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>10714</td>
+      <td>111</td>
+      <td>96.5225</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>6833</td>
+      <td>157</td>
+      <td>43.5223</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Producción por clasificación del grupo</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/04_produccion_clasificacion_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Pᵣ,𝒸 = número de productos de la región r asociados a grupos de clasificación c</span></p>
+            <p><strong>Interpretación:</strong> Permite observar cómo se distribuye la producción regional según clasificación del grupo.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>NME_CLASIFICACION_GR</th>
+      <th>produccion_total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>A</td>
+      <td>64347</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>A1</td>
+      <td>52413</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>B</td>
+      <td>48907</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>C</td>
+      <td>32408</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Reconocido</td>
+      <td>3919</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>A</td>
+      <td>49013</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>B</td>
+      <td>48710</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>C</td>
+      <td>38910</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>A1</td>
+      <td>28675</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>Reconocido</td>
+      <td>3490</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Diversidad de producción científica</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/05_diversidad_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Dᵣ = |Tᵣ|</span></p>
+            <p><strong>Interpretación:</strong> Cuenta el número de tipologías distintas de productos en cada región.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>tipologias_distintas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>74</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>71</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>71</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>66</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>56</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Índice de especialización productiva</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/06_indice_especializacion_productiva_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">IEᵣ,ₜ = (Pᵣ,ₜ / Pᵣ) / (Pₜ / Pₜₒₜₐₗ)</span></p>
+            <p><strong>Interpretación:</strong> Identifica tipologías con mayor concentración relativa en una región frente al patrón nacional.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>NME_TIPOLOGIA_PD</th>
+      <th>produccion_region_tipologia</th>
+      <th>produccion_total</th>
+      <th>produccion_tipologia_nacional</th>
+      <th>participacion_tipologia_region</th>
+      <th>participacion_tipologia_nacional</th>
+      <th>indice_especializacion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>Empresa de base tecnológica</td>
+      <td>1255</td>
+      <td>201994</td>
+      <td>1827</td>
+      <td>0.006213</td>
+      <td>0.001464</td>
+      <td>4.2430</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Secreto empresarial</td>
+      <td>2727</td>
+      <td>201994</td>
+      <td>5373</td>
+      <td>0.013500</td>
+      <td>0.004306</td>
+      <td>3.1350</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Innovacion de gestion empresarial</td>
+      <td>3515</td>
+      <td>201994</td>
+      <td>8429</td>
+      <td>0.017402</td>
+      <td>0.006756</td>
+      <td>2.5758</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Notas científica</td>
+      <td>206</td>
+      <td>201994</td>
+      <td>526</td>
+      <td>0.001020</td>
+      <td>0.000422</td>
+      <td>2.4191</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Productos nutraceúticos</td>
+      <td>18</td>
+      <td>201994</td>
+      <td>51</td>
+      <td>0.000089</td>
+      <td>0.000041</td>
+      <td>2.1801</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Consultoría científico-técnica</td>
+      <td>6747</td>
+      <td>201994</td>
+      <td>20278</td>
+      <td>0.033402</td>
+      <td>0.016253</td>
+      <td>2.0552</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Innovaciones en procedimiento y servicio</td>
+      <td>2227</td>
+      <td>201994</td>
+      <td>7565</td>
+      <td>0.011025</td>
+      <td>0.006063</td>
+      <td>1.8183</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Signos Distintivos</td>
+      <td>306</td>
+      <td>201994</td>
+      <td>1189</td>
+      <td>0.001515</td>
+      <td>0.000953</td>
+      <td>1.5897</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Software</td>
+      <td>1615</td>
+      <td>201994</td>
+      <td>6370</td>
+      <td>0.007995</td>
+      <td>0.005105</td>
+      <td>1.5660</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Talleres de creación</td>
+      <td>214</td>
+      <td>201994</td>
+      <td>858</td>
+      <td>0.001059</td>
+      <td>0.000688</td>
+      <td>1.5406</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Diversidad relativa regional</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/07_diversidad_relativa_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">DRᵣ = Dᵣ / Pᵣ</span></p>
+            <p><strong>Interpretación:</strong> Relaciona la diversidad de tipologías con el volumen total de producción regional.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>tipologias_distintas</th>
+      <th>produccion_total</th>
+      <th>diversidad_relativa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>75</td>
+      <td>413229</td>
+      <td>0.000181</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>74</td>
+      <td>277698</td>
+      <td>0.000266</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>71</td>
+      <td>168798</td>
+      <td>0.000421</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>71</td>
+      <td>136445</td>
+      <td>0.000520</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>70</td>
+      <td>201994</td>
+      <td>0.000347</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>66</td>
+      <td>31972</td>
+      <td>0.002064</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>59</td>
+      <td>10714</td>
+      <td>0.005507</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>56</td>
+      <td>6833</td>
+      <td>0.008196</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Permanencia de grupos por región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/08_permanencia_grupos_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">PGᵣ = grupos presentes en dos o más convocatorias</span></p>
+            <p><strong>Interpretación:</strong> Mide continuidad de los grupos de investigación entre convocatorias.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>grupos_unicos</th>
+      <th>grupos_permanentes</th>
+      <th>promedio_convocatorias_por_grupo</th>
+      <th>porcentaje_grupos_permanentes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>859</td>
+      <td>744</td>
+      <td>2.5390</td>
+      <td>86.6123</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>838</td>
+      <td>708</td>
+      <td>2.4427</td>
+      <td>84.4869</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>241</td>
+      <td>188</td>
+      <td>2.2905</td>
+      <td>78.0083</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>2163</td>
+      <td>1757</td>
+      <td>2.4263</td>
+      <td>81.2298</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>1327</td>
+      <td>1169</td>
+      <td>2.5305</td>
+      <td>88.0934</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>111</td>
+      <td>79</td>
+      <td>2.0811</td>
+      <td>71.1712</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>157</td>
+      <td>63</td>
+      <td>1.4013</td>
+      <td>40.1274</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>765</td>
+      <td>630</td>
+      <td>2.4183</td>
+      <td>82.3529</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Crecimiento de grupos por región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/09_crecimiento_grupos_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Crecimiento = ((Gₜ - Gₜ₋₁) / Gₜ₋₁) × 100</span></p>
+            <p><strong>Interpretación:</strong> Calcula la variación porcentual de grupos entre convocatorias.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>ID_CONVOCATORIA</th>
+      <th>grupos_unicos</th>
+      <th>grupos_periodo_anterior</th>
+      <th>crecimiento_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>620</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>751</td>
+      <td>620.0</td>
+      <td>21.1290</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>21</td>
+      <td>810</td>
+      <td>751.0</td>
+      <td>7.8562</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>19</td>
+      <td>569</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>20</td>
+      <td>703</td>
+      <td>569.0</td>
+      <td>23.5501</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>21</td>
+      <td>775</td>
+      <td>703.0</td>
+      <td>10.2418</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>19</td>
+      <td>154</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>20</td>
+      <td>188</td>
+      <td>154.0</td>
+      <td>22.0779</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>21</td>
+      <td>210</td>
+      <td>188.0</td>
+      <td>11.7021</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>19</td>
+      <td>1628</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Consolidación de grupos por región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/10_consolidacion_grupos_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">CGᵣ = grupos permanentes / grupos únicos</span></p>
+            <p><strong>Interpretación:</strong> Resume la estabilidad de los grupos en cada región.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>grupos_unicos</th>
+      <th>grupos_permanentes</th>
+      <th>promedio_convocatorias_por_grupo</th>
+      <th>porcentaje_grupos_permanentes</th>
+      <th>indice_consolidacion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>859</td>
+      <td>744</td>
+      <td>2.5390</td>
+      <td>86.6123</td>
+      <td>0.8661</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>838</td>
+      <td>708</td>
+      <td>2.4427</td>
+      <td>84.4869</td>
+      <td>0.8449</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>241</td>
+      <td>188</td>
+      <td>2.2905</td>
+      <td>78.0083</td>
+      <td>0.7801</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>2163</td>
+      <td>1757</td>
+      <td>2.4263</td>
+      <td>81.2298</td>
+      <td>0.8123</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>1327</td>
+      <td>1169</td>
+      <td>2.5305</td>
+      <td>88.0934</td>
+      <td>0.8809</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>111</td>
+      <td>79</td>
+      <td>2.0811</td>
+      <td>71.1712</td>
+      <td>0.7117</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>157</td>
+      <td>63</td>
+      <td>1.4013</td>
+      <td>40.1274</td>
+      <td>0.4013</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>765</td>
+      <td>630</td>
+      <td>2.4183</td>
+      <td>82.3529</td>
+      <td>0.8235</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Renovación de grupos por región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/11_renovacion_grupos_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">RGᵣ,ₜ = grupos cuya primera aparición ocurre en la convocatoria t</span></p>
+            <p><strong>Interpretación:</strong> Identifica aparición de grupos nuevos por región y convocatoria.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>ID_CONVOCATORIA</th>
+      <th>grupos_nuevos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>620</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>155</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>21</td>
+      <td>84</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>19</td>
+      <td>569</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>20</td>
+      <td>171</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>21</td>
+      <td>98</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>19</td>
+      <td>154</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>20</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>21</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>19</td>
+      <td>1628</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Distribución por género y región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/12_genero_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">% géneroᵣ = registros del género en región / total regional × 100</span></p>
+            <p><strong>Interpretación:</strong> Caracteriza la composición por género cuando el cruce con investigadores es válido.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>NME_GENERO_PR</th>
+      <th>registros</th>
+      <th>total_region</th>
+      <th>participacion_genero_region_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>Femenino</td>
+      <td>83786</td>
+      <td>201994</td>
+      <td>41.4794</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Intersexual</td>
+      <td>52</td>
+      <td>201994</td>
+      <td>0.0257</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Masculino</td>
+      <td>118156</td>
+      <td>201994</td>
+      <td>58.4948</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>Femenino</td>
+      <td>65754</td>
+      <td>168798</td>
+      <td>38.9543</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>Intersexual</td>
+      <td>2</td>
+      <td>168798</td>
+      <td>0.0012</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>Masculino</td>
+      <td>103042</td>
+      <td>168798</td>
+      <td>61.0446</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>Femenino</td>
+      <td>12669</td>
+      <td>31972</td>
+      <td>39.6253</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>Masculino</td>
+      <td>19303</td>
+      <td>31972</td>
+      <td>60.3747</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>Femenino</td>
+      <td>152225</td>
+      <td>413229</td>
+      <td>36.8379</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>Intersexual</td>
+      <td>8</td>
+      <td>413229</td>
+      <td>0.0019</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Evolución detallada de grupos</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/13_evolucion_grupos_detalle_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Gᵣ,ₜ = grupos únicos por región y convocatoria</span></p>
+            <p><strong>Interpretación:</strong> Presenta grupos y productos por región y convocatoria.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>ID_CONVOCATORIA</th>
+      <th>grupos_unicos</th>
+      <th>grupos_periodo_anterior</th>
+      <th>crecimiento_pct</th>
+      <th>produccion_total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>620</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>40852</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>751</td>
+      <td>620.0</td>
+      <td>21.1290</td>
+      <td>75971</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>21</td>
+      <td>810</td>
+      <td>751.0</td>
+      <td>7.8562</td>
+      <td>85171</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>19</td>
+      <td>569</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>34380</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>20</td>
+      <td>703</td>
+      <td>569.0</td>
+      <td>23.5501</td>
+      <td>57967</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>21</td>
+      <td>775</td>
+      <td>703.0</td>
+      <td>10.2418</td>
+      <td>76451</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>19</td>
+      <td>154</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>5953</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>20</td>
+      <td>188</td>
+      <td>154.0</td>
+      <td>22.0779</td>
+      <td>10863</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>21</td>
+      <td>210</td>
+      <td>188.0</td>
+      <td>11.7021</td>
+      <td>15156</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>19</td>
+      <td>1628</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>99521</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Evolución de grupos por región</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/14_evolucion_grupos_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">Variación = G última convocatoria - G primera convocatoria</span></p>
+            <p><strong>Interpretación:</strong> Resume cambios en el número de grupos entre convocatorias.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>19</th>
+      <th>20</th>
+      <th>21</th>
+      <th>variacion_absoluta</th>
+      <th>variacion_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>620.0</td>
+      <td>751.0</td>
+      <td>810.0</td>
+      <td>190.0</td>
+      <td>30.6452</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>569.0</td>
+      <td>703.0</td>
+      <td>775.0</td>
+      <td>206.0</td>
+      <td>36.2039</td>
+    </tr>
+    <tr>
+      <td>Centro Sur</td>
+      <td>154.0</td>
+      <td>188.0</td>
+      <td>210.0</td>
+      <td>56.0</td>
+      <td>36.3636</td>
+    </tr>
+    <tr>
+      <td>Distrito Capital</td>
+      <td>1628.0</td>
+      <td>1765.0</td>
+      <td>1855.0</td>
+      <td>227.0</td>
+      <td>13.9435</td>
+    </tr>
+    <tr>
+      <td>Eje Cafetero</td>
+      <td>977.0</td>
+      <td>1175.0</td>
+      <td>1206.0</td>
+      <td>229.0</td>
+      <td>23.4391</td>
+    </tr>
+    <tr>
+      <td>Llano</td>
+      <td>55.0</td>
+      <td>83.0</td>
+      <td>93.0</td>
+      <td>38.0</td>
+      <td>69.0909</td>
+    </tr>
+    <tr>
+      <td>No disponible</td>
+      <td>0.0</td>
+      <td>87.0</td>
+      <td>133.0</td>
+      <td>133.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>Pacífico</td>
+      <td>526.0</td>
+      <td>636.0</td>
+      <td>688.0</td>
+      <td>162.0</td>
+      <td>30.7985</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Participación por clasificación del grupo</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/15_participacion_clasificacion_region_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">% clasificaciónᵣ = productos de clasificación c en región / total regional × 100</span></p>
+            <p><strong>Interpretación:</strong> Mide la composición regional según clasificación del grupo.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>NME_CLASIFICACION_GR</th>
+      <th>produccion_total</th>
+      <th>total_region</th>
+      <th>participacion_clasificacion_region_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>A</td>
+      <td>64347</td>
+      <td>201994</td>
+      <td>31.8559</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>A1</td>
+      <td>52413</td>
+      <td>201994</td>
+      <td>25.9478</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>B</td>
+      <td>48907</td>
+      <td>201994</td>
+      <td>24.2121</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>C</td>
+      <td>32408</td>
+      <td>201994</td>
+      <td>16.0440</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>Reconocido</td>
+      <td>3919</td>
+      <td>201994</td>
+      <td>1.9402</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>A</td>
+      <td>49013</td>
+      <td>168798</td>
+      <td>29.0365</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>B</td>
+      <td>48710</td>
+      <td>168798</td>
+      <td>28.8570</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>C</td>
+      <td>38910</td>
+      <td>168798</td>
+      <td>23.0512</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>A1</td>
+      <td>28675</td>
+      <td>168798</td>
+      <td>16.9878</td>
+    </tr>
+    <tr>
+      <td>Centro Oriente</td>
+      <td>Reconocido</td>
+      <td>3490</td>
+      <td>168798</td>
+      <td>2.0676</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+        <section class="card">
+            <h2>Participación por clasificación, región y convocatoria</h2>
+            <p><strong>Archivo generado:</strong> <code>outputs/indicadores/16_participacion_clasificacion_region_convocatoria_match.csv</code></p>
+            <p><strong>Fórmula:</strong> <span class="formula">% clasificaciónᵣ,ₜ = productos de clasificación c en región y convocatoria / total región-convocatoria × 100</span></p>
+            <p><strong>Interpretación:</strong> Permite comparar la composición por clasificación en el tiempo.</p>
+            <table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>NME_REGION_GR</th>
+      <th>ID_CONVOCATORIA</th>
+      <th>NME_CLASIFICACION_GR</th>
+      <th>produccion_total</th>
+      <th>total_region_convocatoria</th>
+      <th>participacion_clasificacion_region_convocatoria_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>A</td>
+      <td>12864</td>
+      <td>40852</td>
+      <td>31.4893</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>A1</td>
+      <td>8510</td>
+      <td>40852</td>
+      <td>20.8313</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>B</td>
+      <td>10471</td>
+      <td>40852</td>
+      <td>25.6315</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>C</td>
+      <td>8264</td>
+      <td>40852</td>
+      <td>20.2291</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>19</td>
+      <td>Reconocido</td>
+      <td>743</td>
+      <td>40852</td>
+      <td>1.8188</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>A</td>
+      <td>24318</td>
+      <td>75971</td>
+      <td>32.0096</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>A1</td>
+      <td>19748</td>
+      <td>75971</td>
+      <td>25.9941</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>B</td>
+      <td>19664</td>
+      <td>75971</td>
+      <td>25.8836</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>C</td>
+      <td>11494</td>
+      <td>75971</td>
+      <td>15.1295</td>
+    </tr>
+    <tr>
+      <td>Caribe</td>
+      <td>20</td>
+      <td>Reconocido</td>
+      <td>747</td>
+      <td>75971</td>
+      <td>0.9833</td>
+    </tr>
+  </tbody>
+</table>
+        </section>
+        
+    </main>
+</body>
+</html>
+    
