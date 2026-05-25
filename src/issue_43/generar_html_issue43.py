@@ -5,12 +5,12 @@ import plotly.express as px
 import plotly.io as pio
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = BASE_DIR / "outputs" / "indicadores"
 DOCS_DIR = BASE_DIR / "docs"
-HTML_PATH = DOCS_DIR / "indicadores_issue43.html"
+HTML_PATH = DOCS_DIR / "issue_43" / "indicadores_issue43.html"
 
-DOCS_DIR.mkdir(parents=True, exist_ok=True)
+(DOCS_DIR / "issue_43").mkdir(parents=True, exist_ok=True)
 
 
 INDICADORES = [
