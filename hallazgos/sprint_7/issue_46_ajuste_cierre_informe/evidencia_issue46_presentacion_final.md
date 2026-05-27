@@ -1,8 +1,8 @@
-# Evidencia Issue #47: Presentación final y dashboard del proyecto
+# Evidencia Issue #46: Presentación final y dashboard del proyecto
 
 ## Sprint 7
 
-**Issue:** #47  
+**Issue:** #46  
 **Nombre de la tarea:** Presentación final y cierre de artefactos del proyecto  
 **Tipo de tarea:** Artefacto visual / presentación final / dashboard  
 **Responsable:** Maria Paula Amaya  
@@ -21,9 +21,9 @@ Los artefactos incluidos corresponden a la presentación final del proyecto y al
 
 Los artefactos finales quedaron organizados en la carpeta de artefactos del Sprint 7:
 
-- artifacts/sprint_7/issue_47_presentacion_final/presentacion_final_minciencias.html
-- artifacts/sprint_7/issue_47_presentacion_final/presentacion_final_minciencias.pdf
-- artifacts/sprint_7/issue_47_presentacion_final/dashboard_indicadores.html
+- artifacts/sprint_7/issue_46_presentacion_final/presentacion_final_minciencias.html
+- artifacts/sprint_7/issue_46_presentacion_final/presentacion_final_minciencias.pdf
+- artifacts/sprint_7/issue_46_presentacion_final/dashboard_indicadores.html
 
 No se incluye archivo ZIP, porque los entregables se conservan directamente en formato HTML y PDF dentro del repositorio.
 
@@ -97,7 +97,7 @@ La tarea se considera completada porque:
 - Se incorporó la presentación final corregida al repositorio.
 - Se incorporó el dashboard final de indicadores regionales.
 - Se organizaron los archivos en la carpeta de artefactos del Sprint 7.
-- Se dejó evidencia documental del Issue #47.
+- Se dejó evidencia documental del Issue #46.
 - Se verificó la coherencia de los datos usados en la presentación.
 - Se mantuvo una estructura ordenada del repositorio.
 
