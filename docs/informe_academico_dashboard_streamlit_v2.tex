@@ -1,0 +1,351 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\geometry{margin=2.54cm}
+\setstretch{1.5}
+\captionsetup[table]{skip=6pt}
+\captionsetup[figure]{skip=6pt}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue,
+  pdftitle={Informe academico del proyecto y consolidacion del Dashboard Streamlit v2},
+  pdfauthor={Ustadistica - Consultoria e Investigacion}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Observatorio MinCiencias}
+\fancyhead[R]{Informe academico}
+\fancyfoot[C]{\thepage}
+
+\graphicspath{{../artifacts/sprint2_genero_ocde/}{../hallazgos/}{../docs/}{../app/}}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    {\Large Universidad Santo Tomas\par}
+    \vspace{0.5cm}
+    {\large Consultoria e Investigacion Ustadistica\par}
+    \vspace{1.8cm}
+    {\LARGE \textbf{Informe academico del proyecto y consolidacion del Dashboard Streamlit v2}\par}
+    \vspace{0.9cm}
+    {\large Proyecto: Observatorio MinCiencias -- Investigadores Reconocidos\par}
+    \vspace{0.9cm}
+    {\large Integrantes: Maria Paula Amaya y Paula Andrea Betancour\par}
+    {\large Docente: Carlos Isaac Zainea\par}
+    {\large Ano: 2026\par}
+    \vfill
+    {\large Fecha de elaboracion: 25 de mayo de 2026\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Resumen}
+
+El presente informe academico reconstruye el desarrollo completo del proyecto Observatorio MinCiencias -- Investigadores Reconocidos a partir de la evidencia disponible en el repositorio, con especial atencion a la secuencia de trabajo, la organizacion por ramas y la produccion de entregables intermedios y finales. En lugar de concentrarse unicamente en el tablero final, el documento describe como el proyecto se fue construyendo desde la consolidacion del repositorio, la preparacion de los datos, la elaboracion de indicadores regionales, la validacion de hallazgos y, finalmente, la publicacion del \texttt{dashboard\_streamlit\_v2}.
+
+El analisis se realizo mediante revision de historial Git, lectura de la documentacion institucional del proyecto, verificacion de artefactos versionados y reproduccion de resultados a partir de los archivos finales de indicadores en CSV. La evidencia muestra una organizacion de trabajo basada en Git Flow y sprints, donde la rama \texttt{develop} cumple la funcion de integracion general, mientras que \texttt{Develop\_PaulaB}, \texttt{develop\_mariap} y \texttt{develop\_victorD} concentran contribuciones especificas de analitica territorial, diversidad, redes de colaboracion y visualizacion.
+
+En la version final se consolidan 15 indicadores regionales con datos precalculados en \texttt{datos/processed/indicadores}, lo que permitio un despliegue web estable en Streamlit Cloud sin dependencia de rutas locales. Los resultados muestran una fuerte concentracion de la produccion en Distrito Capital, desempenos diferenciales por region en crecimiento, renovacion y permanencia, y patrones de colaboracion y composicion interna que enriquecen la interpretacion territorial del sistema de investigacion.
+
+\textbf{Palabras clave:} Minciencias, Streamlit, Git Flow, indicadores regionales, trazabilidad, analitica territorial.
+
+\section{Introduccion}
+
+El proyecto Observatorio MinCiencias -- Investigadores Reconocidos se desarrollo como un ejercicio de analitica aplicada con vocacion reproducible, orientado a estudiar convocatorias de investigadores reconocidos en Colombia desde una perspectiva longitudinal, territorial y de colaboracion institucional. La estructura del repositorio evidencia una logica de trabajo por sprints, con documentacion, scripts, artefactos y resultados organizados para sostener trazabilidad y revision posterior.
+
+El proceso no inicio directamente con la construccion del tablero, sino con la definicion de una estructura de repositorio, la consolidacion de fuentes de datos, la preparacion de transformaciones y la generacion progresiva de productos intermedios. A partir de esa base se desarrollaron resultados analiticos y visuales que, en la etapa final, se integraron en \texttt{dashboard\_streamlit\_v2} como mecanismo de consulta y divulgacion en linea.
+
+\section{Objetivos del informe}
+
+\subsection{Objetivo general}
+
+Documentar de forma academica, trazable y verificable el proceso tecnico y analitico desarrollado en el repositorio, desde el inicio de la organizacion del proyecto hasta la consolidacion de los entregables finales implementados en \texttt{dashboard\_streamlit\_v2}.
+
+\subsection{Objetivos especificos}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Reconstruir los aportes de las ramas \texttt{Develop\_PaulaB}, \texttt{develop\_mariap}, \texttt{develop\_victorD} y \texttt{develop} mediante evidencia Git.
+    \item Describir la arquitectura funcional del \texttt{dashboard\_streamlit\_v2} y su dependencia de datos procesados.
+    \item Reportar resultados de los indicadores finales con base en los CSV versionados.
+    \item Integrar evidencias visuales y referencias documentales bajo una estructura de informe academico.
+\end{enumerate}
+
+\section{Metodologia}
+
+Se aplico una estrategia de revision documental y tecnica en cuatro etapas. Primero se reviso la organizacion oficial del repositorio para identificar la logica de carpetas, entregables y convenciones de trabajo. En segundo lugar, se analizaron las ramas y commits relevantes para reconstruir la secuencia de desarrollo y determinar que produjo cada linea de trabajo. Posteriormente se verificaron artefactos, evidencias y documentos finales en \texttt{docs}, \texttt{hallazgos} y \texttt{artifacts}. Finalmente, se recalcularon resultados agregados a partir de los CSV versionados que alimentan el dashboard.
+
+La metodologia es coherente con una implementacion por sprints y con una logica de integracion progresiva tipo Git Flow, en la que los productos analiticos no se generan de una sola vez, sino por acumulacion de etapas verificables.
+
+\section{Desarrollo del proyecto y secuencia de ejecucion}
+
+El proyecto se fue construyendo de manera incremental. En una primera fase, la prioridad fue organizar el repositorio, delimitar las carpetas de datos, codigo, hallazgos y documentacion, y dejar una base de trabajo comprensible para colaboracion entre integrantes. La estructura general del repositorio y la guia de organizacion confirman ese enfoque, porque distinguen con claridad entre datos, scripts reutilizables, notebooks historicos, resultados finales y documentacion.
+
+Una segunda fase consistio en consolidar bases de datos y scripts de transformacion. La evidencia de commits muestra la produccion de archivos de consolidacion, filtrado y revision de match, asi como la generacion de parquet procesado y CSV derivados. Esta etapa fue necesaria para convertir fuentes heterogeneas en insumos consistentes para el analisis posterior.
+
+En una tercera fase, cada rama especializada aporto un componente distinto del proyecto. La rama \texttt{develop\_victorD} se concentro en la construccion y ajuste de redes, mapas y visualizaciones; \texttt{develop\_mariap} priorizo la produccion de indicadores regionales y la documentacion de resultados; mientras que \texttt{Develop\_PaulaB} reunio la version de publicacion del dashboard regional y los datos minimos requeridos para desplegarlo en linea. La rama \texttt{develop} funciono como eje de integracion de los avances que posteriormente se consolidaron en entregables de mayor alcance.
+
+La ultima fase estuvo orientada a validacion y publicacion. Alli se verifico que el \texttt{dashboard\_streamlit\_v2} pudiera ejecutarse sin depender del entorno local del autor, usando los datos finales versionados en el repositorio. Esa decision no es solo tecnica, sino metodologica: al mantener los insumos dentro de una ruta estable y versionada, el proyecto gana reproducibilidad y puede ser revisado por terceros sin ambiguedades.
+
+\section{Evidencia de ramas y trazabilidad de trabajo}
+
+\subsection{Rama \texttt{develop} (integracion)}
+
+La rama \texttt{develop} registra la integracion de cambios por pull request y consolidacion de entregables. Entre los commits de referencia aparece el merge \texttt{e90efca} (Merge pull request \#38 desde \texttt{develop\_mariap}), junto con otros commits de reorganizacion y cierre de sprint.
+
+\subsection{Rama \texttt{develop\_mariap}}
+
+Se observa evidencia de desarrollo en indicadores regionales y organizacion documental. Un commit representativo es \texttt{fef9d04}, donde se reorganizan archivos de los issues 41 y 43, incluyendo:
+
+\begin{itemize}
+    \item \texttt{docs/issue\_41/propuesta.md}
+    \item \texttt{docs/issue\_43/indicadores\_issue43.html}
+    \item \texttt{src/issue\_43/calcular\_indicadores\_regionales.py}
+    \item \texttt{src/issue\_43/generar\_html\_issue43.py}
+\end{itemize}
+
+\subsection{Rama \texttt{develop\_victorD}}
+
+La rama contiene aportes de modelado y visualizacion de red institucional, asi como ajustes de robustez. El commit \texttt{c7f53f3} corrige un \textit{ZeroDivisionError} al filtrar redes por ano, modificando:
+
+\begin{itemize}
+    \item \texttt{app/streamlit\_app.py}
+    \item \texttt{src/modelo/redes.py}
+    \item \texttt{src/visualizacion/redes.py}
+\end{itemize}
+
+\subsection{Rama \texttt{Develop\_PaulaB}}
+
+La rama incorpora la version final del dashboard regional en Streamlit y los datos minimos para despliegue web. El commit \texttt{312370f} agrega:
+
+\begin{itemize}
+    \item \texttt{app/dashboard\_streamlit\_v2.py}
+    \item \texttt{app/dashboard\_streamlit\_final.py}
+    \item \texttt{datos/processed/indicadores/*.csv} (set minimo requerido)
+    \item \texttt{datos/processed/co.json}
+    \item \texttt{datos/processed/co\_shp.zip}
+    \item \texttt{requirements.txt}
+\end{itemize}
+
+Al corte de este informe, la rama \texttt{Develop\_PaulaB} tiene divergencia frente a \texttt{develop} (20 commits unicos en \texttt{develop} y 6 commits unicos en \texttt{Develop\_PaulaB}), lo cual indica que el tablero regional fue preparado como linea especifica de publicacion.
+
+\section{Arquitectura funcional del \texttt{dashboard\_streamlit\_v2}}
+
+\subsection{Estructura de ejecucion}
+
+El archivo principal de interfaz es \texttt{app/dashboard\_streamlit\_v2.py} y se apoya en \texttt{app/dashboard\_streamlit\_final.py} como modulo base para:
+
+\begin{itemize}
+    \item carga de datos
+    \item definicion de metricas
+    \item estandarizacion de regiones
+    \item generacion de graficos de apoyo
+    \item logica de analisis dinamico
+\end{itemize}
+
+\subsection{Ruta de datos para despliegue en nube}
+
+La ruta de entrada de indicadores se configura en:
+
+\begin{quote}
+\texttt{INPUT\_DIR = datos/processed/indicadores}
+\end{quote}
+
+Esta decision permite que la aplicacion funcione en Streamlit Cloud sin depender de rutas locales del computador del autor.
+
+\subsection{Indicadores incluidos}
+
+El dashboard v2 consolida 15 indicadores regionales derivados de los archivos 01 a 16 (con excepcion del 13 como detalle), incluyendo produccion total, participacion, promedio por grupo, especializacion, diversidad, permanencia, crecimiento, renovacion y composicion por clasificacion y convocatoria.
+
+\section{Resultados finales del \texttt{dashboard\_streamlit\_v2}}
+
+Los siguientes resultados se calcularon sobre los archivos versionados en \texttt{datos/processed/indicadores}, aplicando las agregaciones configuradas en la logica del dashboard.
+
+\subsection{Region lider por indicador (vista general)}
+
+\begin{longtable}{p{7.8cm}p{3.4cm}r}
+\toprule
+\textbf{Indicador} & \textbf{Region lider} & \textbf{Valor lider} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Indicador} & \textbf{Region lider} & \textbf{Valor lider} \\
+\midrule
+\endhead
+1. Produccion total por region & Distrito Capital & 413229 \\
+2. Participacion regional & Distrito Capital & 33.3021 \\
+3. Produccion promedio por grupo & Caribe & 235.1502 \\
+4. Produccion por clasificacion & Distrito Capital & 413229 \\
+5. Diversificacion de productos & Distrito Capital & 75 \\
+6. IEP & Caribe & 1.1947 \\
+7. Diversidad relativa & Distrito Capital & 98.6842 \\
+8. Permanencia grupos & Caribe & 67.2875 \\
+9. Crecimiento neto 2017-2021 & Llano & 69.0909 \\
+10. Fortaleza A1/A 2021 & Eje Cafetero & 44.6103 \\
+11. Tasa de renovacion & Llano & 53.7634 \\
+12. Distribucion por genero (mapa por productos) & Eje Cafetero & 138849 \\
+13. Evolucion 2017-2021 (tasa grupos crecen) & Caribe & 76.4906 \\
+14. Participacion por clasificacion & Centro Oriente & 20 \\
+15. Participacion por clasificacion/convocatoria & Llano & 21.4286 \\
+\bottomrule
+\end{longtable}
+
+\subsection{Produccion total por convocatoria (indicador 1b)}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lr}
+\toprule
+\textbf{Convocatoria} & \textbf{Produccion total nacional} \\
+\midrule
+2017 & 271924 \\
+2019 & 444448 \\
+2021 & 524478 \\
+\bottomrule
+\end{tabular}
+\caption{Produccion total nacional por convocatoria.}
+\end{table}
+
+\subsection{Region lider por convocatoria en produccion total}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lrl}
+\toprule
+\textbf{Convocatoria} & \textbf{Region lider} & \textbf{Produccion} \\
+\midrule
+2017 & Distrito Capital & 99521 \\
+2019 & Distrito Capital & 144937 \\
+2021 & Distrito Capital & 168771 \\
+\bottomrule
+\end{tabular}
+\caption{Region lider por convocatoria en produccion total.}
+\end{table}
+
+\subsection{Interpretacion academica de resultados}
+
+Desde una lectura territorial, el tablero evidencia una concentracion sostenida de la produccion en Distrito Capital. Sin embargo, otros indicadores muestran dinamicas complementarias: Caribe lidera en intensidad promedio y permanencia, Llano destaca en crecimiento neto y renovacion, y Eje Cafetero presenta alta fortaleza relativa en A1/A. Esta diferenciacion sugiere que la evaluacion regional no debe limitarse al volumen absoluto, sino integrar medidas de estructura y evolucion.
+
+\section{Evidencias visuales del proceso}
+
+A continuacion se incluyen figuras existentes en el repositorio como evidencia grafica del trabajo desarrollado en sprints previos y su articulacion con la salida final.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{fig1_barras_pct_femenino.png}
+    \caption{Participacion femenina por gran area OCDE (evidencia sprint 2).}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{fig2_heatmap_pct_femenino.png}
+    \caption{Heatmap de participacion femenina por gran area y convocatoria.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{fig3_lineas_evolucion.png}
+    \caption{Evolucion temporal de participacion femenina.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{fig4_brecha_genero.png}
+    \caption{Brecha de genero por area de conocimiento.}
+\end{figure}
+
+\section{Discusion}
+
+Los resultados muestran continuidad entre los hallazgos historicos del proyecto (concentracion territorial y asimetrias de representacion) y la visualizacion final en \texttt{dashboard\_streamlit\_v2}. La principal fortaleza metodologica del cierre consiste en separar claramente la etapa de calculo (scripts y artefactos de datos) de la etapa de comunicacion (dashboard en linea), lo cual mejora reproducibilidad y facilita la evaluacion docente.
+
+Desde la perspectiva de gestion de repositorio, la coexistencia de ramas tematicas permitio desarrollo paralelo, pero genero divergencias que requieren estrategia formal de integracion final para evitar fragmentacion de resultados. Aun asi, el uso de evidencias en \texttt{hallazgos} y \texttt{docs} mantiene trazabilidad suficiente para reconstruir el proceso completo.
+
+\section{Conclusiones}
+
+\begin{enumerate}[label=\arabic*.]
+    \item El repositorio conserva evidencia verificable del trabajo por sprints y por ramas, permitiendo reconstruccion academica del proceso sin depender de memoria oral.
+    \item La rama \texttt{Develop\_PaulaB} consolida un tablero regional funcional para despliegue en Streamlit Cloud, con dependencias y datos minimos versionados.
+    \item Los 15 indicadores del dashboard permiten lectura multivariable del desempeno regional: volumen, participacion, diversificacion, estabilidad, renovacion y composicion por clasificacion.
+    \item El patron dominante de liderazgo en volumen corresponde a Distrito Capital, mientras otras regiones lideran en indicadores estructurales especificos, lo que enriquece la interpretacion territorial.
+    \item La estandarizacion de rutas de datos en \texttt{datos/processed/indicadores} resuelve el principal riesgo de no reproducibilidad en entorno nube.
+\end{enumerate}
+
+\section{Limitaciones y recomendaciones}
+
+\subsection{Limitaciones}
+
+\begin{itemize}
+    \item Persisten divergencias entre \texttt{develop} y \texttt{Develop\_PaulaB} al momento del corte, por lo que algunos aportes recientes pueden no estar totalmente sincronizados en una unica rama de entrega.
+    \item Parte de la evidencia visual historica esta en HTML y no siempre en imagen estatica, lo que puede dificultar su insercion directa en documentos impresos.
+\end{itemize}
+
+\subsection{Recomendaciones}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Definir una rama de cierre academico para consolidar todo el material final validado.
+    \item Mantener una matriz unica de trazabilidad issue-commit-archivo en \texttt{docs}.
+    \item Exportar capturas oficiales del \texttt{dashboard\_streamlit\_v2} en ejecucion para anexos de presentacion final.
+\end{enumerate}
+
+\section{Referencias}
+
+Departamento Administrativo Nacional de Estadistica. (2018). \textit{Censo Nacional de Poblacion y Vivienda 2018}. \url{https://www.dane.gov.co}
+
+Departamento Administrativo Nacional de Estadistica. (2018). \textit{Encuesta Nacional de Calidad de Vida 2018}. \url{https://www.dane.gov.co}
+
+Ministerio de Ciencia, Tecnologia e Innovacion. (s. f.). \textit{Investigadores reconocidos por convocatoria (2017, 2019, 2021)}. Datos Abiertos Colombia. \url{https://www.datos.gov.co/Ciencia-Tecnolog-a-e-Innovaci-n/Investigadores-Reconocidos-por-convocatoria/bqtm-4y2h/about_data}
+
+Ustadistica. (2026). \textit{Observatorio MinCiencias - Investigadores Reconocidos (Rama Develop\_PaulaB)} [Repositorio de software]. GitHub. \url{https://github.com/ustadistica/Observatorio_Ministerio_de_Ciencias_Grupo7}
+
+\section{Anexo de trazabilidad minima usada en este informe}
+
+\textbf{Documentos base:}
+
+\begin{itemize}
+    \item \texttt{README.md}
+    \item \texttt{docs/sprint\_4\_informe\_final.md}
+    \item \texttt{docs/organizacion\_repositorio.md}
+\end{itemize}
+
+\textbf{Archivos tecnicos del tablero final:}
+
+\begin{itemize}
+    \item \texttt{app/dashboard\_streamlit\_v2.py}
+    \item \texttt{app/dashboard\_streamlit\_final.py}
+    \item \texttt{datos/processed/indicadores/*.csv}
+    \item \texttt{datos/processed/co.json}
+    \item \texttt{datos/processed/co\_shp.zip}
+    \item \texttt{requirements.txt}
+\end{itemize}
+
+\textbf{Commits de referencia:}
+
+\begin{itemize}
+    \item \texttt{312370f} (\texttt{Develop\_PaulaB})
+    \item \texttt{b683605} (\texttt{Develop\_PaulaB})
+    \item \texttt{e90efca} (\texttt{develop})
+    \item \texttt{fef9d04} (\texttt{develop\_mariap})
+    \item \texttt{c7f53f3} (\texttt{develop\_victorD})
+\end{itemize}
+
+\end{document}
