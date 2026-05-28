@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2026-04-07">
+    <creator>NetworkX 3.6.1</creator>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static" name="">
+    <attributes mode="static" class="node">
+      <attribute id="0" title="researchers" type="long" />
+      <attribute id="1" title="display_name" type="string" />
+    </attributes>
+    <nodes>
+      <node id="UNIVERSIDAD DEL VALLE" label="UNIVERSIDAD DEL VALLE">
+        <attvalues>
+          <attvalue for="0" value="1233" />
+          <attvalue for="1" value="UNIVERSIDAD DEL VALLE" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD NACIONAL DE COLOMBIA" label="UNIVERSIDAD NACIONAL DE COLOMBIA">
+        <attvalues>
+          <attvalue for="0" value="3453" />
+          <attvalue for="1" value="UNIVERSIDAD NACIONAL DE COLOMBIA SEDE BOGOTA (UNIVERSIDAD NACIONAL DE COLOMBIA)" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DE ANTIOQUIA" label="UNIVERSIDAD DE ANTIOQUIA">
+        <attvalues>
+          <attvalue for="0" value="2238" />
+          <attvalue for="1" value="UNIVERSIDAD DE ANTIOQUIA" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DE LOS ANDES" label="UNIVERSIDAD DE LOS ANDES">
+        <attvalues>
+          <attvalue for="0" value="1175" />
+          <attvalue for="1" value="UNIVERSIDAD DE LOS ANDES" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DE LOS LLANOS" label="UNIVERSIDAD DE LOS LLANOS">
+        <attvalues>
+          <attvalue for="0" value="143" />
+          <attvalue for="1" value="UNIVERSIDAD DE LOS LLANOS" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD EL BOSQUE" label="UNIVERSIDAD EL BOSQUE">
+        <attvalues>
+          <attvalue for="0" value="556" />
+          <attvalue for="1" value="UNIVERSIDAD EL BOSQUE" />
+        </attvalues>
+      </node>
+      <node id="PONTIFICIA UNIVERSIDAD JAVERIANA" label="PONTIFICIA UNIVERSIDAD JAVERIANA">
+        <attvalues>
+          <attvalue for="0" value="1825" />
+          <attvalue for="1" value="PONTIFICIA UNIVERSIDAD JAVERIANA" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DE MEDELLIN" label="UNIVERSIDAD DE MEDELLIN">
+        <attvalues>
+          <attvalue for="0" value="391" />
+          <attvalue for="1" value="UNIVERSIDAD DE MEDELLIN" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DE SAN BUENAVENTURA" label="UNIVERSIDAD DE SAN BUENAVENTURA">
+        <attvalues>
+          <attvalue for="0" value="552" />
+          <attvalue for="1" value="UNIVERSIDAD DE SAN BUENAVENTURA CALI (UNIVERSIDAD DE SAN BUENAVENTURA)" />
+        </attvalues>
+      </node>
+      <node id="COLEGIO MAYOR NUESTRA SENORA DEL ROSARIO" label="COLEGIO MAYOR NUESTRA SENORA DEL ROSARIO">
+        <attvalues>
+          <attvalue for="0" value="633" />
+          <attvalue for="1" value="COLEGIO MAYOR NUESTRA SENORA DEL ROSARIO" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD PONTIFICIA BOLIVARIANA" label="UNIVERSIDAD PONTIFICIA BOLIVARIANA">
+        <attvalues>
+          <attvalue for="0" value="995" />
+          <attvalue for="1" value="UNIVERSIDAD PONTIFICIA BOLIVARIANA" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD INDUSTRIAL DE SANTANDER" label="UNIVERSIDAD INDUSTRIAL DE SANTANDER">
+        <attvalues>
+          <attvalue for="0" value="915" />
+          <attvalue for="1" value="UNIVERSIDAD INDUSTRIAL DE SANTANDER" />
+        </attvalues>
+      </node>
+      <node id="INSTITUTO TECNOLOGICO METROPOLITANO DE MEDELLIN" label="INSTITUTO TECNOLOGICO METROPOLITANO DE MEDELLIN">
+        <attvalues>
+          <attvalue for="0" value="299" />
+          <attvalue for="1" value="INSTITUTO TECNOLOGICO METROPOLITANO DE MEDELLIN" />
+        </attvalues>
+      </node>
+      <node id="INSTITUTO DE INVESTIGACION DE RECURSOS BIOLOGICOS ALEXANDER VON HUMBOLDT" label="INSTITUTO DE INVESTIGACION DE RECURSOS BIOLOGICOS ALEXANDER VON HUMBOLDT">
+        <attvalues>
+          <attvalue for="0" value="121" />
+          <attvalue for="1" value="INSTITUTO DE INVESTIGACION DE RECURSOS BIOLOGICOS ALEXANDER VON HUMBOLDT" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD SANTO TOMAS" label="UNIVERSIDAD SANTO TOMAS">
+        <attvalues>
+          <attvalue for="0" value="820" />
+          <attvalue for="1" value="UNIVERSIDAD SANTO TOMAS" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD EAFIT" label="UNIVERSIDAD EAFIT">
+        <attvalues>
+          <attvalue for="0" value="562" />
+          <attvalue for="1" value="UNIVERSIDAD EAFIT" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA" label="UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA">
+        <attvalues>
+          <attvalue for="0" value="323" />
+          <attvalue for="1" value="UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA" />
+        </attvalues>
+      </node>
+      <node id="INSTITUTO NACIONAL DE SALUD" label="INSTITUTO NACIONAL DE SALUD">
+        <attvalues>
+          <attvalue for="0" value="187" />
+          <attvalue for="1" value="INSTITUTO NACIONAL DE SALUD" />
+        </attvalues>
+      </node>
+      <node id="FUNDACION UNIVERSIDAD DEL NORTE" label="FUNDACION UNIVERSIDAD DEL NORTE">
+        <attvalues>
+          <attvalue for="0" value="738" />
+          <attvalue for="1" value="FUNDACION UNIVERSIDAD DEL NORTE" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DISTRITAL FRANCISCO JOSE DE CALDAS" label="UNIVERSIDAD DISTRITAL FRANCISCO JOSE DE CALDAS">
+        <attvalues>
+          <attvalue for="0" value="636" />
+          <attvalue for="1" value="UNIVERSIDAD DISTRITAL FRANCISCO JOSE DE CALDAS" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DE CARTAGENA" label="UNIVERSIDAD DE CARTAGENA">
+        <attvalues>
+          <attvalue for="0" value="501" />
+          <attvalue for="1" value="UNIVERSIDAD DE CARTAGENA" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD CATOLICA LUIS AMIGO" label="UNIVERSIDAD CATOLICA LUIS AMIGO">
+        <attvalues>
+          <attvalue for="0" value="198" />
+          <attvalue for="1" value="UNIVERSIDAD CATOLICA LUIS AMIGO" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD CENTRAL" label="UNIVERSIDAD CENTRAL">
+        <attvalues>
+          <attvalue for="0" value="124" />
+          <attvalue for="1" value="UNIVERSIDAD CENTRAL" />
+        </attvalues>
+      </node>
+      <node id="INSTITUTO COLOMBIANO DEL PETROLEO" label="INSTITUTO COLOMBIANO DEL PETROLEO">
+        <attvalues>
+          <attvalue for="0" value="32" />
+          <attvalue for="1" value="INSTITUTO COLOMBIANO DEL PETROLEO (ECOPETROL S A)" />
+        </attvalues>
+      </node>
+      <node id="INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENSES" label="INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENSES">
+        <attvalues>
+          <attvalue for="0" value="14" />
+          <attvalue for="1" value="INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENSES" />
+        </attvalues>
+      </node>
+      <node id="INSTITUCION PRESTADORA DE SERVICIOS DE SALUD UNIVERSIDAD DE ANTIOQUIA I P S UNIVERSITARIA" label="INSTITUCION PRESTADORA DE SERVICIOS DE SALUD UNIVERSIDAD DE ANTIOQUIA I P S UNIVERSITARIA">
+        <attvalues>
+          <attvalue for="0" value="8" />
+          <attvalue for="1" value="INSTITUCION PRESTADORA DE SERVICIOS DE SALUD UNIVERSIDAD DE ANTIOQUIA I P S UNIVERSITARIA" />
+        </attvalues>
+      </node>
+      <node id="UNIVERSIDAD DEL ROSARIO" label="UNIVERSIDAD DEL ROSARIO">
+        <attvalues>
+          <attvalue for="0" value="72" />
+          <attvalue for="1" value="UNIVERSIDAD DEL ROSARIO (COLEGIO MAYOR NUESTRA SENORA DEL ROSARIO)" />
+        </attvalues>
+      </node>
+      <node id="VEDAS CORPORACION DE INVESTIGACION E INNOVACION" label="VEDAS CORPORACION DE INVESTIGACION E INNOVACION">
+        <attvalues>
+          <attvalue for="0" value="13" />
+          <attvalue for="1" value="VEDAS CORPORACION DE INVESTIGACION E INNOVACION" />
+        </attvalues>
+      </node>
+      <node id="ECOPETROL S A" label="ECOPETROL S A">
+        <attvalues>
+          <attvalue for="0" value="12" />
+          <attvalue for="1" value="ECOPETROL S A" />
+        </attvalues>
+      </node>
+      <node id="RED IBEROAMERICANA DE INDICADORES DE CIENCIAS Y TECNOLOGIA RICYT" label="RED IBEROAMERICANA DE INDICADORES DE CIENCIAS Y TECNOLOGIA RICYT">
+        <attvalues>
+          <attvalue for="0" value="2" />
+          <attvalue for="1" value="RED IBEROAMERICANA DE INDICADORES DE CIENCIAS Y TECNOLOGIA RICYT" />
+        </attvalues>
+      </node>
+      <node id="INSTITUTO TECNOLOGICO METROPOLITANO" label="INSTITUTO TECNOLOGICO METROPOLITANO">
+        <attvalues>
+          <attvalue for="0" value="17" />
+          <attvalue for="1" value="INSTITUTO TECNOLOGICO METROPOLITANO" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="UNIVERSIDAD DEL VALLE" target="UNIVERSIDAD DE CARTAGENA" id="0" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD DE LOS LLANOS" id="1" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD DE LOS ANDES" id="2" weight="3" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD DE ANTIOQUIA" id="3" weight="5" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="FUNDACION UNIVERSIDAD DEL NORTE" id="4" weight="3" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="INSTITUTO NACIONAL DE SALUD" id="5" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD CENTRAL" id="6" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="INSTITUTO DE INVESTIGACION DE RECURSOS BIOLOGICOS ALEXANDER VON HUMBOLDT" id="7" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD DISTRITAL FRANCISCO JOSE DE CALDAS" id="8" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD INDUSTRIAL DE SANTANDER" id="9" weight="3" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA" id="10" weight="2" />
+      <edge source="UNIVERSIDAD NACIONAL DE COLOMBIA" target="INSTITUTO TECNOLOGICO METROPOLITANO DE MEDELLIN" id="11" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="UNIVERSIDAD EAFIT" id="12" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="UNIVERSIDAD DE MEDELLIN" id="13" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="UNIVERSIDAD PONTIFICIA BOLIVARIANA" id="14" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="UNIVERSIDAD DE SAN BUENAVENTURA" id="15" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENSES" id="16" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="VEDAS CORPORACION DE INVESTIGACION E INNOVACION" id="17" weight="2" />
+      <edge source="UNIVERSIDAD DE ANTIOQUIA" target="INSTITUCION PRESTADORA DE SERVICIOS DE SALUD UNIVERSIDAD DE ANTIOQUIA I P S UNIVERSITARIA" id="18" weight="2" />
+      <edge source="UNIVERSIDAD DE LOS ANDES" target="PONTIFICIA UNIVERSIDAD JAVERIANA" id="19" weight="2" />
+      <edge source="UNIVERSIDAD EL BOSQUE" target="PONTIFICIA UNIVERSIDAD JAVERIANA" id="20" weight="2" />
+      <edge source="PONTIFICIA UNIVERSIDAD JAVERIANA" target="UNIVERSIDAD SANTO TOMAS" id="21" weight="2" />
+      <edge source="PONTIFICIA UNIVERSIDAD JAVERIANA" target="RED IBEROAMERICANA DE INDICADORES DE CIENCIAS Y TECNOLOGIA RICYT" id="22" weight="2" />
+      <edge source="UNIVERSIDAD DE MEDELLIN" target="UNIVERSIDAD EAFIT" id="23" weight="2" />
+      <edge source="UNIVERSIDAD DE SAN BUENAVENTURA" target="UNIVERSIDAD CATOLICA LUIS AMIGO" id="24" weight="2" />
+      <edge source="COLEGIO MAYOR NUESTRA SENORA DEL ROSARIO" target="UNIVERSIDAD DEL ROSARIO" id="25" weight="3" />
+      <edge source="INSTITUTO TECNOLOGICO METROPOLITANO DE MEDELLIN" target="INSTITUTO TECNOLOGICO METROPOLITANO" id="26" weight="2" />
+      <edge source="INSTITUTO COLOMBIANO DEL PETROLEO" target="ECOPETROL S A" id="27" weight="2" />
+    </edges>
+  </graph>
+</gexf>
